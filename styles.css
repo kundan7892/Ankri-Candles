@@ -422,6 +422,7 @@ section {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  border-radius: 40px; /* Curved shape */
 }
 
 .hero-side-img {
@@ -429,6 +430,7 @@ section {
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 40px; /* Curved shape */
 }
 
 .hero-title {
@@ -3975,6 +3977,13 @@ section {
   }
   .visualizer-stage {
     height: 380px !important;
+  }
+  .corporate-container {
+    grid-template-columns: 1fr !important;
+    gap: 3rem !important;
+  }
+  .corporate-content h2 {
+    font-size: 2.2rem !important;
   }
 }
 
