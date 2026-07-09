@@ -494,6 +494,18 @@ section {
   gap: 1.5rem;
 }
 
+.hero-ctas .btn {
+  height: 56px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 0 2rem !important;
+  box-sizing: border-box !important;
+  line-height: 1.2 !important;
+  font-size: 0.8rem !important;
+}
+
 .hero-visual {
   display: flex;
   justify-content: center;
@@ -4071,6 +4083,17 @@ section {
   }
   .price-summary {
     margin-bottom: 1rem !important;
+  }
+  .hero-ctas {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    width: 100% !important;
+  }
+  .hero-ctas .btn {
+    width: 100% !important;
+    height: 52px !important;
+    font-size: 0.75rem !important;
+    padding: 0 1rem !important;
   }
 }
 /* ==========================================================================
