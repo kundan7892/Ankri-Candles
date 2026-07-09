@@ -3964,5 +3964,54 @@ section {
   }
 }
 
+/* ==========================================================================
+   MOBILE VISUAL RESPONSIVENESS FIXES
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .visualizer-sticky-wrapper {
+    position: relative !important;
+    top: auto !important;
+    margin-bottom: 2rem;
+  }
+  .visualizer-stage {
+    height: 380px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .unboxing-modal-card {
+    padding: 30px 15px !important;
+    border-radius: 16px !important;
+  }
+  .unboxing-modal-card h2 {
+    font-size: 1.8rem !important;
+    line-height: 1.2 !important;
+  }
+  .unboxing-modal-card p {
+    font-size: 0.8rem !important;
+    margin-bottom: 20px !important;
+  }
+  .virtual-gift-box-container {
+    transform: scale(0.85);
+    margin-bottom: 10px !important;
+  }
+  .unboxing-reveal-details h3 {
+    font-size: 1.4rem !important;
+  }
+  .tab-btn {
+    padding: 1.2rem 0.2rem !important;
+    font-size: 0.65rem !important;
+  }
+  .tab-btn .tab-num {
+    display: none !important;
+  }
+  .configurator-footer {
+    padding: 1.5rem !important;
+  }
+  .price-summary {
+    margin-bottom: 1rem !important;
+  }
+}
+
 
 
