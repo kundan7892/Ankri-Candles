@@ -2316,6 +2316,10 @@ section {
   margin-left: 0.5rem;
 }
 
+.add-sig-btn {
+  margin-top: auto !important;
+}
+
 /* About / Story Section styling */
 .about-section {
   background: linear-gradient(180deg, transparent, var(--bg-secondary));
