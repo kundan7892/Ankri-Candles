@@ -175,18 +175,18 @@ section {
 }
 
 .btn-hero-glow {
-  background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%) !important;
-  color: #0b0c10 !important;
-  font-weight: 600 !important;
+  background: linear-gradient(135deg, #02652e 0%, #013a1a 100%) !important; /* Premium rich emerald gradient */
+  color: #ffffff !important;
+  font-weight: 500 !important;
   border-radius: 30px !important;
-  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 20px rgba(2, 101, 46, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
 }
 
 .btn-hero-glow:hover {
-  background: linear-gradient(135deg, #e5c060 0%, #c4993a 100%) !important;
-  box-shadow: 0 6px 25px rgba(212, 175, 55, 0.45) !important;
+  background: linear-gradient(135deg, #03803b 0%, #014d23 100%) !important;
+  box-shadow: 0 6px 25px rgba(2, 101, 46, 0.45) !important;
   transform: translateY(-3px) scale(1.02) !important;
 }
 
