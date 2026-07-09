@@ -4073,6 +4073,63 @@ section {
     margin-bottom: 1rem !important;
   }
 }
+/* ==========================================================================
+   GLOBAL ORGANIC CURVED SHAPES SYSTEM (EVERY BOX CURVED)
+   ========================================================================== */
+/* 1. Large containers, panels, and modals */
+.visualizer-panel, 
+.configurator-panel, 
+.config-steps, 
+.quiz-glass-card, 
+.results-layout, 
+.modal-overlay .modal-card, 
+.success-modal-card, 
+.bulk-order-modal, 
+#unboxing-modal-overlay .unboxing-modal-card, 
+.cart-drawer,
+.corporate-form {
+  border-radius: 24px !important;
+}
 
+/* 2. Standard cards and intermediate containers */
+.product-card, 
+.product-card-image-wrapper, 
+.product-card img, 
+.product-type-card, 
+.product-type-card .type-card-inner, 
+.vessel-swatch-card, 
+.vessel-swatch-card img, 
+.quiz-option-card, 
+.review-item-card, 
+.room-simulator-controls, 
+.scent-selectors-grid, 
+.recipe-summary-box, 
+.cart-item-card,
+.purchase-option-card {
+  border-radius: 16px !important;
+}
 
+/* 3. Inputs, selects, and textareas */
+input[type="text"], 
+input[type="email"], 
+input[type="tel"], 
+input[type="number"], 
+select, 
+textarea, 
+.scent-select, 
+.room-btn, 
+.promo-input-wrapper, 
+.promo-input, 
+.apply-promo-btn {
+  border-radius: 30px !important;
+}
 
+/* 4. Buttons and pills */
+.btn, 
+button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick-arrow), 
+.cart-toggle-btn, 
+.builder-tag, 
+.section-tag, 
+.chip {
+  border-radius: 50px !important;
+}
