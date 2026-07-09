@@ -190,6 +190,21 @@ section {
   transform: translateY(-3px) scale(1.02) !important;
 }
 
+.btn-hero-outline {
+  border: 1px solid var(--border-glass) !important;
+  color: var(--text-primary) !important;
+  background: var(--bg-primary) !important;
+  border-radius: 30px !important; /* Curved shape */
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+}
+
+.btn-hero-outline:hover {
+  border-color: var(--sage-accent) !important;
+  background: var(--bg-tertiary) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.03) !important;
+}
+
 .btn-outline {
   border: 1px solid var(--border-glass);
   color: var(--text-primary);
