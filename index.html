@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ankri Candles | Hand-poured Soy Candles</title>
+  <meta name="description" content="Every flame carries a memory. Hand-poured soy candles made to order in our Bangalore studio. Choose your vessel, scent, and title — we craft the rest.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <!-- Background Glows -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Top Promo Ticker -->
+  <div class="top-promo-ticker">
+    <span>♻️ REFILL PROGRAMME: SAME VESSEL FOREVER, NEW SCENT EVERY TIME</span>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="#" class="logo-main">
+        ANKRI CANDLES<span class="logo-sparkle">✦</span>
+      </a>
+      <nav class="main-nav">
+        <a href="#collection" class="nav-link">Shop</a>
+        <a href="#customizer" class="nav-link active">Custom Candle</a>
+        <a href="#about" class="nav-link">Refill & Subscription</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#" class="nav-link" id="bulk-order-nav-link">Bulk Order</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-action-btn" id="bulk-order-btn" aria-label="Bulk Order Enquiry" title="Bulk Order Enquiry"><i data-lucide="package"></i></button>
+        <button class="icon-action-btn" aria-label="Search"><i data-lucide="search"></i></button>
+        <button class="icon-action-btn" aria-label="Wishlist"><i data-lucide="heart"></i></button>
+        <button class="icon-action-btn" aria-label="Account"><i data-lucide="user"></i></button>
+        <button class="cart-toggle-btn" id="cart-btn" aria-label="Open shopping cart">
+          <i data-lucide="shopping-bag"></i>
+          <span class="cart-count" id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+      <div class="hero-content">
+        <span class="section-tag animate-up">Artisan Soy Wax Studio</span>
+        <h1 class="hero-title animate-up">
+          Every Flame <br>
+          <span class="italic-serif">Carries a Memory.</span>
+        </h1>
+        <p class="hero-subtitle animate-up delay-1">
+          A sensory ritual that transforms your space. Hand-poured with 100% vegan soy wax, custom-layered to curate your personal sanctuary.
+        </p>
+        <div class="hero-ctas animate-up delay-2">
+          <a href="#customizer" class="btn btn-primary">Build Your Candle (₹799)</a>
+          <a href="#collection" class="btn btn-outline">Explore Collection</a>
+        </div>
+      </div>
+      
+      <div class="hero-image-side animate-fade">
+        <img class="hero-side-img" src="luxury_candles_banner.png" alt="Luxury hand-poured soy candles">
+      </div>
+    </section>
+
+    <!-- Customizer Section (Candle Builder) -->
+    <section class="customizer-section" id="customizer">
+      <!-- Breadcrumb and title -->
+      <div class="customizer-header">
+        <div class="breadcrumb">Home &rsaquo; Custom Candle</div>
+        <span class="builder-tag">CUSTOM BUILDER STUDIO</span>
+        <h2 class="builder-title">The Custom Candle</h2>
+        <div class="builder-meta-row">
+          <span class="builder-price-info"><span class="price-symbol">₹</span><span id="header-candle-price">799</span> <span class="shipping-note">Free shipping above ₹999</span></span>
+          <div class="builder-rating">
+            <i data-lucide="star" class="star-fill"></i>
+            <i data-lucide="star" class="star-fill"></i>
+            <i data-lucide="star" class="star-fill"></i>
+            <i data-lucide="star" class="star-fill"></i>
+            <i data-lucide="star" class="star-fill"></i>
+            <span class="rating-val">4.8 (13 reviews)</span>
+            <a href="#" class="see-all-reviews">See all</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Type Choice Cards -->
+      <div class="product-type-cards-row">
+        <!-- Choice 1: Glass Jar -->
+        <label class="product-type-card active" id="type-card-glass">
+          <input type="radio" name="product-type-selection" value="glass-jar" checked>
+          <div class="type-card-inner">
+            <i data-lucide="cup-soda" class="type-icon"></i>
+            <span class="type-name">Glass Jar</span>
+            <span class="type-volume">180ml • 40 hrs burn</span>
+            <span class="type-price">₹799</span>
+          </div>
+        </label>
+        <!-- Choice 2: Refill -->
+        <label class="product-type-card" id="type-card-refill">
+          <input type="radio" name="product-type-selection" value="refill">
+          <div class="type-card-inner">
+            <i data-lucide="refresh-cw" class="type-icon"></i>
+            <span class="type-name">Refill</span>
+            <span class="type-volume">For your existing jar</span>
+            <span class="type-price">₹399</span>
+          </div>
+        </label>
+        <!-- Choice 3: Travel Tin -->
+        <label class="product-type-card" id="type-card-tin">
+          <input type="radio" name="product-type-selection" value="travel-tin">
+          <div class="type-card-inner">
+            <i data-lucide="plane" class="type-icon"></i>
+            <span class="type-name">Travel Tin</span>
+            <span class="type-volume">60ml • 15 hrs</span>
+            <span class="type-price">₹299</span>
+          </div>
+        </label>
+      </div>
+
+      <div class="customizer-container">
+        <!-- Left: Interactive Visualizer -->
+        <div class="visualizer-panel">
+          <div class="visualizer-sticky-wrapper">
+            <div class="visualizer-stage">
+              <!-- Flame Indicator/Toggle Hint -->
+              <div class="light-hint" id="flame-toggle-hint">Click the wick to light the candle</div>
+              
+              <!-- Sound Toggle Button -->
+              <button class="stage-sound-btn" id="ambient-audio-toggle" aria-label="Toggle ASMR Sound" title="Toggle ASMR Sound">
+                <i data-lucide="volume-x"></i>
+              </button>
+              
+              <!-- ASMR Neon Wave Canvas -->
+              <canvas id="asmr-waveform-canvas" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; z-index: 2;"></canvas>
+              
+              <!-- Candle Interactive Preview -->
+              <div class="candle-preview" id="candle-preview-target">
+                <!-- Wick and Flame -->
+                <div class="preview-flame-system" id="preview-flame-system">
+                  <div class="wick-graphic"></div>
+                  <!-- Flame SVG/CSS -->
+                  <div class="candle-flame" id="interactive-flame">
+                    <div class="flicker-flame-outer"></div>
+                    <div class="flicker-flame-inner"></div>
+                    <div class="flicker-flame-blue"></div>
+                  </div>
+                </div>
+
+                <!-- Glass/Ceramic Jar Graphic (Default gold vessel) -->
+                <div class="jar-body" id="jar-element" data-jar="gold">
+                  <!-- Wax Graphic (updates color gradient/layers dynamically) -->
+                  <div class="wax-fill-layers" id="wax-fill-element">
+                    <!-- Layer 3: The Twist (10% on top) -->
+                    <div class="wax-layer-twist" id="wax-twist-visual" style="height: 10%"></div>
+                    <!-- Layer 2: The Heart (60% in middle) -->
+                    <div class="wax-layer-heart" id="wax-heart-visual" style="height: 60%"></div>
+                    <!-- Layer 1: The Depth (30% on bottom) -->
+                    <div class="wax-layer-depth" id="wax-depth-visual" style="height: 30%">
+                      <div class="wax-melt-layer"></div>
+                    </div>
+                  </div>
+                  <!-- Custom label printed on the vessel -->
+                  <div class="jar-label" id="jar-label-element" data-font="serif" data-theme="warm-cream">
+                    <div class="label-border">
+                      <div class="label-content">
+                        <div class="label-custom-title" id="preview-label-title">SUNDAY COFFEE</div>
+                        <div class="label-custom-scents" id="preview-label-scents">Lavender, Coffee & Clove</div>
+                        <div class="label-footer-note" id="preview-label-footer">Hand-Poured Soy Candle</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Reflection/Shadow Overlays for Jar Realism -->
+                <div class="jar-overlay-highlight"></div>
+                <div class="jar-shadow"></div>
+              </div>
+
+              <!-- Visual Status Badge -->
+              <div class="candle-status-badge" style="margin-bottom: 15px;">
+                <span id="flame-status">UNLIT</span> • <span id="current-jar-name">Classic Gold</span>
+              </div>
+
+              <!-- Preview Unboxing Experience Button -->
+              <button class="btn btn-outline btn-small" id="preview-unboxing-btn" style="margin-top: 10px; width: 100%; max-width: 320px; margin-left: auto; margin-right: auto; border-color: var(--accent, #D4AF37); color: var(--accent, #D4AF37); display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 20px;">
+                <i data-lucide="package-open"></i> Preview Unboxing Experience
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Configurator Panel -->
+        <div class="configurator-panel">
+          <div class="config-tabs">
+            <button class="tab-btn active" data-step="1">
+              <span class="tab-num">Step 1</span> Choose Vessel
+            </button>
+            <button class="tab-btn" data-step="2">
+              <span class="tab-num">Step 2</span> Scent Layers
+            </button>
+            <button class="tab-btn" data-step="3">
+              <span class="tab-num">Step 3</span> Personalize Label
+            </button>
+          </div>
+
+          <!-- Step Content Container -->
+          <div class="config-steps">
+            <!-- Step 1: Vessel Selection -->
+            <div class="config-step-content active" id="step-1">
+              <h3>01. Your Vessel</h3>
+              <p class="step-desc">Pick the glass finish of your refillable 200ml jar (40-45 hours burn time).</p>
+              
+              <!-- Color Circle Swatches Container -->
+              <div class="vessel-swatches-container" id="vessel-swatches-wrapper">
+                <!-- Gold Swatch -->
+                <label class="vessel-swatch-card active" title="Classic Gold">
+                  <input type="radio" name="jar-selection" value="gold" checked>
+                  <span class="swatch-color gold-swatch"></span>
+                  <span class="swatch-label">Gold</span>
+                </label>
+                <!-- Silver Swatch -->
+                <label class="vessel-swatch-card" title="Classic Silver">
+                  <input type="radio" name="jar-selection" value="silver">
+                  <span class="swatch-color silver-swatch"></span>
+                  <span class="swatch-label">Silver</span>
+                </label>
+                <!-- Black Swatch -->
+                <label class="vessel-swatch-card" title="Shiny Black">
+                  <input type="radio" name="jar-selection" value="black">
+                  <span class="swatch-color black-swatch"></span>
+                  <span class="swatch-label">Black</span>
+                </label>
+                <!-- Amber Swatch -->
+                <label class="vessel-swatch-card" title="Warm Amber">
+                  <input type="radio" name="jar-selection" value="amber">
+                  <span class="swatch-color amber-swatch"></span>
+                  <span class="swatch-label">Amber</span>
+                </label>
+              </div>
+
+              <!-- Informative text blocks for Refill / Tin states -->
+              <div class="vessel-info-block hidden" id="refill-vessel-notice">
+                <i data-lucide="info"></i>
+                <p>No jar is included with the Refill option. We pour the wax into a biodegradable mold that you can drop directly into your existing empty jar.</p>
+              </div>
+              <div class="vessel-info-block hidden" id="tin-vessel-notice">
+                <i data-lucide="info"></i>
+                <p>Travel Tin includes a sleek, seamless aluminium travel container with a matching lid. finish: Brushed Tin.</p>
+              </div>
+            </div>
+
+            <!-- Step 2: Build Your Scent Layers -->
+            <div class="config-step-content" id="step-2">
+              <h3>Build Your Scent Profile</h3>
+              <p class="step-desc">Layer essential extracts. Our formula divides the pour into three distinct aromatic depths.</p>
+
+              <!-- Aromatic Selectors -->
+              <div class="scent-selectors-group">
+                <!-- Dropdown 1: The Heart (60%) -->
+                <div class="scent-dropdown-row">
+                  <div class="scent-row-header">
+                    <label for="scent-select-heart">
+                      <strong>The Heart (60%):</strong> The Dominant Character
+                    </label>
+                    <span class="percentage-badge">60% Volume</span>
+                  </div>
+                  <select id="scent-select-heart" class="scent-dropdown">
+                    <option value="lavender" selected>Lavender (Soft, floral, relaxing)</option>
+                    <option value="vanilla">Vanilla (Creamy, sweet, comforting)</option>
+                    <option value="rose">Rose (Deep, romantic, botanical)</option>
+                    <option value="sandalwood">Sandalwood (Warm, woodsy, sacred)</option>
+                    <option value="first-rain">First Rain (Petrichor, fresh, earthy)</option>
+                    <option value="coffee">Caramelised Coffee (Rich, dark, energizing)</option>
+                    <option value="orange">Orange (Zesty, citrusy, uplifting)</option>
+                    <option value="coconut">Coconut (Warm, tropical, sweet)</option>
+                    <option value="chocolate">Chocolate (Indulgent, cocoa, sweet)</option>
+                    <option value="lemongrass">Lemongrass (Crisp, zesty, purifying)</option>
+                    <option value="cinnamon">Cinnamon (Spicy, festive, cozy)</option>
+                    <option value="pineapple">Pineapple (Tangy, tropical, vibrant)</option>
+                    <option value="clove">Clove (Warm, spicy, complex)</option>
+                    <option value="ylang-ylang">Ylang Ylang (Sweet, floral, exotic)</option>
+                  </select>
+                </div>
+
+                <!-- Dropdown 2: The Depth (30%) -->
+                <div class="scent-dropdown-row">
+                  <div class="scent-row-header">
+                    <label for="scent-select-depth">
+                      <strong>The Depth (30%):</strong> Adds Body & Complexity
+                    </label>
+                    <span class="percentage-badge">30% Volume</span>
+                  </div>
+                  <select id="scent-select-depth" class="scent-dropdown">
+                    <option value="lavender">Lavender (Soft, floral, relaxing)</option>
+                    <option value="vanilla">Vanilla (Creamy, sweet, comforting)</option>
+                    <option value="rose">Rose (Deep, romantic, botanical)</option>
+                    <option value="sandalwood" selected>Sandalwood (Warm, woodsy, sacred)</option>
+                    <option value="first-rain">First Rain (Petrichor, fresh, earthy)</option>
+                    <option value="coffee">Caramelised Coffee (Rich, dark, energizing)</option>
+                    <option value="orange">Orange (Zesty, citrusy, uplifting)</option>
+                    <option value="coconut">Coconut (Warm, tropical, sweet)</option>
+                    <option value="chocolate">Chocolate (Indulgent, cocoa, sweet)</option>
+                    <option value="lemongrass">Lemongrass (Crisp, zesty, purifying)</option>
+                    <option value="cinnamon">Cinnamon (Spicy, festive, cozy)</option>
+                    <option value="pineapple">Pineapple (Tangy, tropical, vibrant)</option>
+                    <option value="clove">Clove (Warm, spicy, complex)</option>
+                    <option value="ylang-ylang">Ylang Ylang (Sweet, floral, exotic)</option>
+                  </select>
+                </div>
+
+                <!-- Dropdown 3: The Twist (10%) -->
+                <div class="scent-dropdown-row">
+                  <div class="scent-row-header">
+                    <label for="scent-select-twist">
+                      <strong>The Twist (10%):</strong> The Unexpected Accent
+                    </label>
+                    <span class="percentage-badge">10% Volume</span>
+                  </div>
+                  <select id="scent-select-twist" class="scent-dropdown">
+                    <option value="lavender">Lavender (Soft, floral, relaxing)</option>
+                    <option value="vanilla">Vanilla (Creamy, sweet, comforting)</option>
+                    <option value="rose">Rose (Deep, romantic, botanical)</option>
+                    <option value="sandalwood">Sandalwood (Warm, woodsy, sacred)</option>
+                    <option value="first-rain">First Rain (Petrichor, fresh, earthy)</option>
+                    <option value="coffee" selected>Caramelised Coffee (Rich, dark, energizing)</option>
+                    <option value="orange">Orange (Zesty, citrusy, uplifting)</option>
+                    <option value="coconut">Coconut (Warm, tropical, sweet)</option>
+                    <option value="chocolate">Chocolate (Indulgent, cocoa, sweet)</option>
+                    <option value="lemongrass">Lemongrass (Crisp, zesty, purifying)</option>
+                    <option value="cinnamon">Cinnamon (Spicy, festive, cozy)</option>
+                    <option value="pineapple">Pineapple (Tangy, tropical, vibrant)</option>
+                    <option value="clove">Clove (Warm, spicy, complex)</option>
+                    <option value="ylang-ylang">Ylang Ylang (Sweet, floral, exotic)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Scent Profile Summary Visualizer -->
+              <div class="scent-profile-visualizer">
+                <h4>Layered Wax Composition</h4>
+                <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:1rem;">Your custom candle wax contains three distinct visual bands reflecting your recipe ingredients:</p>
+                <div class="layered-swatch-display">
+                  <div class="swatch-band" id="swatch-band-twist"><span>10% Twist</span></div>
+                  <div class="swatch-band" id="swatch-band-heart"><span>60% Heart</span></div>
+                  <div class="swatch-band" id="swatch-band-depth"><span>30% Depth</span></div>
+                </div>
+              </div>
+
+              <!-- Scent Synergy Analyzer Card -->
+              <div class="scent-synergy-card">
+                <div class="synergy-header-row">
+                  <span class="synergy-label"><i data-lucide="sparkles"></i> Olfactory Chemistry</span>
+                  <div class="synergy-score-wrapper">
+                    <span class="synergy-score-text">Synergy Score:</span>
+                    <span class="synergy-percent" id="synergy-score-val">94%</span>
+                  </div>
+                </div>
+                <div class="synergy-vibe-row">
+                  <span class="vibe-title">Aromatic Vibe:</span>
+                  <span class="vibe-tag" id="synergy-vibe-val">Warm Botanical Spice</span>
+                </div>
+                <div class="synergy-evolution-row">
+                  <div class="evo-step">
+                    <span class="evo-dot twist-dot"></span>
+                    <div class="evo-desc">
+                      <strong>First Light (10%):</strong> <span id="synergy-twist-desc">Immediate zesty splash.</span>
+                    </div>
+                  </div>
+                  <div class="evo-step">
+                    <span class="evo-dot heart-dot"></span>
+                    <div class="evo-desc">
+                      <strong>Mid Burn (60%):</strong> <span id="synergy-heart-desc">Warm botanical florals settle in.</span>
+                    </div>
+                  </div>
+                  <div class="evo-step">
+                    <span class="evo-dot depth-dot"></span>
+                    <div class="evo-desc">
+                      <strong>Lingering Base (30%):</strong> <span id="synergy-depth-desc">Rich sacred woods remain.</span>
+                    </div>
+                  </div>
+              </div>
+
+              <!-- ASMR Soundscape Selector -->
+              <div class="soundscape-selector-block">
+                <h4><i data-lucide="music"></i> Custom ASMR Soundscape</h4>
+                <p class="section-desc-small">Select a soothing backdrop that synthesizes in real-time when your candle is lit.</p>
+                <div class="soundscape-chips">
+                  <label class="soundscape-chip active">
+                    <input type="radio" name="soundscape-selection" value="crackle" checked>
+                    <span>Pure Wood-Wick</span>
+                  </label>
+                  <label class="soundscape-chip">
+                    <input type="radio" name="soundscape-selection" value="rain">
+                    <span>Rainy Forest</span>
+                  </label>
+                  <label class="soundscape-chip">
+                    <input type="radio" name="soundscape-selection" value="zen">
+                    <span>Zen Temple</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Scent Throw Virtual Room Simulator -->
+              <div class="room-simulator-block">
+                <h4><i data-lucide="home"></i> Scent Throw Room Simulator</h4>
+                <p class="section-desc-small">Visualize how the Twist, Heart, and Depth notes disperse in your space.</p>
+                
+                <div class="simulator-controls">
+                  <div class="sim-control-group">
+                    <label for="room-size-select">Room Size:</label>
+                    <select id="room-size-select" class="simulator-select">
+                      <option value="small">Powder Room (80 sq ft)</option>
+                      <option value="medium" selected>Standard Bedroom (150 sq ft)</option>
+                      <option value="large">Grand Living Room (350 sq ft)</option>
+                    </select>
+                  </div>
+                  
+                  <div class="sim-control-group">
+                    <div class="slider-label-row">
+                      <label for="burn-time-slider">Burn Time:</label>
+                      <span id="burn-time-val">1 Hour</span>
+                    </div>
+                    <input type="range" id="burn-time-slider" min="1" max="3" value="2" class="simulator-slider">
+                  </div>
+                </div>
+
+                <!-- Architectural Top-Down Floor Plan -->
+                <div class="room-floorplan-container">
+                  <div class="room-floorplan" id="room-floor-plan">
+                    <!-- Wall outlines & Door -->
+                    <div class="room-wall room-wall-top"></div>
+                    <div class="room-wall room-wall-right"></div>
+                    <div class="room-wall room-wall-bottom"></div>
+                    <div class="room-wall room-wall-left"></div>
+                    <div class="room-door"></div>
+                    
+                    <!-- Stylized Furniture Mini Icons -->
+                    <div class="furniture sofa" title="Sofa"><i data-lucide="armchair"></i></div>
+                    <div class="furniture window" title="Window"></div>
+                    <div class="furniture table" title="Candle Table">
+                      <!-- Pulsing scent aura rings radiating from candle -->
+                      <div class="candle-dot"></div>
+                      <div class="aura-ring aura-twist" id="aura-twist-ring"></div>
+                      <div class="aura-ring aura-heart" id="aura-heart-ring"></div>
+                      <div class="aura-ring aura-depth" id="aura-depth-ring"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="room-diffusion-description-card">
+                  <p id="room-diffusion-description">At 1 hour, the warm botanical heart notes of Lavender have fully diffused, creating a relaxing 150 sq ft sanctuary.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Label Customizer -->
+            <div class="config-step-content" id="step-3">
+              <h3>Personalize the Label</h3>
+              <p class="step-desc">Name the scent yourself. We print your custom title on a premium textured paper label.</p>
+
+              <div class="label-customizer-form">
+                <div class="form-group">
+                  <label for="label-input-title">Candle Title (Max 24 characters)</label>
+                  <input type="text" id="label-input-title" maxLength="24" value="SUNDAY COFFEE" placeholder="e.g. SLOW SUNDAY, BREATHE">
+                </div>
+
+                <div class="form-group">
+                  <label for="label-input-scents">Scent Description Subtitle (Max 36 characters)</label>
+                  <input type="text" id="label-input-scents" maxLength="36" value="Lavender, Coffee & Sandalwood" placeholder="e.g. Lavender, Coffee & Sandalwood">
+                </div>
+
+                <!-- Font Choices -->
+                <div class="form-group">
+                  <label>Label Typography Style</label>
+                  <div class="font-selector">
+                    <button type="button" class="font-btn active" data-font="serif" style="font-family:'Cormorant Garamond', serif">Serif Classic</button>
+                    <button type="button" class="font-btn" data-font="sans" style="font-family:'Jost', sans-serif">Modern Jost</button>
+                  </div>
+                </div>
+
+                <!-- Label Themes -->
+                <div class="form-group">
+                  <label>Label Paper Design</label>
+                  <div class="theme-selector">
+                    <button type="button" class="theme-btn active" data-theme="warm-cream" style="background:#FDFBF7; color:#121212">Textured Cream</button>
+                    <button type="button" class="theme-btn" data-theme="midnight-black" style="background:#161616; color:#FDFBF7; border: 1px solid #333">Craft Charcoal</button>
+                    <button type="button" class="theme-btn" data-theme="vintage-gold" style="background:#D4AF37; color:#121212">Gold Foil</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Price & Add Action Container -->
+          <div class="configurator-footer">
+            <div class="price-summary">
+              <span class="price-label">Price Per Candle</span>
+              <span class="price-value" id="custom-candle-price">₹799</span>
+            </div>
+            <button class="btn btn-primary btn-large btn-grow" id="add-custom-candle-btn">
+              <i data-lucide="plus"></i> Add Custom Candle
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How Your Custom Candle is Hand-Crafted Section -->
+    <section class="process-section" id="process">
+      <div class="section-header text-center">
+        <span class="section-tag">Behind the Scenes</span>
+        <h2>How Your Custom Candle is Hand-Crafted</h2>
+        <p>From custom recipe selection to your doorstep in Bangalore — how our artisan soy-pouring process works.</p>
+      </div>
+      
+      <div class="process-container">
+        <div class="process-step">
+          <span class="step-num">01</span>
+          <div class="step-content">
+            <h3>Blending Your Custom Recipe</h3>
+            <p>We measure your custom percentages of Twist, Heart, and Depth notes. Each level is carefully mixed with natural essential oils at optimal temperature to preserve aromatic purity.</p>
+          </div>
+        </div>
+        
+        <div class="process-step">
+          <span class="step-num">02</span>
+          <div class="step-content">
+            <h3>Hand-Pouring Wax Layers</h3>
+            <p>We hand-pour organic biodegradable soy wax into your selected glass jar or travel tin. Each scent band cures slowly to form distinct, aromatic visual layers inside the vessel.</p>
+          </div>
+        </div>
+        
+        <div class="process-step">
+          <span class="step-num">03</span>
+          <div class="step-content">
+            <h3>Personalized Label Printing</h3>
+            <p>We custom-print your unique title in either Classic Serif or Modern Jost typography on textured cream or gold foil stock, individually wicking and polishing your finished candle.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scent Finder Quiz Section -->
+    <section class="quiz-section-container" id="quiz-section">
+      <div class="quiz-glass-card">
+        <div class="quiz-intro" id="quiz-intro-step">
+          <div class="quiz-tag"><i data-lucide="sparkles"></i> Aromatic Discovery</div>
+          <h2>Find Your Signature Scent</h2>
+          <p>Not sure which layers go together? Take our short mood quiz and our studio algorithm will match you with the perfect Heart, Depth, and Twist recipe.</p>
+          <button class="btn btn-primary btn-large" id="start-quiz-btn">Begin Discovery</button>
+        </div>
+
+        <div class="quiz-question-wrapper hidden" id="quiz-question-step">
+          <!-- Progress bar -->
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="quiz-progress-fill" style="width: 33%"></div>
+          </div>
+
+          <div class="quiz-question-box">
+            <span class="quiz-question-number" id="quiz-question-number">Question 1 of 3</span>
+            <h3 id="quiz-question-title">What atmosphere do you wish to invite?</h3>
+            <div class="quiz-options" id="quiz-options-container">
+              <!-- Options loaded by JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-results hidden" id="quiz-results-step">
+          <div class="results-layout">
+            <div class="results-visual">
+              <div class="quiz-recommended-swatch" id="quiz-rec-swatch"></div>
+            </div>
+            <div class="results-details">
+              <span class="quiz-tag">Your Custom Matching Scent</span>
+              <h3 id="quiz-rec-title">Tranquil Twilight</h3>
+              <p id="quiz-rec-description">A cozy, soothing mixture of warm vanilla and rich sandalwood, crafted to make your living space feel safe and comforting.</p>
+              
+              <div class="scent-breakdown-list" id="quiz-rec-scent-breakdown">
+                <!-- Breakdown shares populated by JS -->
+              </div>
+
+              <div class="quiz-results-actions">
+                <button class="btn btn-primary" id="apply-quiz-btn">Load in Customizer</button>
+                <button class="btn btn-outline" id="retake-quiz-btn">Retake Quiz</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust Section (What Makes Us Unique) -->
+    <section class="trust-section" id="trust-features">
+      <div class="section-header text-center">
+        <span class="section-tag">Ankri Quality</span>
+        <h2>What Makes Us Unique</h2>
+        <p>Every flame we pour carries a commitment to purity, safety, and sustainable luxury.</p>
+      </div>
+
+      <div class="trust-grid">
+        <!-- Feature 1: Soy Wax -->
+        <div class="trust-card">
+          <div class="trust-icon-wrapper">
+            <i data-lucide="leaf"></i>
+          </div>
+          <h3>100% Soy Wax</h3>
+          <p>Pure, organic, biodegradable soy wax. Completely non-toxic and burns clean without petroleum soot.</p>
+        </div>
+        <!-- Feature 2: Essential Oils -->
+        <div class="trust-card">
+          <div class="trust-icon-wrapper">
+            <i data-lucide="droplet"></i>
+          </div>
+          <h3>Organic Aromas</h3>
+          <p>Infused with therapeutic essential oils. Rich hot and cold scent throw that supports respiratory wellness.</p>
+        </div>
+        <!-- Feature 3: Cotton Wick -->
+        <div class="trust-card">
+          <div class="trust-icon-wrapper">
+            <i data-lucide="sparkles"></i>
+          </div>
+          <h3>Organic Cotton Wicks</h3>
+          <p>Braided cotton wicks primed for a soot-free, slow, and stable flicker. No lead or zinc cores.</p>
+        </div>
+        <!-- Feature 4: Reusable Jar -->
+        <div class="trust-card">
+          <div class="trust-icon-wrapper">
+            <i data-lucide="refresh-cw"></i>
+          </div>
+          <h3>Infinite Reusable Jars</h3>
+          <p>Designed for our drop-in refill program. Clean out the empty jar, insert a fresh wax block, and burn forever.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Signature Collection Section -->
+    <section class="collection-section" id="collection">
+      <div class="section-header text-center">
+        <span class="section-tag">Premium Catalog</span>
+        <h2>Artisan Heritage Series</h2>
+        <p>Hand-poured candle collections inspired by the aromas, moods, and seasons of India. Filter below.</p>
+      </div>
+
+      <!-- Shop Filter Tabs -->
+      <div class="shop-filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="calming">Calming</button>
+        <button class="filter-btn" data-filter="energizing">Energizing</button>
+        <button class="filter-btn" data-filter="romantic">Romantic</button>
+        <button class="filter-btn" data-filter="festive">Festive</button>
+        <button class="filter-btn" data-filter="bedroom">Bedroom</button>
+        <button class="filter-btn" data-filter="living">Living Room</button>
+        <button class="filter-btn" data-filter="meditation">Meditation</button>
+        <button class="filter-btn" data-filter="office">Office/Study</button>
+        <button class="filter-btn" data-filter="heritage">Heritage India</button>
+        <button class="filter-btn" data-filter="signature">Signature Series</button>
+        <button class="filter-btn" data-filter="kits">Occasion Kits</button>
+      </div>
+
+      <div class="collection-grid" id="product-grid-catalog">
+        <!-- Card 1: Floral Bliss -->
+        <div class="product-card" data-id="sig-1" data-name="Floral Bliss" data-price="699" data-scent="Rose, Jasmine & Sandalwood" data-colors="#E1D5E7, #DEB887" data-collection="signature" data-mood="romantic" data-room="bedroom">
+          <div class="product-image-container">
+            <div class="card-glow" style="background: radial-gradient(circle, rgba(220,100,180,0.12) 0%, transparent 70%);"></div>
+            <div class="product-preview-candle orchid-theme">
+              <div class="flame-dot"></div>
+              <div class="candle-jar-mini">
+                <div class="label-mini">FLORAL BLISS</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-category-tag">FLORAL & SWEET</span>
+            <div class="product-meta">
+              <h3 class="product-title">Floral Bliss</h3>
+              <span class="product-price">₹699</span>
+            </div>
+            <p class="product-scent-notes"><strong>Notes:</strong> Rose, Jasmine & Sandalwood</p>
+            <p class="product-card-details">100% Soy Wax | 40-45 Hours Burn Time</p>
+            <div class="product-rating">
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <span class="rating-text">(48 reviews)</span>
+            </div>
+            <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 2: Earthy Comfort -->
+        <div class="product-card" data-id="sig-2" data-name="Earthy Comfort" data-price="699" data-scent="Petrichor, Clove & Lavender" data-colors="#C5D3C1, #E1D5E7" data-collection="signature" data-mood="calming" data-room="living">
+          <div class="product-image-container">
+            <div class="card-glow" style="background: radial-gradient(circle, rgba(60,150,90,0.1) 0%, transparent 70%);"></div>
+            <div class="product-preview-candle forest-theme">
+              <div class="flame-dot"></div>
+              <div class="candle-jar-mini">
+                <div class="label-mini">EARTHY COMFORT</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-category-tag">EARTHY & COZY</span>
+            <div class="product-meta">
+              <h3 class="product-title">Earthy Comfort</h3>
+              <span class="product-price">₹699</span>
+            </div>
+            <p class="product-scent-notes"><strong>Notes:</strong> Petrichor (First Rain), Clove & Lavender</p>
+            <p class="product-card-details">100% Soy Wax | 40-45 Hours Burn Time</p>
+            <div class="product-rating">
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <span class="rating-text">(36 reviews)</span>
+            </div>
+            <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 3: Espresso Delight -->
+        <div class="product-card" data-id="sig-3" data-name="Espresso Delight" data-price="699" data-scent="Chocolate, Coffee & Vanilla" data-colors="#4A3B32, #FFF9C4" data-collection="signature" data-mood="energizing" data-room="office">
+          <div class="product-image-container">
+            <div class="card-glow" style="background: radial-gradient(circle, rgba(160,100,50,0.12) 0%, transparent 70%);"></div>
+            <div class="product-preview-candle citrus-theme">
+              <div class="flame-dot"></div>
+              <div class="candle-jar-mini">
+                <div class="label-mini">ESPRESSO DELIGHT</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-category-tag">WARM & ROASTED</span>
+            <div class="product-meta">
+              <h3 class="product-title">Espresso Delight</h3>
+              <span class="product-price">₹699</span>
+            </div>
+            <p class="product-scent-notes"><strong>Notes:</strong> Chocolate, Coffee & Vanilla</p>
+            <p class="product-card-details">100% Soy Wax | 40-45 Hours Burn Time</p>
+            <div class="product-rating">
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star"></i>
+              <span class="rating-text">(61 reviews)</span>
+            </div>
+            <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 4: Slow Morning -->
+        <div class="product-card" data-id="sig-4" data-name="Slow Morning" data-price="699" data-scent="Orange, Lavender & Vanilla" data-colors="#F5B041, #E1D5E7" data-collection="signature" data-mood="calming" data-room="bedroom">
+          <div class="product-image-container">
+            <div class="card-glow" style="background: radial-gradient(circle, rgba(230,120,40,0.12) 0%, transparent 70%);"></div>
+            <div class="product-preview-candle hearth-theme">
+              <div class="flame-dot"></div>
+              <div class="candle-jar-mini">
+                <div class="label-mini">SLOW MORNING</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-category-tag">CITRUS & HERBAL</span>
+            <div class="product-meta">
+              <h3 class="product-title">Slow Morning</h3>
+              <span class="product-price">₹699</span>
+            </div>
+            <p class="product-scent-notes"><strong>Notes:</strong> Orange, Lavender & Vanilla</p>
+            <p class="product-card-details">100% Soy Wax | 40-45 Hours Burn Time</p>
+            <div class="product-rating">
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <span class="rating-text">(82 reviews)</span>
+            </div>
+            <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 5: Kesar Pista -->
+        <div class="product-card" data-id="sig-5" data-name="Kesar Pista" data-price="699" data-scent="Saffron, Pistachio & Creamy Vanilla" data-colors="#F4D03F, #58D68D" data-collection="heritage" data-mood="festive" data-room="living">
+          <div class="product-image-container">
+            <div class="card-glow" style="background: radial-gradient(circle, rgba(244,208,63,0.12) 0%, transparent 70%);"></div>
+            <div class="product-preview-candle hearth-theme">
+              <div class="flame-dot"></div>
+              <div class="candle-jar-mini">
+                <div class="label-mini">KESAR PISTA</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-category-tag">SWEET & FESTIVE</span>
+            <div class="product-meta">
+              <h3 class="product-title">Kesar Pista</h3>
+              <span class="product-price">₹699</span>
+            </div>
+            <p class="product-scent-notes"><strong>Notes:</strong> Saffron, Pistachio & Creamy Vanilla</p>
+            <p class="product-card-details">100% Soy Wax | 45 Hours Burn Time</p>
+            <div class="product-rating">
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <span class="rating-text">(28 reviews)</span>
+            </div>
+            <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 6: Masala Chai -->
+        <div class="product-card" data-id="sig-6" data-name="Masala Chai" data-price="699" data-scent="Black Tea, Cardamom, Ginger & Clove" data-colors="#DEB887, #D35400" data-collection="heritage" data-mood="energizing" data-room="living">
+          <div class="product-image-container">
+            <div class="card-glow" style="background: radial-gradient(circle, rgba(211,84,0,0.12) 0%, transparent 70%);"></div>
+            <div class="product-preview-candle citrus-theme">
+              <div class="flame-dot"></div>
+              <div class="candle-jar-mini">
+                <div class="label-mini">MASALA CHAI</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-category-tag">SPICED & ROASTED</span>
+            <div class="product-meta">
+              <h3 class="product-title">Masala Chai</h3>
+              <span class="product-price">₹699</span>
+            </div>
+            <p class="product-scent-notes"><strong>Notes:</strong> Black Tea, Cardamom, Ginger & Clove</p>
+            <p class="product-card-details">100% Soy Wax | 45 Hours Burn Time</p>
+            <div class="product-rating">
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <span class="rating-text">(41 reviews)</span>
+            </div>
+            <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 7: Monsoon Rain -->
+        <div class="product-card" data-id="sig-7" data-name="Monsoon Rain" data-price="699" data-scent="Wet Clay (Petrichor), Sandalwood & Rainwater" data-colors="#AED6F1, #DEB887" data-collection="heritage" data-mood="calming" data-room="meditation">
+          <div class="product-image-container">
+            <div class="card-glow" style="background: radial-gradient(circle, rgba(133,193,233,0.12) 0%, transparent 70%);"></div>
+            <div class="product-preview-candle forest-theme">
+              <div class="flame-dot"></div>
+              <div class="candle-jar-mini">
+                <div class="label-mini">MONSOON RAIN</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-category-tag">AQUATIC & WOODY</span>
+            <div class="product-meta">
+              <h3 class="product-title">Monsoon Rain</h3>
+              <span class="product-price">₹699</span>
+            </div>
+            <p class="product-scent-notes"><strong>Notes:</strong> Wet Clay (Petrichor), Sandalwood & Rainwater</p>
+            <p class="product-card-details">100% Soy Wax | 45 Hours Burn Time</p>
+            <div class="product-rating">
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <span class="rating-text">(52 reviews)</span>
+            </div>
+            <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 8: Mogra Jasmine -->
+        <div class="product-card" data-id="sig-8" data-name="Mogra Jasmine" data-price="699" data-scent="Sweet Jasmine, Mogra Blooms & Soft Amber" data-colors="#FDFEFE, #F4D03F" data-collection="heritage" data-mood="calming" data-room="meditation">
+          <div class="product-image-container">
+            <div class="card-glow" style="background: radial-gradient(circle, rgba(253,254,254,0.12) 0%, transparent 70%);"></div>
+            <div class="product-preview-candle forest-theme">
+              <div class="flame-dot"></div>
+              <div class="candle-jar-mini">
+                <div class="label-mini">MOGRA JASMINE</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-category-tag">FLORAL & FRESH</span>
+            <div class="product-meta">
+              <h3 class="product-title">Mogra Jasmine</h3>
+              <span class="product-price">₹699</span>
+            </div>
+            <p class="product-scent-notes"><strong>Notes:</strong> Sweet Jasmine, Mogra Blooms & Soft Amber</p>
+            <p class="product-card-details">100% Soy Wax | 45 Hours Burn Time</p>
+            <div class="product-rating">
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <span class="rating-text">(19 reviews)</span>
+            </div>
+            <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 9: Meditation Sanctuary Kit -->
+        <div class="product-card" data-id="kit-1" data-name="Meditation Sanctuary Kit" data-price="1299" data-scent="Mogra Jasmine, First Rain & Sandalwood Votives" data-colors="#85C1E9, #DEB887" data-collection="kits" data-mood="calming" data-room="meditation">
+          <div class="product-image-container">
+            <div class="card-glow" style="background: radial-gradient(circle, rgba(162,183,172,0.12) 0%, transparent 70%);"></div>
+            <div class="product-preview-candle forest-theme">
+              <div class="flame-dot"></div>
+              <div class="candle-jar-mini">
+                <div class="label-mini">MEDITATION SANCTUARY</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-category-tag">WELLNESS KIT</span>
+            <div class="product-meta">
+              <h3 class="product-title">Meditation Sanctuary Kit</h3>
+              <span class="product-price">₹1299</span>
+            </div>
+            <p class="product-scent-notes"><strong>Notes:</strong> Mogra Jasmine, First Rain & Sandalwood (3 Votives)</p>
+            <p class="product-card-details">Pack of 3 Votives | 100% Soy Wax</p>
+            <div class="product-rating">
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <span class="rating-text">(21 reviews)</span>
+            </div>
+            <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 10: Monsoon Comfort Kit -->
+        <div class="product-card" data-id="kit-2" data-name="Monsoon Comfort Kit" data-price="1199" data-scent="Masala Chai & First Rain Large Jars" data-colors="#D35400, #AED6F1" data-collection="kits" data-mood="calming" data-room="living">
+          <div class="product-image-container">
+            <div class="card-glow" style="background: radial-gradient(circle, rgba(212,175,55,0.12) 0%, transparent 70%);"></div>
+            <div class="product-preview-candle orchid-theme">
+              <div class="flame-dot"></div>
+              <div class="candle-jar-mini">
+                <div class="label-mini">MONSOON COMFORT</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <span class="product-category-tag">WELLNESS KIT</span>
+            <div class="product-meta">
+              <h3 class="product-title">Monsoon Comfort Kit</h3>
+              <span class="product-price">₹1199</span>
+            </div>
+            <p class="product-scent-notes"><strong>Notes:</strong> Masala Chai & First Rain (2 Large Jars)</p>
+            <p class="product-card-details">Pack of 2 Large Jars | 100% Soy Wax</p>
+            <div class="product-rating">
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <i data-lucide="star" class="star-fill"></i>
+              <span class="rating-text">(34 reviews)</span>
+            </div>
+            <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Philosophy Section -->
+    <section class="about-section" id="about">
+      <div class="about-container">
+        <div class="about-visual">
+          <div class="about-card">
+            <h4>Poured in Bangalore</h4>
+            <p>Every single candle is individually blended, set, and labeled by expert hands in our Bangalore studio using 100% natural biodegradable soy wax and organic cotton wicks.</p>
+          </div>
+        </div>
+        <div class="about-content">
+          <span class="section-tag">Artisan Studio</span>
+          <h2>The Craft of Slow Rituals</h2>
+          <p>We believe fragrance has the capacity to construct environments, anchor memories, and hold space. By combining custom scent engineering with premium glass vessels, we let you customize the light and olfactory character of your room. Each candle is cured for 7 days to guarantee a rich and stable cold and hot scent throw.</p>
+          <ul class="benefit-list">
+            <li><i data-lucide="check-circle-2"></i> 100% Natural Soy Wax (Biodegradable & Vegan)</li>
+            <li><i data-lucide="check-circle-2"></i> High-purity essential oil extracts (soot-free burn)</li>
+            <li><i data-lucide="check-circle-2"></i> Flat-rate pan-India shipping, free above ₹999</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- FAQ & Safety Section -->
+    <section class="faq-section" id="faq-rituals">
+      <div class="section-header text-center">
+        <span class="section-tag">Candle Care</span>
+        <h2>Rituals & Care FAQs</h2>
+        <p>Maximize your candle life and ensure a clean, aromatic burn with these expert rituals.</p>
+      </div>
+
+      <div class="faq-accordion-container">
+        <!-- FAQ 1 -->
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>Should I trim the wick before burning?</span>
+            <i data-lucide="chevron-down" class="faq-arrow"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Absolutely. Before lighting, always trim your cotton wick to approximately 5mm (1/4 inch). This prevents the flame from growing too tall, eliminates smoke and soot splatters, and extends the overall burn time by up to 20%.</p>
+          </div>
+        </div>
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>What is "candle memory" and how do I avoid tunneling?</span>
+            <i data-lucide="chevron-down" class="faq-arrow"></i>
+          </button>
+          <div class="faq-answer">
+            <p>On your candle's first light, let it burn for 2 to 3 hours until the melted pool of wax reaches all edges of the jar. Soy wax has a "memory"—if extinguished before a full pool forms, the candle will continue to burn straight down the center (tunneling), wasting the outer wax.</p>
+          </div>
+        </div>
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>What is the best way to extinguish the flame?</span>
+            <i data-lucide="chevron-down" class="faq-arrow"></i>
+          </button>
+          <div class="faq-answer">
+            <p>We strongly recommend using a metal candle snuffer or gently dipping the wick into the liquid wax pool (and straightening it back up). Avoid blowing out the candle, as this produces smoke, releases soot particles into your air, and can cause hot wax to splatter.</p>
+          </div>
+        </div>
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false">
+            <span>Are Ankri Candles safe for homes with pets?</span>
+            <i data-lucide="chevron-down" class="faq-arrow"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. Because we use 100% natural, biodegradable soy wax and organic cotton wicks, our candles burn clean and soot-free. We formulate our scents with pet-friendly essential oil ratios, making them much safer than heavy synthetic paraffin candles.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Corporate Gifting Section -->
+    <section class="corporate-section" id="bulk-gifting">
+      <div class="corporate-container">
+        <div class="corporate-content">
+          <span class="section-tag">Custom Commissions</span>
+          <h2>Corporate Gifting & Bulk Orders</h2>
+          <p>Illuminating your brand story. We design bespoke candle runs, custom scent blends, and personalized branded labels for corporate events, luxury hospitality, weddings, and private events.</p>
+          <ul class="corporate-perks">
+            <li><i data-lucide="check-circle-2"></i> Custom scent curation and label printing</li>
+            <li><i data-lucide="check-circle-2"></i> Tiered wholesale bulk discounts (minimum 30 units)</li>
+            <li><i data-lucide="check-circle-2"></i> Safe, protected delivery across India</li>
+          </ul>
+        </div>
+        
+        <div class="corporate-form-card">
+          <h3>Request a Bulk Quote</h3>
+          <form class="corporate-form" id="bulk-enquiry-form">
+            <div class="form-row-grid">
+              <div class="form-group">
+                <label for="corp-name">Your Name</label>
+                <input type="text" id="corp-name" placeholder="e.g. Rahul Sharma" required>
+              </div>
+              <div class="form-group">
+                <label for="corp-email">Work Email</label>
+                <input type="email" id="corp-email" placeholder="rahul@company.com" required>
+              </div>
+            </div>
+            <div class="form-row-grid">
+              <div class="form-group">
+                <label for="corp-org">Company / Occasion</label>
+                <input type="text" id="corp-org" placeholder="e.g. TechCorp, Wedding" required>
+              </div>
+              <div class="form-group">
+                <label for="corp-qty">Estimated Quantity</label>
+                <input type="number" id="corp-qty" min="30" placeholder="Min. 30 units" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="corp-msg">Your Customization Details</label>
+              <textarea id="corp-msg" rows="4" placeholder="Describe your preferred vessel colors, scent profile ideas, and branding needs..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-large btn-grow">Submit Inquiry</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Sliding Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-header">
+      <h3>Your Bag</h3>
+      <button class="close-cart-btn" id="close-cart-btn" aria-label="Close cart">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <!-- Scrollable Items Container -->
+    <div class="cart-drawer-items" id="cart-items-container">
+      <!-- Dynamically populated items -->
+      <div class="empty-cart-message" id="empty-cart-message">
+        <i data-lucide="shopping-bag" class="empty-icon"></i>
+        <p>Your shopping bag is empty.</p>
+        <a href="#customizer" class="btn btn-primary btn-small" id="shop-custom-btn">Start Designing</a>
+      </div>
+    </div>
+
+    <!-- Drawer Footer Actions -->
+    <div class="cart-drawer-footer" id="cart-footer">
+      <div class="cart-summary-row">
+        <span>Subtotal</span>
+        <span id="cart-subtotal">₹0</span>
+      </div>
+      <div class="cart-summary-row shipping-row">
+        <span>Shipping</span>
+        <span id="cart-shipping-fee" class="green-text">FREE</span>
+      </div>
+      <div class="cart-summary-row total-row">
+        <span>Total</span>
+        <span id="cart-total">₹0</span>
+      </div>
+      
+      <!-- Checkout Promo Box -->
+      <div class="promo-box">
+        <input type="text" id="promo-input" placeholder="Promo Code (TRY: LIGHTUP)">
+        <button id="apply-promo-btn">Apply</button>
+      </div>
+
+      <button class="btn btn-primary btn-large btn-grow" id="checkout-btn">
+        Proceed to Checkout
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast/Notification Banner -->
+  <div class="toast-notification" id="toast-notification">
+    <span id="toast-message">Item added to bag!</span>
+  </div>
+
+  <!-- Checkout Success Modal -->
+  <div class="modal-overlay hidden" id="success-modal-overlay">
+    <div class="success-modal">
+      <div class="success-icon-wrapper">
+        <i data-lucide="check" class="success-icon"></i>
+      </div>
+      <h2 id="success-title">Order Confirmed!</h2>
+      <p id="success-desc">Thank you for crafting with Ankri Candles. Your custom soy recipes are being lined up for hand-pouring in our Bangalore studio.</p>
+      <div class="order-id-badge"><span id="order-id-label">Order ID</span>: <span id="order-number">AE-98271</span></div>
+      <button class="btn btn-primary" id="close-success-btn">Continue Designing</button>
+    </div>
+  </div>
+
+  <!-- Bulk Order Enquiry Modal -->
+  <div class="modal-overlay hidden" id="bulk-order-modal-overlay">
+    <div class="enquiry-modal">
+      <button class="close-enquiry-btn" id="close-enquiry-btn" aria-label="Close enquiry modal">
+        <i data-lucide="x"></i>
+      </button>
+      <h2>Enquire Now</h2>
+      <form class="enquiry-form" id="bulk-order-enquiry-form">
+        <div class="form-row-grid">
+          <div class="form-group">
+            <label for="enq-name">Name <span class="required-star">*</span></label>
+            <input type="text" id="enq-name" required>
+          </div>
+          <div class="form-group">
+            <label for="enq-email">Email <span class="required-star">*</span></label>
+            <input type="email" id="enq-email" required>
+          </div>
+        </div>
+        <div class="form-row-grid">
+          <div class="form-group">
+            <label for="enq-phone">Phone No. <span class="required-star">*</span></label>
+            <input type="tel" id="enq-phone" required>
+          </div>
+          <div class="form-group">
+            <label for="enq-qty">Minimum Order Quantity <span class="required-star">*</span></label>
+            <select id="enq-qty" required>
+              <option value="" disabled selected>—Please choose an option—</option>
+              <option value="30-50">30 - 50 units</option>
+              <option value="50-100">50 - 100 units</option>
+              <option value="100-200">100 - 200 units</option>
+              <option value="200+">200+ units</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="enq-subject">Subject <span class="required-star">*</span></label>
+          <input type="text" id="enq-subject" required>
+        </div>
+        <div class="form-group">
+          <label for="enq-message">Message <span class="required-star">*</span></label>
+          <textarea id="enq-message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-large btn-grow">Submit Enquiry</button>
+      </form>
+    </div>
+  </div>
+
+
+
+  <!-- Footer -->
+  <footer class="app-footer-main">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo-main">
+          ANKRI CANDLES<span class="logo-sparkle">✦</span>
+        </a>
+        <p>Sensory crafting. Premium customized soy wax candles hand-poured in Bangalore, India.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Explore</h4>
+        <a href="#customizer">Custom Candle Builder</a>
+        <a href="#collection">Signature Series</a>
+        <a href="#quiz-section">Scent Finder Quiz</a>
+      </div>
+      <div class="footer-newsletter">
+        <h4>Stay Inspired</h4>
+        <p>Subscribe for seasonal notes, early customizer alerts, and exclusive discounts.</p>
+        <form class="newsletter-form" id="newsletter-form">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit"><i data-lucide="arrow-right"></i></button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Ankri Candles. Handcrafted in India.</p>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp Widget -->
+  <a href="https://wa.me/918976996297" class="whatsapp-float-widget" target="_blank" rel="noopener noreferrer" aria-label="Chat with Ankri Candles on WhatsApp">
+    <i data-lucide="message-square" class="wa-icon"></i>
+    <span class="wa-tooltip">Quick Help on WhatsApp!</span>
+  </a>
+
+  <!-- Luxury Unboxing Modal Overlay -->
+  <div class="modal-overlay hidden" id="unboxing-modal-overlay" style="z-index: 9999; display: flex; align-items: center; justify-content: center; background: rgba(5, 5, 8, 0.85); backdrop-filter: blur(12px); position: fixed; top: 0; left: 0; width: 100%; height: 100%;">
+    <div class="unboxing-modal-card" style="position: relative; width: 90%; max-width: 480px; background: #0c0d12; border: 1px solid rgba(212,175,55,0.25); border-radius: 20px; padding: 40px; box-shadow: 0 25px 60px rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; overflow: hidden; box-sizing: border-box; text-align: center;">
+      
+      <!-- Close Button -->
+      <button class="close-unboxing-btn" id="close-unboxing-btn" aria-label="Close unboxing modal" style="position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; transition: color 0.2s ease;">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+
+      <!-- Welcome screen before opening -->
+      <div class="unboxing-intro" id="unboxing-intro" style="width: 100%; transition: all 0.5s ease;">
+        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent, #D4AF37); font-weight: 600;">Hand-Poured Ritual</span>
+        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; color: #fff; margin: 12px 0 8px 0; font-weight: 400; letter-spacing: -0.5px;">The Unboxing Experience</h2>
+        <p style="color: #8c8e9b; font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6; max-width: 360px; margin-left: auto; margin-right: auto;">Witness how your customized candle arrives, nestled safely in premium tissue paper inside our signatures gold-embossed textured box.</p>
+        <button class="btn btn-primary btn-grow" id="start-unboxing-btn" style="width: 100%; padding: 14px; font-weight: 500; font-size: 0.95rem; border-radius: 30px;">Reveal Ritual Box</button>
+      </div>
+
+      <!-- Animation Area (hidden by default) -->
+      <div class="unboxing-stage hidden" id="unboxing-stage" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 300px; position: relative; opacity: 0; transition: all 0.5s ease;">
+        
+        <!-- Virtual Gift Box -->
+        <div class="virtual-gift-box-container" style="perspective: 1000px; margin-bottom: 25px;">
+          <div class="virtual-gift-box" id="virtual-gift-box" style="width: 170px; height: 170px; position: relative; transform-style: preserve-3d; transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);">
+            
+            <!-- Box Base Container -->
+            <div class="box-base-inner" style="position: absolute; width: 100%; height: 100%; background: #08090d; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); overflow: hidden; display: flex; align-items: center; justify-content: center;">
+              
+              <!-- Silk Tissue Paper (Folds open) -->
+              <div class="box-tissue-flap left-flap" id="tissue-left" style="position: absolute; top: 0; left: 0; width: 50%; height: 100%; background: #eae6df; z-index: 12; transform-origin: left center; transition: transform 0.8s ease 0.4s; box-shadow: 2px 0 10px rgba(0,0,0,0.15);"></div>
+              <div class="box-tissue-flap right-flap" id="tissue-right" style="position: absolute; top: 0; right: 0; width: 50%; height: 100%; background: #e3ded5; z-index: 12; transform-origin: right center; transition: transform 0.8s ease 0.4s; box-shadow: -2px 0 10px rgba(0,0,0,0.15);"></div>
+              
+              <!-- Candle Nested Inside -->
+              <div class="unboxing-candle-render" id="unboxing-candle-render" style="width: 70px; height: 85px; position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); transform: scale(0.6) translateY(20px); opacity: 0; transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s;">
+                <!-- Label on the candle inside box -->
+                <div class="unboxing-candle-label" id="unboxing-candle-label" style="width: 75%; height: 50%; background: #fff; margin-bottom: 8px; border-radius: 2px; padding: 4px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                  <span id="unboxing-label-title" style="font-size: 0.35rem; font-weight: bold; text-align: center; color: #121212; line-height: 1;">SUNDAY COFFEE</span>
+                  <span id="unboxing-label-scents" style="font-size: 0.2rem; color: #666; text-align: center; margin-top: 2px;">Lavender & Sandalwood</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lid overlay (Slides off and vanishes) -->
+            <div class="box-lid" id="box-lid-element" style="position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #1d1e27 0%, #0d0e14 100%); border: 2.5px solid var(--accent, #D4AF37); border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.7); z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: center; transform-origin: top center; transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);">
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; letter-spacing: 3px; color: var(--accent, #D4AF37); font-weight: 500; border: 1px solid rgba(212,175,55,0.25); padding: 5px 12px; border-radius: 2px;">ANKRI</span>
+              <span style="font-size: 0.5rem; text-transform: uppercase; letter-spacing: 2px; color: #6e707e; margin-top: 6px;">Bespoke Pour</span>
+            </div>
+            
+          </div>
+        </div>
+
+        <!-- Detail reveal footer -->
+        <div class="unboxing-reveal-details" id="unboxing-reveal-details" style="opacity: 0; transform: translateY(15px); transition: all 0.8s ease 1.2s; max-width: 320px; margin: 0 auto;">
+          <h3 id="unboxing-showcase-title" style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: #fff; margin: 0 0 4px 0; font-weight: 400; letter-spacing: -0.5px;">SUNDAY COFFEE</h3>
+          <p id="unboxing-showcase-scents" style="color: var(--accent, #D4AF37); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 15px 0;">Lavender, Coffee & Clove</p>
+          <div style="font-size: 0.8rem; color: #8c8e9b; line-height: 1.5;">Hand-wrapped in raw cotton twine, wax sealed, and accompanied by a gold-foiled card.</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Lucide Icons initialization -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Main Script -->
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
