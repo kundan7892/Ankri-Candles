@@ -85,15 +85,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Render logs inside table
-  function renderLogs() {
+  async function renderLogs() {
     if (!tableBody) return;
-    tableBody.innerHTML = '';
+    tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Loading logs...</td></tr>';
 
     let logs = [];
     try {
-      logs = JSON.parse(localStorage.getItem('ankri_inquiries')) || [];
-    } catch (e){}
+      const res = await fetch('http://localhost:5000/api/inquiries');
+      if (res.ok) {
+        logs = await res.json();
+      }
+    } catch (e) {
+      console.error(e);
+    }
 
     if (logs.length === 0) {
       tableBody.innerHTML = `
@@ -109,12 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logs.forEach(log => {
       const tr = document.createElement('tr');
-      
+
       const badgeClass = log.type === 'bulk' ? 'bulk' : 'gifting';
       const badgeLabel = log.type === 'bulk' ? 'Bulk Modal' : 'Gifting Form';
-      
+
       const dateStr = new Date(log.timestamp).toLocaleString();
-      
+
       let clientInfo = '';
       let requestDetails = '';
       let msgDetails = '';
@@ -149,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${requestDetails}</td>
         <td>${msgDetails}</td>
       `;
-      
+
       tableBody.appendChild(tr);
     });
   }
@@ -165,11 +169,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Clear Logs Handler
   if (clearLogsBtn) {
-    clearLogsBtn.addEventListener('click', () => {
+    clearLogsBtn.addEventListener('click', async () => {
       if (confirm("Are you sure you want to delete all local inquiry logs? This cannot be undone.")) {
-        localStorage.removeItem('ankri_inquiries');
-        renderLogs();
-        showToast("Inquiry database cleared.");
+        try {
+          const res = await fetch('http://localhost:5000/api/inquiries', { method: 'DELETE' });
+          if (res.ok) {
+            renderLogs();
+            showToast("Inquiry database cleared.");
+          }
+        } catch (e) {
+          console.error(e);
+        }
       }
     });
   }

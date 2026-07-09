@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let droneGainNode = null;
   let rumbleSource = null;
   let rumbleGainNode = null;
-  
+
   const audioState = {
     isMuted: true,
     activeSoundscape: 'crackle' // 'crackle' | 'rain' | 'zen'
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const vesselSwatchesWrapper = document.getElementById('vessel-swatches-wrapper');
   const refillVesselNotice = document.getElementById('refill-vessel-notice');
   const tinVesselNotice = document.getElementById('tin-vessel-notice');
-  
+
   // Customizer Swatch Display
   const swatchBandTwist = document.getElementById('swatch-band-twist');
   const swatchBandHeart = document.getElementById('swatch-band-heart');
@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateVisualWaxLayers();
     setupEventListeners();
     updateRoomSimulator();
-    
+
     // Set initial product type visual representation
     jarElement.setAttribute('data-product-type', state.customizer.productType);
 
@@ -229,12 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
       window.lucide.createIcons();
     }
   }
- 
+
   // --- LISTENERS ---
   function setupEventListeners() {
     // Interactive Wick Flame Toggle
     flameSystem.addEventListener('click', toggleFlame);
- 
+
     // Navigation Tabs
     tabBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -242,18 +242,18 @@ document.addEventListener('DOMContentLoaded', () => {
         setActiveTab(step);
       });
     });
- 
+
     // Product Type Selection Cards
     document.querySelectorAll('input[name="product-type-selection"]').forEach(radio => {
       radio.addEventListener('change', (e) => {
         const type = e.target.value;
         state.customizer.productType = type;
-        
+
         // Update price and visuals based on type
         if (type === 'glass-jar') {
           state.customizer.price = 799;
           jarElement.setAttribute('data-product-type', 'glass-jar');
-          
+
           // Show swatches, hide notices
           vesselSwatchesWrapper.classList.remove('disabled');
           refillVesselNotice.classList.add('hidden');
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (type === 'refill') {
           state.customizer.price = 399;
           jarElement.setAttribute('data-product-type', 'refill');
-          
+
           // Hide swatches, show refill notice
           vesselSwatchesWrapper.classList.add('disabled');
           refillVesselNotice.classList.remove('hidden');
@@ -271,20 +271,20 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (type === 'travel-tin') {
           state.customizer.price = 299;
           jarElement.setAttribute('data-product-type', 'travel-tin');
-          
+
           // Hide swatches, show tin notice
           vesselSwatchesWrapper.classList.add('disabled');
           refillVesselNotice.classList.add('hidden');
           tinVesselNotice.classList.remove('hidden');
           currentJarName.textContent = 'Brushed Tin';
         }
- 
+
         // Update active class on parent labels
         document.querySelectorAll('.product-type-card').forEach(card => {
           card.classList.remove('active');
         });
         e.target.closest('.product-type-card').classList.add('active');
- 
+
         // Update price display in UI
         const headerCandlePrice = document.getElementById('header-candle-price');
         const customCandlePrice = document.getElementById('custom-candle-price');
@@ -292,14 +292,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (customCandlePrice) customCandlePrice.textContent = `₹${state.customizer.price}`;
       });
     });
- 
+
     // Vessel Radio Group
     document.querySelectorAll('input[name="jar-selection"]').forEach(radio => {
       radio.addEventListener('change', (e) => {
         state.customizer.vessel = e.target.value;
         currentJarName.textContent = VESSELS[state.customizer.vessel];
         jarElement.setAttribute('data-jar', state.customizer.vessel);
-        
+
         // Update active class on parent swatches
         document.querySelectorAll('.vessel-swatch-card').forEach(card => {
           card.classList.remove('active');
@@ -359,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
         jarLabelElement.setAttribute('data-theme', state.customizer.label.theme);
       });
     });
- 
+
     // NEW: Unboxing experience button binds
     const previewUnboxingBtn = document.getElementById('preview-unboxing-btn');
     const unboxingOverlay = document.getElementById('unboxing-modal-overlay');
@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startUnboxingBtn = document.getElementById('start-unboxing-btn');
     const unboxingIntro = document.getElementById('unboxing-intro');
     const unboxingStage = document.getElementById('unboxing-stage');
-    
+
     const virtualGiftBox = document.getElementById('virtual-gift-box');
     const unboxingCandleRender = document.getElementById('unboxing-candle-render');
     const unboxingCandleLabel = document.getElementById('unboxing-candle-label');
@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
         unboxingStage.style.opacity = '0';
         unboxingIntro.classList.remove('hidden');
         unboxingIntro.style.opacity = '1';
-        
+
         if (tissueLeft) tissueLeft.style.transform = '';
         if (tissueRight) tissueRight.style.transform = '';
         if (boxLidElement) {
@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
         unboxingCandleRender.setAttribute('data-jar', state.customizer.productType === 'glass-jar' ? state.customizer.vessel : 'gold');
         unboxingCandleLabel.setAttribute('data-theme', state.customizer.label.theme);
         unboxingLabelTitle.style.fontFamily = state.customizer.label.font === 'serif' ? "'Cormorant Garamond', serif" : "'Jost', sans-serif";
-        
+
         unboxingLabelTitle.textContent = state.customizer.label.title;
         unboxingLabelScents.textContent = state.customizer.label.scents;
         unboxingShowcaseTitle.textContent = state.customizer.label.title;
@@ -505,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>${opt.text}</span>
           <span class="quiz-option-desc">${opt.desc}</span>
         `;
-        
+
         btn.addEventListener('click', () => {
           // Accumulate weights
           Object.keys(opt.weights).forEach(k => {
@@ -543,11 +543,11 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update UI elements
       quizRecTitle.textContent = selectedProfile.title;
       quizRecDescription.textContent = selectedProfile.description;
-      
+
       const heartColor = SCENT_POOL[selectedProfile.heart].color;
       const depthColor = SCENT_POOL[selectedProfile.depth].color;
       const twistColor = SCENT_POOL[selectedProfile.twist].color;
-      
+
       quizRecSwatch.style.background = `linear-gradient(135deg, ${twistColor} 0%, ${heartColor} 50%, ${depthColor} 100%)`;
 
       quizRecScentBreakdown.innerHTML = `
@@ -579,7 +579,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Sync labels
         state.customizer.label.title = selectedProfile.title.toUpperCase();
         state.customizer.label.scents = `${SCENT_POOL[selectedProfile.heart].name}, ${SCENT_POOL[selectedProfile.depth].name} & ${SCENT_POOL[selectedProfile.twist].name}`;
-        
+
         labelInputTitle.value = state.customizer.label.title;
         labelInputScents.value = state.customizer.label.scents;
         previewLabelTitle.textContent = state.customizer.label.title;
@@ -618,7 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (filterVal === 'all' || matchesCollection || matchesMood || matchesRoom) {
               card.classList.remove('hidden');
               // trigger reflow to restart animation
-              card.offsetHeight; 
+              card.offsetHeight;
               card.style.opacity = '1';
               card.style.transform = 'scale(1)';
             } else {
@@ -659,7 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
       bulkEnquiryForm.addEventListener('submit', (e) => {
         e.preventDefault();
         console.log("🚀 Corporate Gifting Form submit event fired!");
-        
+
         const name = document.getElementById('corp-name').value;
         const email = document.getElementById('corp-email').value;
         const org = document.getElementById('corp-org').value;
@@ -676,7 +676,7 @@ document.addEventListener('DOMContentLoaded', () => {
           details: details,
           timestamp: Date.now()
         });
-        
+
         const submitBtn = bulkEnquiryForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
 
@@ -708,7 +708,7 @@ document.addEventListener('DOMContentLoaded', () => {
       audioToggleBtn.addEventListener('click', () => {
         audioState.isMuted = !audioState.isMuted;
         audioToggleBtn.classList.toggle('active', !audioState.isMuted);
-        
+
         const icon = audioToggleBtn.querySelector('i');
         if (icon) {
           if (audioState.isMuted) {
@@ -728,13 +728,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('input[name="soundscape-selection"]').forEach(radio => {
       radio.addEventListener('change', (e) => {
         audioState.activeSoundscape = e.target.value;
-        
+
         // Update chips active class
         document.querySelectorAll('.soundscape-chip').forEach(chip => {
           chip.classList.remove('active');
         });
         e.target.closest('.soundscape-chip').classList.add('active');
-        
+
         updateAudioState();
       });
     });
@@ -848,12 +848,12 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       audioCtx = new AudioContextClass();
-      
+
       // Master Gain Node
       mainGainNode = audioCtx.createGain();
       mainGainNode.gain.setValueAtTime(0, audioCtx.currentTime); // start silent
       mainGainNode.connect(audioCtx.destination);
-      
+
       // Create continuous noise buffer for rain/rumble/crackles
       const bufferSize = audioCtx.sampleRate * 2;
       const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
@@ -861,19 +861,19 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let i = 0; i < bufferSize; i++) {
         output[i] = Math.random() * 2 - 1;
       }
-      
+
       // 1. Generate gentle candle wax rumble
       rumbleSource = audioCtx.createBufferSource();
       rumbleSource.buffer = noiseBuffer;
       rumbleSource.loop = true;
-      
+
       const rumbleFilter = audioCtx.createBiquadFilter();
       rumbleFilter.type = 'lowpass';
       rumbleFilter.frequency.value = 120;
-      
+
       rumbleGainNode = audioCtx.createGain();
       rumbleGainNode.gain.value = 0.4;
-      
+
       rumbleSource.connect(rumbleFilter);
       rumbleFilter.connect(rumbleGainNode);
       rumbleGainNode.connect(mainGainNode);
@@ -883,28 +883,28 @@ document.addEventListener('DOMContentLoaded', () => {
       rainSource = audioCtx.createBufferSource();
       rainSource.buffer = noiseBuffer;
       rainSource.loop = true;
-      
+
       const rainFilter = audioCtx.createBiquadFilter();
       rainFilter.type = 'bandpass';
       rainFilter.frequency.value = 500;
       rainFilter.Q.value = 0.8;
-      
+
       rainGainNode = audioCtx.createGain();
       rainGainNode.gain.value = 0; // muted by default
-      
+
       rainSource.connect(rainFilter);
       rainFilter.connect(rainGainNode);
       rainGainNode.connect(mainGainNode);
       rainSource.start();
-      
+
       // Rainy LFO drift
       const rainLfo = audioCtx.createOscillator();
       rainLfo.type = 'sine';
       rainLfo.frequency.value = 0.15; // 0.15Hz slow drift
-      
+
       const rainLfoGain = audioCtx.createGain();
       rainLfoGain.gain.value = 0.05;
-      
+
       rainLfo.connect(rainLfoGain);
       rainLfoGain.connect(rainGainNode.gain);
       rainLfo.start();
@@ -912,7 +912,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // 3. Generate Zen Chord Drone (meditative pad)
       droneGainNode = audioCtx.createGain();
       droneGainNode.gain.value = 0; // muted by default
-      
+
       const droneFilter = audioCtx.createBiquadFilter();
       droneFilter.type = 'lowpass';
       droneFilter.frequency.value = 250;
@@ -925,24 +925,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const osc = audioCtx.createOscillator();
         osc.type = 'triangle';
         osc.frequency.value = f;
-        
+
         const oscGain = audioCtx.createGain();
         oscGain.gain.value = 0.15;
-        
+
         // Modulate osc gain slightly to create movement
         const oscLfo = audioCtx.createOscillator();
         oscLfo.type = 'sine';
         oscLfo.frequency.value = 0.1 + Math.random() * 0.1; // very slow
-        
+
         const oscLfoGain = audioCtx.createGain();
         oscLfoGain.gain.value = 0.05;
-        
+
         oscLfo.connect(oscLfoGain);
         oscLfoGain.connect(oscGain.gain);
-        
+
         osc.connect(oscGain);
         oscGain.connect(droneFilter);
-        
+
         osc.start();
         oscLfo.start();
         droneOscillators.push(osc);
@@ -964,22 +964,22 @@ document.addEventListener('DOMContentLoaded', () => {
           try {
             const popSrc = audioCtx.createBufferSource();
             popSrc.buffer = noiseBuffer;
-            
+
             const popFilter = audioCtx.createBiquadFilter();
             popFilter.type = 'bandpass';
             popFilter.frequency.value = 800 + Math.random() * 1500;
             popFilter.Q.value = 6;
-            
+
             const popGain = audioCtx.createGain();
             popGain.gain.setValueAtTime(0, audioCtx.currentTime);
             popGain.gain.linearRampToValueAtTime(0.04 * (0.2 + Math.random() * 0.8), audioCtx.currentTime + 0.001);
             popGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.005 + Math.random() * 0.015);
-            
+
             popSrc.connect(popFilter);
             popFilter.connect(popGain);
             popGain.connect(mainGainNode);
             popSrc.start();
-          } catch(err){}
+          } catch (err) { }
         }
         scheduleCrackle();
       }, delay);
@@ -996,7 +996,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const shouldPlay = state.customizer.isLit && !audioState.isMuted;
-    
+
     const targetGain = shouldPlay ? 1.0 : 0.0;
     mainGainNode.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.15);
 
@@ -1144,10 +1144,10 @@ document.addEventListener('DOMContentLoaded', () => {
       interactiveFlame.classList.add('active');
       flameStatus.textContent = "LIT";
       flameToggleHint.textContent = "Click the flame to extinguish it";
-      
+
       const stage = document.querySelector('.visualizer-stage');
       stage.style.boxShadow = 'inset 0 0 100px rgba(212,175,55,0.06)';
-      
+
       if ('vibrate' in navigator) {
         navigator.vibrate(20);
       }
@@ -1157,7 +1157,7 @@ document.addEventListener('DOMContentLoaded', () => {
       interactiveFlame.classList.remove('active');
       flameStatus.textContent = "UNLIT";
       flameToggleHint.textContent = "Click the wick to light the candle";
-      
+
       const stage = document.querySelector('.visualizer-stage');
       stage.style.boxShadow = 'none';
     }
@@ -1251,11 +1251,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Generate unique ID based on settings
     const customId = `custom-${c.productType}-${c.productType === 'glass-jar' ? c.vessel : ''}-${c.scents.heart}-${c.scents.depth}-${c.scents.twist}-${c.label.title.toLowerCase().replace(/\s+/g, '-')}`;
-    
+
     const heartName = SCENT_POOL[c.scents.heart].name;
     const depthName = SCENT_POOL[c.scents.depth].name;
     const twistName = SCENT_POOL[c.scents.twist].name;
-    
+
     let name = '';
     let description = '';
 
@@ -1270,7 +1270,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name = "Bespoke Custom Candle (Travel Tin)";
       description = `Container: Brushed Tin | Recipe: 60% ${heartName}, 30% ${depthName}, 10% ${twistName} | Label: "${c.label.title}"`;
     }
-    
+
     // Create color gradient representation for Cart thumbnail card
     const heartColor = SCENT_POOL[c.scents.heart].color;
     const depthColor = SCENT_POOL[c.scents.depth].color;
@@ -1569,14 +1569,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function saveInquiryToLocalStorage(data) {
+  async function saveInquiryToLocalStorage(data) {
     try {
-      const logs = JSON.parse(localStorage.getItem('ankri_inquiries')) || [];
-      logs.unshift(data);
-      localStorage.setItem('ankri_inquiries', JSON.stringify(logs));
-      console.log("📥 Inquiry logged locally:", data);
-    } catch(e) {
-      console.error("Failed to write to localStorage:", e);
+      const response = await fetch('http://localhost:5000/api/inquiries', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        console.log("📥 Inquiry logged to database:", data);
+      } else {
+        console.error("Failed to log inquiry");
+      }
+    } catch (e) {
+      console.error("Failed to send inquiry to API:", e);
     }
   }
 
@@ -1592,7 +1600,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function startWaveVisualizer() {
     if (!waveCanvas || !waveCtx) return;
     waveCanvas.style.opacity = '1';
-    
+
     // Scale canvas dynamically for high-DPI displays
     const dpr = window.devicePixelRatio || 1;
     const rect = waveCanvas.getBoundingClientRect();
@@ -1601,20 +1609,20 @@ document.addEventListener('DOMContentLoaded', () => {
     waveCtx.scale(dpr, dpr);
 
     let phase = 0;
-    
+
     function animate() {
       if (!state.customizer.isLit) {
         cancelAnimationFrame(waveAnimationId);
         waveCanvas.style.opacity = '0';
         return;
       }
-      
+
       waveCtx.clearRect(0, 0, rect.width, rect.height);
-      
+
       const isSounding = !audioState.isMuted;
       const amplitudeMultiplier = isSounding ? 1.0 : 0.22;
       const speedMultiplier = isSounding ? 1.0 : 0.25;
-      
+
       const scentColors = {
         lavender: 'rgba(155, 89, 182, 0.45)',
         vanilla: 'rgba(241, 196, 15, 0.45)',
@@ -1627,17 +1635,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const primaryColor = scentColors[state.customizer.scents.heart] || 'rgba(212, 175, 55, 0.45)';
       const secondaryColor = scentColors[state.customizer.scents.depth] || 'rgba(212, 175, 55, 0.25)';
-      
+
       phase += 0.05 * speedMultiplier;
-      
+
       // Draw 3 layered waves for visual depth
       drawSingleWave(rect.width, rect.height, phase, 16 * amplitudeMultiplier, 0.012, primaryColor, 0);
       drawSingleWave(rect.width, rect.height, phase + 2, 10 * amplitudeMultiplier, 0.02, secondaryColor, 8);
       drawSingleWave(rect.width, rect.height, phase + 4, 6 * amplitudeMultiplier, 0.015, 'rgba(212, 175, 55, 0.3)', -4);
-      
+
       waveAnimationId = requestAnimationFrame(animate);
     }
-    
+
     animate();
   }
 
@@ -1646,10 +1654,10 @@ document.addEventListener('DOMContentLoaded', () => {
     waveCtx.strokeStyle = color;
     waveCtx.lineWidth = 2.0;
     waveCtx.lineCap = 'round';
-    
+
     waveCtx.shadowBlur = 8;
     waveCtx.shadowColor = color;
-    
+
     for (let x = 0; x < width; x++) {
       const y = (height / 2) + Math.sin(x * frequency + phase) * amplitude + offsetY;
       if (x === 0) {
