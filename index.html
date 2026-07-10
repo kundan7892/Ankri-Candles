@@ -43,9 +43,12 @@
       <div class="header-actions">
         <button class="icon-action-btn" id="bulk-order-btn" aria-label="Bulk Order Enquiry"
           title="Bulk Order Enquiry"><i data-lucide="package"></i></button>
-        <button class="icon-action-btn" aria-label="Search"><i data-lucide="search"></i></button>
-        <button class="icon-action-btn" aria-label="Wishlist"><i data-lucide="heart"></i></button>
-        <button class="icon-action-btn" aria-label="Account"><i data-lucide="user"></i></button>
+        <button class="icon-action-btn" id="search-btn" aria-label="Search" title="Search"><i
+            data-lucide="search"></i></button>
+        <button class="icon-action-btn" id="wishlist-btn" aria-label="Wishlist" title="Wishlist"><i
+            data-lucide="heart"></i></button>
+        <button class="icon-action-btn" id="profile-btn" aria-label="Profile" title="Profile"><i
+            data-lucide="user"></i></button>
         <button class="cart-toggle-btn" id="cart-btn" aria-label="Open shopping cart">
           <i data-lucide="shopping-bag"></i>
           <span class="cart-count" id="cart-count">0</span>
@@ -1668,6 +1671,120 @@
         </div>
 
       </div>
+    </div>
+  </div>
+
+  <!-- Search Modal Overlay -->
+  <div class="modal-overlay hidden" id="search-modal-overlay" style="z-index: 9997;">
+    <div class="enquiry-modal" style="max-width: 600px; width: 95%;">
+      <button class="close-enquiry-btn" id="close-search-btn" aria-label="Close search modal">
+        <i data-lucide="x"></i>
+      </button>
+      <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">Search
+        Collections</h2>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Find your
+        favorite artisan recipes and custom scents.</p>
+
+      <div style="position: relative; margin-bottom: 1.5rem;">
+        <input type="text" id="storefront-search-input"
+          placeholder="Type to search (e.g., Lavender, Sandalwood, Oud)..."
+          style="width: 100%; padding: 0.85rem 1.25rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-primary); font-family: var(--font-sans); font-size: 0.95rem; outline: none; transition: border 0.3s ease;">
+      </div>
+
+      <div id="search-results-container" style="max-height: 250px; overflow-y: auto; padding: 0.5rem;">
+        <div style="color: var(--text-secondary); font-size: 0.85rem; text-align: center; padding: 1.5rem 0;">Type a
+          query to see matching artisan candles.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wishlist Modal Overlay -->
+  <div class="modal-overlay hidden" id="wishlist-modal-overlay" style="z-index: 9997;">
+    <div class="enquiry-modal" style="max-width: 500px; width: 95%;">
+      <button class="close-enquiry-btn" id="close-wishlist-btn" aria-label="Close wishlist modal">
+        <i data-lucide="x"></i>
+      </button>
+      <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">My
+        Wishlist</h2>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Your
+        curated selection of hand-poured favorites.</p>
+
+      <div id="wishlist-items-container" style="margin-bottom: 1.5rem;">
+        <div
+          style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-glass);">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div
+              style="width: 48px; height: 48px; background: linear-gradient(135deg, #C8A338 0%, #B28E2E 100%); border-radius: 6px;">
+            </div>
+            <div>
+              <div style="font-size: 0.9rem; font-weight: 600;">Sandalwood Silk</div>
+              <div style="font-size: 0.75rem; color: #8A9E92;">Custom Soy Blend</div>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="wishlist-add-bag-1"
+            style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Add to Bag</button>
+        </div>
+        <div
+          style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-glass);">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div
+              style="width: 48px; height: 48px; background: linear-gradient(135deg, #13221C 0%, #3a5c4e 100%); border-radius: 6px;">
+            </div>
+            <div>
+              <div style="font-size: 0.9rem; font-weight: 600;">Royal Oud & Amber</div>
+              <div style="font-size: 0.75rem; color: #8A9E92;">Signature Series</div>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="wishlist-add-bag-2"
+            style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Add to Bag</button>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="close-wishlist-btn-bottom" style="width: 100%;">Close Wishlist</button>
+    </div>
+  </div>
+
+  <!-- Profile Modal Overlay -->
+  <div class="modal-overlay hidden" id="profile-modal-overlay" style="z-index: 9997;">
+    <div class="enquiry-modal" style="max-width: 500px; width: 95%;">
+      <button class="close-enquiry-btn" id="close-profile-btn" aria-label="Close profile modal">
+        <i data-lucide="x"></i>
+      </button>
+      <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">My Account
+      </h2>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Welcome
+        back, candle artisan.</p>
+
+      <div
+        style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-glass); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1rem;">
+          <div
+            style="width: 54px; height: 54px; background: var(--gold-text); color: #13221C; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; font-family: var(--font-serif);">
+            A</div>
+          <div>
+            <div style="font-size: 1.1rem; font-weight: 600;">Ankri Artisan</div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">artisan@ankricandles.com</div>
+          </div>
+        </div>
+        <div
+          style="display: flex; justify-content: space-between; border-top: 1px solid var(--border-glass); padding-top: 0.75rem; font-size: 0.8rem;">
+          <div>Loyalty Tier: <strong style="color: var(--gold-text);">Gold Patron</strong></div>
+          <div>Points: <strong>350</strong></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1.5rem;">
+        <h4 style="font-size: 0.9rem; margin-bottom: 0.75rem; color: var(--gold-text);">Order History</h4>
+        <div
+          style="font-size: 0.8rem; padding: 0.5rem; background: rgba(255,255,255,0.01); border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 600;">Order #AC-98216</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">Delivered on July 05, 2026</div>
+          </div>
+          <strong style="color: #8A9E92;">$64.00</strong>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="close-profile-btn-bottom" style="width: 100%;">Sign Out</button>
     </div>
   </div>
 

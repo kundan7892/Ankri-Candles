@@ -2133,5 +2133,109 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // --- STOREFRONT MODALS: SEARCH, WISHLIST, ACCOUNT ---
+  const searchBtn = document.getElementById('search-btn');
+  const searchModalOverlay = document.getElementById('search-modal-overlay');
+  const closeSearchBtn = document.getElementById('close-search-btn');
+  const storefrontSearchInput = document.getElementById('storefront-search-input');
+  const searchResultsContainer = document.getElementById('search-results-container');
+
+  const wishlistBtn = document.getElementById('wishlist-btn');
+  const wishlistModalOverlay = document.getElementById('wishlist-modal-overlay');
+  const closeWishlistBtn = document.getElementById('close-wishlist-btn');
+  const closeWishlistBtnBottom = document.getElementById('close-wishlist-btn-bottom');
+  const wishlistAddBag1 = document.getElementById('wishlist-add-bag-1');
+  const wishlistAddBag2 = document.getElementById('wishlist-add-bag-2');
+
+  const profileBtn = document.getElementById('profile-btn');
+  const profileModalOverlay = document.getElementById('profile-modal-overlay');
+  const closeProfileBtn = document.getElementById('close-profile-btn');
+  const closeProfileBtnBottom = document.getElementById('close-profile-btn-bottom');
+
+  const availableCandleProducts = [
+    { name: "Royal Oud & Amber", category: "Signature Collection", price: "$32.00", color: "linear-gradient(135deg, #13221C 0%, #3a5c4e 100%)" },
+    { name: "Forest Lavender", category: "Signature Collection", price: "$28.00", color: "linear-gradient(135deg, #5c4e7c 0%, #3a2b54 100%)" },
+    { name: "Sandalwood Silk", category: "Custom Soy Blend", price: "$35.00", color: "linear-gradient(135deg, #C8A338 0%, #B28E2E 100%)" },
+    { name: "Amber Wood & Cedar", category: "Premium Series", price: "$34.00", color: "linear-gradient(135deg, #b28e2e 0%, #6e5414 100%)" },
+    { name: "Vanilla Spice", category: "Classic Series", price: "$24.00", color: "linear-gradient(135deg, #F3E5AB 0%, #c4b57c 100%)" }
+  ];
+
+  function openStorefrontModal(modal) {
+    if (modal) {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeStorefrontModal(modal) {
+    if (modal) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+  }
+
+  if (searchBtn) searchBtn.addEventListener('click', () => openStorefrontModal(searchModalOverlay));
+  if (wishlistBtn) wishlistBtn.addEventListener('click', () => openStorefrontModal(wishlistModalOverlay));
+  if (profileBtn) profileBtn.addEventListener('click', () => openStorefrontModal(profileModalOverlay));
+
+  if (closeSearchBtn) closeSearchBtn.addEventListener('click', () => closeStorefrontModal(searchModalOverlay));
+  if (closeWishlistBtn) closeWishlistBtn.addEventListener('click', () => closeStorefrontModal(wishlistModalOverlay));
+  if (closeWishlistBtnBottom) closeWishlistBtnBottom.addEventListener('click', () => closeStorefrontModal(wishlistModalOverlay));
+  if (closeProfileBtn) closeProfileBtn.addEventListener('click', () => closeStorefrontModal(profileModalOverlay));
+  if (closeProfileBtnBottom) closeProfileBtnBottom.addEventListener('click', () => {
+    closeStorefrontModal(profileModalOverlay);
+    showToast("Signed out of your customer account.");
+  });
+
+  if (wishlistAddBag1) {
+    wishlistAddBag1.addEventListener('click', () => {
+      showToast("Added Sandalwood Silk to bag!");
+      closeStorefrontModal(wishlistModalOverlay);
+    });
+  }
+  if (wishlistAddBag2) {
+    wishlistAddBag2.addEventListener('click', () => {
+      showToast("Added Royal Oud & Amber to bag!");
+      closeStorefrontModal(wishlistModalOverlay);
+    });
+  }
+
+  if (storefrontSearchInput && searchResultsContainer) {
+    storefrontSearchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      if (!query) {
+        searchResultsContainer.innerHTML = '<div style="color: var(--text-secondary); font-size: 0.85rem; text-align: center; padding: 1.5rem 0;">Type a query to see matching artisan candles.</div>';
+        return;
+      }
+
+      const matches = availableCandleProducts.filter(item =>
+        item.name.toLowerCase().includes(query) ||
+        item.category.toLowerCase().includes(query)
+      );
+
+      if (matches.length === 0) {
+        searchResultsContainer.innerHTML = '<div style="color: var(--text-secondary); font-size: 0.85rem; text-align: center; padding: 1.5rem 0;">No matching candles found. Try search terms like Lavender, Oud, or Silk.</div>';
+        return;
+      }
+
+      searchResultsContainer.innerHTML = matches.map(item => `
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background: rgba(255,255,255,0.02); border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.05);">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 36px; height: 36px; background: ${item.color}; border-radius: 6px;"></div>
+            <div>
+              <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">${item.name}</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">${item.category}</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 0.85rem; font-weight: 600; color: var(--gold-text);">${item.price}</span>
+            <button class="btn btn-primary" onclick="showToast('Added matching item!')" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;">View</button>
+          </div>
+        </div>
+      `).join('');
+    });
+  }
 });
+
 
