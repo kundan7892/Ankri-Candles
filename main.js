@@ -186,6 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkoutBtn = document.getElementById('checkout-btn');
   const cartFooter = document.getElementById('cart-footer');
 
+  // Checkout Modal
+  const checkoutModalOverlay = document.getElementById('checkout-modal-overlay');
+  const closeCheckoutModalBtn = document.getElementById('close-checkout-modal-btn');
+  const checkoutDetailsForm = document.getElementById('checkout-details-form');
+
   // Success Modal
   const successModalOverlay = document.getElementById('success-modal-overlay');
   const orderNumberText = document.getElementById('order-number');
@@ -468,6 +473,17 @@ document.addEventListener('DOMContentLoaded', () => {
     closeSuccessBtn.addEventListener('click', () => {
       successModalOverlay.classList.add('hidden');
     });
+
+    if (closeCheckoutModalBtn) {
+      closeCheckoutModalBtn.addEventListener('click', () => {
+        if (checkoutModalOverlay) checkoutModalOverlay.classList.add('hidden');
+      });
+    }
+
+    if (checkoutDetailsForm) {
+      checkoutDetailsForm.addEventListener('submit', handlePaymentAndOrderSubmit);
+    }
+
 
     // Scent Finder Quiz Logic
     let currentQuizIndex = 0;
@@ -1444,32 +1460,117 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- CHECKOUT PROCESS SIMULATION ---
   function performCheckout() {
-    checkoutBtn.disabled = true;
-    checkoutBtn.textContent = "Processing order...";
+    if (state.cart.length === 0) {
+      showToast("Your shopping bag is empty.");
+      return;
+    }
+    // Open the checkout details modal
+    if (checkoutModalOverlay) {
+      checkoutModalOverlay.classList.remove('hidden');
+    }
+  }
 
-    setTimeout(() => {
-      checkoutBtn.disabled = false;
-      checkoutBtn.textContent = "Proceed to Checkout";
+  async function handlePaymentAndOrderSubmit(e) {
+    e.preventDefault();
 
-      toggleCartDrawer();
+    const name = document.getElementById('bill-name').value.trim();
+    const email = document.getElementById('bill-email').value.trim();
+    const phone = document.getElementById('bill-phone').value.trim();
+    const paymentMethod = document.getElementById('bill-payment').value;
+    const address = document.getElementById('bill-address').value.trim();
 
-      // Clear state
-      state.cart = [];
-      state.discount = 0;
-      state.promoApplied = false;
-      promoInput.value = '';
-      renderCart();
+    const payBtn = document.getElementById('btn-pay-complete');
+    if (!payBtn) return;
+    const originalText = payBtn.textContent;
+    payBtn.disabled = true;
+    payBtn.textContent = "Processing Payment...";
 
-      // Trigger the candle glowing animation before displaying order confirmation
-      triggerCandleGlowAnimation(() => {
-        const randomOrder = `AE-${Math.floor(10000 + Math.random() * 90000)}`;
-        if (orderNumberText) orderNumberText.textContent = randomOrder;
-        if (successTitle) successTitle.textContent = "You glowed the candle! Order booked successfully!";
-        if (successDesc) successDesc.textContent = "Thank you for crafting with Ankri Candles. Your custom soy recipes are being lined up for hand-pouring in our Bangalore studio.";
-        if (orderIdLabel) orderIdLabel.textContent = "Order ID";
-        if (successModalOverlay) successModalOverlay.classList.remove('hidden');
+    // Calculate totals
+    let subtotal = 0;
+    state.cart.forEach(item => {
+      subtotal += item.price * item.quantity;
+    });
+    const discountValue = subtotal * state.discount;
+    const discountedSubtotal = subtotal - discountValue;
+    const shipping = discountedSubtotal >= 999 ? 0 : 100;
+    const total = discountedSubtotal + shipping;
+
+    const randomSuffix = Math.floor(10000 + Math.random() * 90000);
+    const orderId = `AE-${randomSuffix}`;
+    const transactionId = `TXN-${randomSuffix}`;
+
+    const bookingData = {
+      orderId: orderId,
+      customerInfo: { name, email, phone, address },
+      items: state.cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        description: item.description,
+        colors: item.colors,
+        isCustom: item.isCustom,
+        quantity: item.quantity
+      })),
+      subtotal: subtotal,
+      shipping: shipping,
+      total: total,
+      status: 'Pending'
+    };
+
+    const paymentData = {
+      transactionId: transactionId,
+      orderId: orderId,
+      amount: total,
+      paymentMethod: paymentMethod,
+      status: paymentMethod === 'COD' ? 'Pending' : 'Success'
+    };
+
+    try {
+      // 1. Save Booking
+      const bookingResponse = await fetch('http://localhost:5000/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData)
       });
-    }, 2000);
+
+      // 2. Save Payment
+      const paymentResponse = await fetch('http://localhost:5000/api/payments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(paymentData)
+      });
+
+      if (bookingResponse.ok && paymentResponse.ok) {
+        checkoutDetailsForm.reset();
+        if (checkoutModalOverlay) checkoutModalOverlay.classList.add('hidden');
+        toggleCartDrawer();
+
+        // Clear cart state
+        state.cart = [];
+        state.discount = 0;
+        state.promoApplied = false;
+        if (promoInput) promoInput.value = '';
+        renderCart();
+
+        // Trigger candle glow and reveal order details
+        triggerCandleGlowAnimation(() => {
+          if (orderNumberText) orderNumberText.textContent = `${orderId} (${paymentMethod === 'COD' ? 'COD Pending' : 'Paid'})`;
+          if (successTitle) successTitle.textContent = "Order Placed Successfully!";
+          if (successDesc) successDesc.textContent = `Thank you, ${name}! Your order items are saved to database. Transaction Reference: ${transactionId}. Our team will contact you shortly.`;
+          if (orderIdLabel) orderIdLabel.textContent = "Order ID";
+          if (successModalOverlay) successModalOverlay.classList.remove('hidden');
+        });
+        showToast("Order booked in database!");
+      } else {
+        showToast("Error processing checkout. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      showToast("Failed to connect to local server.");
+    } finally {
+      payBtn.disabled = false;
+      payBtn.textContent = originalText;
+    }
   }
 
   // --- BULK ORDER ENQUIRY MODAL LOGIC ---

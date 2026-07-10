@@ -1214,6 +1214,51 @@
     </div>
   </div>
 
+  <!-- Checkout Details Modal -->
+  <div class="modal-overlay hidden" id="checkout-modal-overlay">
+    <div class="enquiry-modal">
+      <button class="close-enquiry-btn" id="close-checkout-modal-btn" aria-label="Close checkout modal">
+        <i data-lucide="x"></i>
+      </button>
+      <h2>Checkout Details</h2>
+      <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1.5rem;">Please provide your shipping and mock payment details to complete the pour order.</p>
+      
+      <form class="enquiry-form" id="checkout-details-form">
+        <div class="form-row-grid">
+          <div class="form-group">
+            <label for="bill-name">Full Name <span class="required-star">*</span></label>
+            <input type="text" id="bill-name" placeholder="e.g. Rahul Sharma" required>
+          </div>
+          <div class="form-group">
+            <label for="bill-email">Email <span class="required-star">*</span></label>
+            <input type="email" id="bill-email" placeholder="rahul@company.com" required>
+          </div>
+        </div>
+        <div class="form-row-grid">
+          <div class="form-group">
+            <label for="bill-phone">Phone No. <span class="required-star">*</span></label>
+            <input type="tel" id="bill-phone" placeholder="e.g. 9876543210" required>
+          </div>
+          <div class="form-group">
+            <label for="bill-payment">Payment Method <span class="required-star">*</span></label>
+            <select id="bill-payment" required>
+              <option value="" disabled selected>—Choose Payment Method—</option>
+              <option value="UPI">UPI / GPay / PhonePe</option>
+              <option value="Card">Credit or Debit Card</option>
+              <option value="COD">Cash on Delivery (COD)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="bill-address">Shipping Address <span class="required-star">*</span></label>
+          <textarea id="bill-address" rows="3" placeholder="Enter your full shipping address..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-large btn-grow" id="btn-pay-complete">Pay & Complete Order</button>
+      </form>
+    </div>
+  </div>
+
+
 
 
   <!-- Footer -->

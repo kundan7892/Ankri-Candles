@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ankri Candles | Super Admin Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
   <style>
     body {
@@ -15,6 +18,7 @@
       display: flex;
       flex-direction: column;
     }
+
     .admin-container {
       flex: 1;
       display: flex;
@@ -22,6 +26,7 @@
       align-items: center;
       padding: 4rem 2rem;
     }
+
     .admin-card {
       background: var(--bg-primary);
       border: 1px solid var(--border-glass);
@@ -32,15 +37,18 @@
       box-shadow: 0 15px 40px rgba(19, 34, 28, 0.04);
       text-align: center;
     }
+
     .login-box {
       max-width: 400px;
       margin: 0 auto;
       text-align: left;
     }
+
     .dashboard-box {
       text-align: left;
       animation: fadeIn 0.4s ease;
     }
+
     .dashboard-header {
       display: flex;
       justify-content: space-between;
@@ -51,20 +59,24 @@
       flex-wrap: wrap;
       gap: 1rem;
     }
+
     .admin-title-row {
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
+
     .admin-title-row h2 {
       font-size: 2.2rem;
       font-family: var(--font-serif);
       color: var(--text-primary);
     }
+
     .admin-nav-actions {
       display: flex;
       gap: 1rem;
     }
+
     .logs-table-container {
       border: 1px solid var(--border-glass);
       border-radius: 4px;
@@ -72,12 +84,14 @@
       margin-bottom: 2rem;
       background: var(--bg-primary);
     }
+
     .logs-table {
       width: 100%;
       border-collapse: collapse;
       font-family: var(--font-sans);
       font-size: 0.85rem;
     }
+
     .logs-table th {
       background: var(--bg-tertiary);
       padding: 1rem 1.25rem;
@@ -86,18 +100,22 @@
       color: var(--text-primary);
       border-bottom: 1px solid var(--border-glass);
     }
+
     .logs-table td {
       padding: 1.25rem;
       border-bottom: 1px solid var(--border-glass);
       color: var(--text-primary);
       vertical-align: top;
     }
+
     .logs-table tr:last-child td {
       border-bottom: none;
     }
+
     .logs-table tr:hover {
       background: var(--bg-secondary);
     }
+
     .message-cell {
       max-width: 320px;
       white-space: pre-wrap;
@@ -105,6 +123,7 @@
       font-size: 0.8rem;
       color: var(--text-secondary);
     }
+
     .back-home-link {
       margin-top: 2rem;
       display: inline-flex;
@@ -118,11 +137,13 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
+
     .back-home-link:hover {
       color: var(--sage-accent);
     }
   </style>
 </head>
+
 <body>
 
   <!-- Header Branding Bar -->
@@ -131,33 +152,46 @@
       <a href="/" class="logo-main">
         ANKRI CANDLES<span class="logo-sparkle">✦</span>
       </a>
-      <span style="font-family: var(--font-sans); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; color: var(--gold-text); text-transform: uppercase;">Super Admin Portal</span>
+      <span
+        style="font-family: var(--font-sans); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; color: var(--gold-text); text-transform: uppercase;">Super
+        Admin Portal</span>
     </div>
   </header>
 
   <div class="admin-container">
     <div class="admin-card" id="admin-card-root">
-      
+
       <!-- 1. Authentication View -->
       <div id="admin-login-box" class="login-box">
-        <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;">Super Admin Login</h2>
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 2.5rem; text-align: center;">Enter credentials to unlock the bulk inquiries database.</p>
-        
+        <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;">Super
+          Admin Login</h2>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 2.5rem; text-align: center;">Enter
+          credentials to unlock the bulk inquiries database.</p>
+
         <form id="admin-login-form">
           <div class="form-group" style="margin-bottom: 1.25rem;">
-            <label for="admin-user" style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem;">Username</label>
-            <input type="text" id="admin-user" required style="width: 100%; padding: 0.85rem; border: 1px solid var(--border-glass); border-radius: 4px; outline: none; background: var(--bg-tertiary); color: var(--text-primary); transition: var(--transition-fast);">
+            <label for="admin-user"
+              style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem;">Username</label>
+            <input type="text" id="admin-user" required
+              style="width: 100%; padding: 0.85rem; border: 1px solid var(--border-glass); border-radius: 4px; outline: none; background: var(--bg-tertiary); color: var(--text-primary); transition: var(--transition-fast);">
           </div>
-          
+
           <div class="form-group" style="margin-bottom: 1.5rem; position: relative;">
-            <label for="admin-pass" style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem;">Password</label>
-            <input type="password" id="admin-pass" required style="width: 100%; padding: 0.85rem; border: 1px solid var(--border-glass); border-radius: 4px; outline: none; background: var(--bg-tertiary); color: var(--text-primary); transition: var(--transition-fast); padding-right: 2.5rem;">
-            <button type="button" id="toggle-pass-visibility" style="position: absolute; right: 12px; top: 38px; color: var(--text-muted); cursor: pointer; background: none; border: none; outline: none;"><i data-lucide="eye" style="width: 18px; height: 18px;"></i></button>
+            <label for="admin-pass"
+              style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem;">Password</label>
+            <input type="password" id="admin-pass" required
+              style="width: 100%; padding: 0.85rem; border: 1px solid var(--border-glass); border-radius: 4px; outline: none; background: var(--bg-tertiary); color: var(--text-primary); transition: var(--transition-fast); padding-right: 2.5rem;">
+            <button type="button" id="toggle-pass-visibility"
+              style="position: absolute; right: 12px; top: 38px; color: var(--text-muted); cursor: pointer; background: none; border: none; outline: none;"><i
+                data-lucide="eye" style="width: 18px; height: 18px;"></i></button>
           </div>
-          
-          <div id="login-error-msg" style="color: #C0392B; font-size: 0.85rem; margin-bottom: 1.5rem; min-height: 1.2rem; font-weight: 600; text-align: center;"></div>
-          
-          <button type="submit" class="btn btn-primary btn-large btn-grow" style="padding: 1.1rem 2rem;">Access Database</button>
+
+          <div id="login-error-msg"
+            style="color: #C0392B; font-size: 0.85rem; margin-bottom: 1.5rem; min-height: 1.2rem; font-weight: 600; text-align: center;">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large btn-grow" style="padding: 1.1rem 2rem;">Access
+            Database</button>
         </form>
       </div>
 
@@ -166,35 +200,97 @@
         <div class="dashboard-header">
           <div class="admin-title-row">
             <i data-lucide="database" style="color: var(--gold-primary); width: 28px; height: 28px;"></i>
-            <h2>Inquiry Database</h2>
+            <h2 id="dashboard-title">Administrative Datasets</h2>
           </div>
           <div class="admin-nav-actions">
-            <button class="btn btn-outline btn-small" id="btn-clear-logs"><i data-lucide="trash-2"></i> Clear Logs</button>
-            <button class="btn btn-primary btn-small" id="btn-admin-logout"><i data-lucide="log-out"></i> Log Out</button>
+            <button class="btn btn-outline btn-small" id="btn-clear-logs"><i data-lucide="trash-2"></i> Clear Active Tab
+              Data</button>
+            <button class="btn btn-primary btn-small" id="btn-admin-logout"><i data-lucide="log-out"></i> Log
+              Out</button>
           </div>
         </div>
 
-        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">This dashboard shows all bulk order inquiries and corporate gifting requests submitted by customers.</p>
+        <!-- Dashboard Tab Switching Navigation -->
+        <div class="shop-filter-bar"
+          style="margin-bottom: 2rem; width: 100%; border-bottom: 1px solid var(--border-glass); justify-content: flex-start; gap: 0.5rem; padding-bottom: 0.5rem;">
+          <button class="filter-btn active" data-tab="inquiries" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Bulk
+            Inquiries</button>
+          <button class="filter-btn" data-tab="bookings" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Order
+            Bookings</button>
+          <button class="filter-btn" data-tab="payments" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Payment
+            Transactions</button>
+        </div>
 
-        <div class="logs-table-container">
-          <table class="logs-table">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Received Date</th>
-                <th>Client Info</th>
-                <th>Request Details</th>
-                <th>Message/Details</th>
-              </tr>
-            </thead>
-            <tbody id="logs-table-body">
-              <!-- Rendered by JS -->
-            </tbody>
-          </table>
+        <!-- Tab 1: Inquiries -->
+        <div id="tab-inquiries-content" class="tab-panel">
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">This dashboard shows all
+            bulk order inquiries and corporate gifting requests submitted by customers.</p>
+          <div class="logs-table-container">
+            <table class="logs-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Received Date</th>
+                  <th>Client Info</th>
+                  <th>Request Details</th>
+                  <th>Message/Details</th>
+                </tr>
+              </thead>
+              <tbody id="logs-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 2: Bookings -->
+        <div id="tab-bookings-content" class="tab-panel hidden">
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">This dashboard shows all
+            custom and signature candle order bookings submitted during checkout.</p>
+          <div class="logs-table-container">
+            <table class="logs-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date & Time</th>
+                  <th>Customer Info</th>
+                  <th>Ordered Candles</th>
+                  <th>Total Price</th>
+                </tr>
+              </thead>
+              <tbody id="bookings-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 3: Payments -->
+        <div id="tab-payments-content" class="tab-panel hidden">
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">This dashboard shows all
+            payment transaction records registered in the system database.</p>
+          <div class="logs-table-container">
+            <table class="logs-table">
+              <thead>
+                <tr>
+                  <th>Transaction ID</th>
+                  <th>Order ID</th>
+                  <th>Date & Time</th>
+                  <th>Amount</th>
+                  <th>Method</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="payments-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      <a href="/" class="back-home-link"><i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back to Storefront</a>
+      <a href="/" class="back-home-link"><i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back to
+        Storefront</a>
 
     </div>
   </div>
@@ -206,4 +302,5 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script type="module" src="/admin.js"></script>
 </body>
+
 </html>
