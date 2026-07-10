@@ -4160,3 +4160,43 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
 .chip {
   border-radius: 50px !important;
 }
+
+/* Administrative Dashboard Tables and Badges */
+.inquiry-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.inquiry-badge.bulk {
+  background: rgba(2, 101, 46, 0.1);
+  color: var(--sage-accent);
+}
+.inquiry-badge.gifting {
+  background: var(--gold-glow);
+  color: var(--gold-text);
+}
+.message-cell {
+  max-width: 320px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.logs-table tr:hover {
+  background: var(--bg-secondary);
+}
+#homepage-admin-modal-overlay .logs-table th,
+#homepage-admin-modal-overlay .logs-table td {
+  border-bottom: 1px solid var(--border-glass);
+}
+#homepage-admin-modal-overlay .logs-table th {
+  background: rgba(0, 0, 0, 0.02);
+}
+#homepage-admin-modal-overlay code {
+  font-family: Consolas, Monaco, monospace;
+}
+

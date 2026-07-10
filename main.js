@@ -1770,5 +1770,368 @@ document.addEventListener('DOMContentLoaded', () => {
     waveCtx.stroke();
     waveCtx.shadowBlur = 0; // reset
   }
+
+  // --- HOMEPAGE ADMIN PORTAL MODAL ACTIONS ---
+  const homepageAdminTrigger = document.getElementById('homepage-admin-trigger');
+  const homepageAdminOverlay = document.getElementById('homepage-admin-modal-overlay');
+  const closeHomepageAdminBtn = document.getElementById('close-homepage-admin-btn');
+  const homepageLoginForm = document.getElementById('homepage-admin-login-form');
+  const homepageLoginBox = document.getElementById('homepage-admin-login-box');
+  const homepageDashboardBox = document.getElementById('homepage-admin-dashboard-box');
+  const homepageErrorMsg = document.getElementById('homepage-login-error-msg');
+  const homepageTogglePassBtn = document.getElementById('homepage-toggle-pass-visibility');
+  const homepagePassInput = document.getElementById('homepage-admin-pass');
+  const homepageLogoutBtn = document.getElementById('homepage-btn-admin-logout');
+  const homepageClearLogsBtn = document.getElementById('homepage-btn-clear-logs');
+
+  const homepageLogsTableBody = document.getElementById('homepage-logs-table-body');
+  const homepageBookingsTableBody = document.getElementById('homepage-bookings-table-body');
+  const homepagePaymentsTableBody = document.getElementById('homepage-payments-table-body');
+  const homepageDashboardTitle = document.getElementById('homepage-dashboard-title');
+
+  let activeHomeTab = 'inquiries';
+
+  if (homepageAdminTrigger) {
+    homepageAdminTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      openHomepageAdminModal();
+    });
+  }
+
+  if (closeHomepageAdminBtn) {
+    closeHomepageAdminBtn.addEventListener('click', closeHomepageAdminModal);
+  }
+
+  if (homepageAdminOverlay) {
+    homepageAdminOverlay.addEventListener('click', (e) => {
+      if (e.target === homepageAdminOverlay) {
+        closeHomepageAdminModal();
+      }
+    });
+  }
+
+  function openHomepageAdminModal() {
+    if (homepageAdminOverlay) {
+      homepageAdminOverlay.classList.remove('hidden');
+      checkHomepageAdminAuth();
+    }
+  }
+
+  function closeHomepageAdminModal() {
+    if (homepageAdminOverlay) {
+      homepageAdminOverlay.classList.add('hidden');
+    }
+  }
+
+  function checkHomepageAdminAuth() {
+    const isAuth = sessionStorage.getItem('superadmin_authenticated') === 'true';
+    if (isAuth) {
+      if (homepageLoginBox) homepageLoginBox.classList.add('hidden');
+      if (homepageDashboardBox) homepageDashboardBox.classList.remove('hidden');
+      renderHomepageActiveTab();
+    } else {
+      if (homepageLoginBox) homepageLoginBox.classList.remove('hidden');
+      if (homepageDashboardBox) homepageDashboardBox.classList.add('hidden');
+    }
+  }
+
+  // Handle Authentication submit via Server API
+  if (homepageLoginForm) {
+    homepageLoginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('homepage-admin-user').value.trim();
+      const password = homepagePassInput.value.trim();
+
+      try {
+        const res = await fetch('http://localhost:5000/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          sessionStorage.setItem('superadmin_authenticated', 'true');
+          homepageErrorMsg.textContent = '';
+          homepageLoginForm.reset();
+          checkHomepageAdminAuth();
+          showToast("Authenticated successfully. Welcome, Super Admin!");
+        } else {
+          homepageErrorMsg.textContent = result.message || 'Invalid credentials. Please try again.';
+        }
+      } catch (err) {
+        console.error(err);
+        homepageErrorMsg.textContent = 'Server connection error. Please run local server first.';
+      }
+    });
+  }
+
+  // Toggle Password text/password visibility
+  if (homepageTogglePassBtn && homepagePassInput) {
+    homepageTogglePassBtn.addEventListener('click', () => {
+      const type = homepagePassInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      homepagePassInput.setAttribute('type', type);
+      const icon = homepageTogglePassBtn.querySelector('i');
+      if (icon) {
+        if (type === 'password') {
+          icon.setAttribute('data-lucide', 'eye');
+        } else {
+          icon.setAttribute('data-lucide', 'eye-off');
+        }
+        if (window.lucide) {
+          window.lucide.createIcons();
+        }
+      }
+    });
+  }
+
+  // Set up dashboard Tab Switching Navigation callbacks
+  const homeTabButtons = document.querySelectorAll('[data-homedashboardtab]');
+  homeTabButtons.forEach(btn => {
+    btn.addEventListener('click', async () => {
+      homeTabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      activeHomeTab = btn.getAttribute('data-homedashboardtab');
+
+      // Hide all panels, show active
+      const panels = homepageDashboardBox.querySelectorAll('.tab-panel');
+      panels.forEach(p => p.classList.add('hidden'));
+
+      const activePanel = document.getElementById(`homepanel-${activeHomeTab}-content`);
+      if (activePanel) activePanel.classList.remove('hidden');
+
+      // Update Header Title depending on active tab
+      if (homepageDashboardTitle) {
+        if (activeHomeTab === 'inquiries') homepageDashboardTitle.textContent = "Bulk Inquiries Database";
+        if (activeHomeTab === 'bookings') homepageDashboardTitle.textContent = "Order Bookings Database";
+        if (activeHomeTab === 'payments') homepageDashboardTitle.textContent = "Payment Transaction Records";
+      }
+
+      await renderHomepageActiveTab();
+    });
+  });
+
+  async function renderHomepageActiveTab() {
+    if (activeHomeTab === 'inquiries') {
+      await renderHomepageInquiries();
+    } else if (activeHomeTab === 'bookings') {
+      await renderHomepageBookings();
+    } else if (activeHomeTab === 'payments') {
+      await renderHomepagePayments();
+    }
+  }
+
+  async function renderHomepageInquiries() {
+    if (!homepageLogsTableBody) return;
+    homepageLogsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Loading inquiries...</td></tr>';
+
+    let logs = [];
+    try {
+      const res = await fetch('http://localhost:5000/api/inquiries');
+      if (res.ok) {
+        logs = await res.json();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (logs.length === 0) {
+      homepageLogsTableBody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 4rem 1.25rem; color: var(--text-secondary);">
+            <div style="font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;">📁</div>
+            No inquiries received yet.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    homepageLogsTableBody.innerHTML = '';
+    logs.forEach(log => {
+      const tr = document.createElement('tr');
+      const badgeClass = log.type === 'bulk' ? 'bulk' : 'gifting';
+      const badgeLabel = log.type === 'bulk' ? 'Bulk Modal' : 'Gifting Form';
+      const dateStr = new Date(log.timestamp).toLocaleString();
+
+      let clientInfo = '';
+      let requestDetails = '';
+      let msgDetails = '';
+
+      if (log.type === 'bulk') {
+        clientInfo = `
+          <strong>${log.name}</strong><br>
+          <span style="font-size:0.75rem; color:var(--text-secondary);">${log.email}</span><br>
+          <span style="font-size:0.75rem; color:var(--text-secondary);">${log.phone}</span>
+        `;
+        requestDetails = `
+          <strong>Qty:</strong> ${log.qty}<br>
+          <strong>Subj:</strong> ${log.subject}
+        `;
+        msgDetails = `<div class="message-cell">${log.message || ''}</div>`;
+      } else {
+        clientInfo = `
+          <strong>${log.name}</strong><br>
+          <span style="font-size:0.75rem; color:var(--text-secondary);">${log.email}</span>
+        `;
+        requestDetails = `
+          <strong>Company:</strong> ${log.org || 'N/A'}<br>
+          <strong>Est. Qty:</strong> ${log.qty || 'N/A'} units
+        `;
+        msgDetails = `<div class="message-cell">${log.details || ''}</div>`;
+      }
+
+      tr.innerHTML = `
+        <td style="padding: 1.25rem;"><span class="inquiry-badge ${badgeClass}">${badgeLabel}</span></td>
+        <td style="padding: 1.25rem; white-space: nowrap;">${dateStr}</td>
+        <td style="padding: 1.25rem;">${clientInfo}</td>
+        <td style="padding: 1.25rem;">${requestDetails}</td>
+        <td style="padding: 1.25rem;">${msgDetails}</td>
+      `;
+      homepageLogsTableBody.appendChild(tr);
+    });
+  }
+
+  async function renderHomepageBookings() {
+    if (!homepageBookingsTableBody) return;
+    homepageBookingsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Loading bookings...</td></tr>';
+
+    let bookings = [];
+    try {
+      const res = await fetch('http://localhost:5000/api/bookings');
+      if (res.ok) {
+        bookings = await res.json();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (bookings.length === 0) {
+      homepageBookingsTableBody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 4rem 1.25rem; color: var(--text-secondary);">
+            <div style="font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;">🛍️</div>
+            No candle orders booked yet.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    homepageBookingsTableBody.innerHTML = '';
+    bookings.forEach(booking => {
+      const tr = document.createElement('tr');
+      const dateStr = new Date(booking.timestamp).toLocaleString();
+
+      const clientInfo = `
+        <strong>${booking.customerInfo.name}</strong><br>
+        <span style="font-size:0.75rem; color:var(--text-secondary);">${booking.customerInfo.email}</span><br>
+        <span style="font-size:0.75rem; color:var(--text-secondary);">${booking.customerInfo.phone}</span><br>
+        <span style="font-size:0.75rem; color:var(--text-secondary);">${booking.customerInfo.address}</span>
+      `;
+
+      const itemsList = booking.items.map(item => {
+        if (item.isCustom) {
+          return `• Custom: <strong>${item.name}</strong> (${item.description}) x${item.quantity}`;
+        } else {
+          return `• Signature: <strong>${item.name}</strong> (${item.description || 'Standard'}) x${item.quantity}`;
+        }
+      }).join('<br>');
+
+      tr.innerHTML = `
+        <td style="padding: 1.25rem; font-weight: bold; color: var(--gold-primary);">${booking.orderId}</td>
+        <td style="padding: 1.25rem; white-space: nowrap;">${dateStr}</td>
+        <td style="padding: 1.25rem;">${clientInfo}</td>
+        <td style="padding: 1.25rem; font-size: 0.8rem; line-height: 1.4;">${itemsList}</td>
+        <td style="padding: 1.25rem; font-weight: bold;">₹${booking.total}</td>
+      `;
+      homepageBookingsTableBody.appendChild(tr);
+    });
+  }
+
+  async function renderHomepagePayments() {
+    if (!homepagePaymentsTableBody) return;
+    homepagePaymentsTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Loading payments...</td></tr>';
+
+    let payments = [];
+    try {
+      const res = await fetch('http://localhost:5000/api/payments');
+      if (res.ok) {
+        payments = await res.json();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (payments.length === 0) {
+      homepagePaymentsTableBody.innerHTML = `
+        <tr>
+          <td colspan="6" style="text-align: center; padding: 4rem 1.25rem; color: var(--text-secondary);">
+            <div style="font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;">💳</div>
+            No payment records found yet.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    homepagePaymentsTableBody.innerHTML = '';
+    payments.forEach(payment => {
+      const tr = document.createElement('tr');
+      const dateStr = new Date(payment.timestamp).toLocaleString();
+      const statusClass = payment.status === 'Success' ? 'bulk' : 'gifting';
+
+      tr.innerHTML = `
+        <td style="padding: 1.25rem; font-weight: bold;">${payment.transactionId}</td>
+        <td style="padding: 1.25rem; color: var(--gold-primary); font-weight: bold;">${payment.orderId}</td>
+        <td style="padding: 1.25rem; white-space: nowrap;">${dateStr}</td>
+        <td style="padding: 1.25rem; font-weight: bold;">₹${payment.amount}</td>
+        <td style="padding: 1.25rem;">${payment.paymentMethod}</td>
+        <td style="padding: 1.25rem;"><span class="inquiry-badge ${statusClass}">${payment.status}</span></td>
+      `;
+      homepagePaymentsTableBody.appendChild(tr);
+    });
+  }
+
+  // Logout Handler
+  if (homepageLogoutBtn) {
+    homepageLogoutBtn.addEventListener('click', () => {
+      sessionStorage.removeItem('superadmin_authenticated');
+      checkHomepageAdminAuth();
+      showToast("Logged out of Admin Session.");
+    });
+  }
+
+  // Clear Logs Handler
+  if (homepageClearLogsBtn) {
+    homepageClearLogsBtn.addEventListener('click', async () => {
+      let deleteUrl = '';
+      let tabLabel = '';
+      if (activeHomeTab === 'inquiries') {
+        deleteUrl = 'http://localhost:5000/api/inquiries';
+        tabLabel = 'inquiry logs';
+      } else if (activeHomeTab === 'bookings') {
+        deleteUrl = 'http://localhost:5000/api/bookings';
+        tabLabel = 'order bookings';
+      } else if (activeHomeTab === 'payments') {
+        deleteUrl = 'http://localhost:5000/api/payments';
+        tabLabel = 'payment transaction details';
+      }
+
+      if (confirm(`Are you sure you want to delete all local ${tabLabel}? This cannot be undone.`)) {
+        try {
+          const res = await fetch(deleteUrl, { method: 'DELETE' });
+          if (res.ok) {
+            await renderHomepageActiveTab();
+            showToast(`${tabLabel} database cleared.`);
+          }
+        } catch (e) {
+          console.error(e);
+          showToast("Failed to clear database logs.");
+        }
+      }
+    });
+  }
 });
 

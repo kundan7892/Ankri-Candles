@@ -1360,8 +1360,8 @@
         <a href="#customizer">Custom Candle Builder</a>
         <a href="#collection">Signature Series</a>
         <a href="#quiz-section">Scent Finder Quiz</a>
-        <a href="admin.html" style="display: flex; align-items: center; gap: 4px;"><i data-lucide="shield-alert"
-            style="width: 14px; height: 14px;"></i> Super Admin Portal</a>
+        <a id="homepage-admin-trigger" href="#" style="display: flex; align-items: center; gap: 4px;"><i
+            data-lucide="shield-alert" style="width: 14px; height: 14px;"></i> Super Admin Portal</a>
       </div>
       <div class="footer-newsletter">
         <h4>Stay Inspired</h4>
@@ -1478,6 +1478,193 @@
 
       </div>
 
+    </div>
+  </div>
+
+
+  <!-- Homepage Admin Dashboard Modal Overlay -->
+  <div class="modal-overlay hidden" id="homepage-admin-modal-overlay" style="z-index: 9998;">
+    <div class="enquiry-modal" style="max-width: 900px; width: 95%; max-height: 90vh; overflow-y: auto;">
+      <button class="close-enquiry-btn" id="close-homepage-admin-btn" aria-label="Close admin modal">
+        <i data-lucide="x"></i>
+      </button>
+
+      <!-- 1. Authentication View -->
+      <div id="homepage-admin-login-box" class="login-box" style="max-width: 480px; margin: 0 auto; padding: 2rem 0;">
+        <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;">Super
+          Admin Login</h2>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Enter
+          credentials to unlock the administrative datasets.</p>
+
+        <!-- Testing Credentials Helper Note -->
+        <div
+          style="background: rgba(212,175,55,0.08); border: 1px dashed rgba(212,175,55,0.3); border-radius: 6px; padding: 0.75rem; margin-bottom: 1.5rem; text-align: center; font-size: 0.8rem; color: var(--gold-text); font-family: var(--font-sans);">
+          <strong
+            style="text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px; color: var(--gold-primary);">Testing
+            Credentials</strong>
+          Username: <code
+            style="background: rgba(255,255,255,0.08); padding: 2px 4px; border-radius: 3px; color: #fff;">admin</code>
+          &nbsp;|&nbsp; Password: <code
+            style="background: rgba(255,255,255,0.08); padding: 2px 4px; border-radius: 3px; color: #fff;">password</code>
+        </div>
+
+        <form class="enquiry-form" id="homepage-admin-login-form">
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label for="homepage-admin-user"
+              style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem;">Username</label>
+            <input type="text" id="homepage-admin-user" required style="width:100%; border-radius:30px !important;">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.5rem; position: relative;">
+            <label for="homepage-admin-pass"
+              style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem;">Password</label>
+            <input type="password" id="homepage-admin-pass" required
+              style="width:100%; padding-right: 2.5rem; border-radius:30px !important;">
+            <button type="button" id="homepage-toggle-pass-visibility"
+              style="position: absolute; right: 12px; top: 38px; color: var(--text-muted); cursor: pointer; background: none; border: none; outline: none;">
+              <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+            </button>
+          </div>
+
+          <div id="homepage-login-error-msg"
+            style="color: #C0392B; font-size: 0.85rem; margin-bottom: 1.5rem; min-height: 1.2rem; font-weight: 600; text-align: center;">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large btn-grow"
+            style="padding: 1.1rem 2rem; width: 100%;">Access Database</button>
+        </form>
+      </div>
+
+      <!-- 2. Dashboard View -->
+      <div id="homepage-admin-dashboard-box" class="dashboard-box hidden" style="padding: 1.5rem 0;">
+        <div class="dashboard-header"
+          style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 1.5rem; margin-bottom: 2rem;">
+          <div class="admin-title-row" style="display: flex; align-items: center; gap: 0.75rem;">
+            <i data-lucide="database" style="color: var(--gold-primary); width: 28px; height: 28px;"></i>
+            <h2 id="homepage-dashboard-title" style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0;">Bulk
+              Inquiries Database</h2>
+          </div>
+          <div class="admin-nav-actions" style="display: flex; gap: 0.75rem;">
+            <button class="btn btn-outline btn-small" id="homepage-btn-clear-logs"
+              style="padding: 0.6rem 1rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem;"><i
+                data-lucide="trash-2" style="width:14px; height:14px;"></i> Clear Active Tab Data</button>
+            <button class="btn btn-primary btn-small" id="homepage-btn-admin-logout"
+              style="padding: 0.6rem 1rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.5rem;"><i
+                data-lucide="log-out" style="width:14px; height:14px;"></i> Log Out</button>
+          </div>
+        </div>
+
+        <!-- Dashboard Tab Switching Navigation -->
+        <div class="shop-filter-bar"
+          style="margin-bottom: 2rem; width: 100%; border-bottom: 1px solid var(--border-glass); justify-content: flex-start; gap: 0.5rem; padding-bottom: 0.5rem; display: flex;">
+          <button class="filter-btn active" data-homedashboardtab="inquiries"
+            style="font-size: 0.9rem; padding: 0.5rem 1rem;">Bulk Inquiries</button>
+          <button class="filter-btn" data-homedashboardtab="bookings"
+            style="font-size: 0.9rem; padding: 0.5rem 1rem;">Order Bookings</button>
+          <button class="filter-btn" data-homedashboardtab="payments"
+            style="font-size: 0.9rem; padding: 0.5rem 1rem;">Payment Transactions</button>
+        </div>
+
+        <!-- Tab 1: Inquiries -->
+        <div class="tab-panel" id="homepanel-inquiries-content">
+          <div class="table-container"
+            style="overflow-x: auto; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: 8px;">
+            <table class="logs-table"
+              style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-sans); font-size: 0.85rem;">
+              <thead>
+                <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-glass);">
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Source Form</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Time Received</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Client Details</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Request Summary</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Details / Message</th>
+                </tr>
+              </thead>
+              <tbody id="homepage-logs-table-body">
+                <!-- Javascript will load here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 2: Bookings -->
+        <div class="tab-panel hidden" id="homepanel-bookings-content">
+          <div class="table-container"
+            style="overflow-x: auto; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: 8px;">
+            <table class="logs-table"
+              style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-sans); font-size: 0.85rem;">
+              <thead>
+                <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-glass);">
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Order ID</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Time Booked</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Customer Info</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Ordered Items</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Total Paid</th>
+                </tr>
+              </thead>
+              <tbody id="homepage-bookings-table-body">
+                <!-- Javascript will load here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 3: Payments -->
+        <div class="tab-panel hidden" id="homepanel-payments-content">
+          <div class="table-container"
+            style="overflow-x: auto; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: 8px;">
+            <table class="logs-table"
+              style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-sans); font-size: 0.85rem;">
+              <thead>
+                <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-glass);">
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Transaction ID</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Order ID</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Time Completed</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Amount</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Method</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Status</th>
+                </tr>
+              </thead>
+              <tbody id="homepage-payments-table-body">
+                <!-- Javascript will load here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
