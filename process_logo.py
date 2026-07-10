@@ -21,21 +21,21 @@ def process_logo():
     width, height = img.size
     pixels = img.load()
 
-    # Process pixels
+    # Process pixels to make background transparent
     for y in range(height):
         for x in range(width):
             r, g, b, a = pixels[x, y]
-            # White or near-white background pixel -> Black
-            if r > 230 and g > 230 and b > 230:
-                pixels[x, y] = (0, 0, 0, 255)
-            # Dark green/grey text pixel -> White
-            elif r < 100 and g < 100 and b < 100:
-                pixels[x, y] = (255, 255, 255, 255)
-            # Otherwise it's gold (flame, sparkles) or gradient edges, let's preserve them
+            # White or near-white background pixel -> fully transparent
+            if r > 240 and g > 240 and b > 240:
+                pixels[x, y] = (0, 0, 0, 0)
+            else:
+                # Keep all original colors (e.g., dark green text and gold flame)
+                # Ensure they have full opacity
+                pixels[x, y] = (r, g, b, 255)
 
     img.save(output_path1, "PNG")
     img.save(output_path2, "PNG")
-    print("Logo processed successfully and saved.")
+    print("Logo processed with transparency successfully and saved.")
 
 if __name__ == "__main__":
     process_logo()
