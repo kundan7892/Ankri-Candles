@@ -33,6 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
         font: 'serif', // 'serif' | 'sans'
         theme: 'warm-cream' // 'warm-cream' | 'midnight-black' | 'vintage-gold'
       },
+      gifting: {
+        enabled: false,
+        wrap: 'forest-silk',
+        message: ''
+      },
       isLit: false,
       price: 799
     },
@@ -365,6 +370,43 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    // Premium Gifting Interactive Builder Event Listeners
+    const giftToggle = document.getElementById('gift-add-on-toggle');
+    const giftingOptions = document.getElementById('gifting-options-group');
+    const wrapBtns = document.querySelectorAll('.wrap-btn');
+    const giftCardInput = document.getElementById('gift-card-message');
+    const giftCharCount = document.getElementById('card-msg-char-count');
+
+    if (giftToggle) {
+      giftToggle.addEventListener('change', (e) => {
+        const isEnabled = e.target.checked;
+        state.customizer.gifting.enabled = isEnabled;
+        if (isEnabled) {
+          giftingOptions.classList.remove('hidden');
+        } else {
+          giftingOptions.classList.add('hidden');
+        }
+      });
+    }
+
+    wrapBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        wrapBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.customizer.gifting.wrap = btn.getAttribute('data-wrap');
+      });
+    });
+
+    if (giftCardInput) {
+      giftCardInput.addEventListener('input', (e) => {
+        const val = e.target.value;
+        state.customizer.gifting.message = val;
+        if (giftCharCount) {
+          giftCharCount.textContent = `${val.length} / 120 characters`;
+        }
+      });
+    }
+
     // NEW: Unboxing experience button binds
     const previewUnboxingBtn = document.getElementById('preview-unboxing-btn');
     const unboxingOverlay = document.getElementById('unboxing-modal-overlay');
@@ -384,14 +426,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const tissueLeft = document.getElementById('tissue-left');
     const tissueRight = document.getElementById('tissue-right');
     const boxLidElement = document.getElementById('box-lid-element');
+    const giftCardPreview = document.getElementById('unboxing-gift-card-preview');
 
     if (previewUnboxingBtn) {
       previewUnboxingBtn.addEventListener('click', () => {
-        virtualGiftBox.classList.remove('open-lid', 'open-tissue', 'reveal-candle');
+        virtualGiftBox.classList.remove('open-lid', 'open-tissue', 'reveal-candle', 'untie-ribbon');
         unboxingStage.classList.add('hidden');
         unboxingStage.style.opacity = '0';
         unboxingIntro.classList.remove('hidden');
         unboxingIntro.style.opacity = '1';
+
+        if (giftCardPreview) {
+          giftCardPreview.classList.add('hidden');
+          giftCardPreview.classList.remove('show-card', 'dismiss-card');
+        }
 
         if (tissueLeft) tissueLeft.style.transform = '';
         if (tissueRight) tissueRight.style.transform = '';
@@ -406,6 +454,46 @@ document.addEventListener('DOMContentLoaded', () => {
         if (unboxingRevealDetails) {
           unboxingRevealDetails.style.opacity = '0';
           unboxingRevealDetails.style.transform = 'translateY(15px)';
+        }
+
+        // Apply chosen gift wrap and ribbon state dynamically
+        const giftState = state.customizer.gifting || { enabled: false, wrap: 'forest-silk', message: '' };
+        const ribbonV = document.getElementById('box-ribbon-v');
+        const ribbonH = document.getElementById('box-ribbon-h');
+        const ribbonBow = document.getElementById('box-ribbon-bow');
+        const cardText = document.getElementById('unboxing-card-text');
+
+        if (giftState.enabled) {
+          virtualGiftBox.setAttribute('data-wrap', giftState.wrap);
+          if (ribbonV) {
+            ribbonV.style.opacity = '1';
+            ribbonV.style.transform = 'scaleY(1)';
+          }
+          if (ribbonH) {
+            ribbonH.style.opacity = '1';
+            ribbonH.style.transform = 'scaleX(1)';
+          }
+          if (ribbonBow) {
+            ribbonBow.style.opacity = '1';
+            ribbonBow.style.transform = 'scale(1)';
+          }
+          if (cardText) {
+            cardText.textContent = giftState.message ? `"${giftState.message}"` : '"Wishing you warmth and lovely light!"';
+          }
+        } else {
+          virtualGiftBox.removeAttribute('data-wrap');
+          if (ribbonV) {
+            ribbonV.style.opacity = '0';
+            ribbonV.style.transform = 'scaleY(0)';
+          }
+          if (ribbonH) {
+            ribbonH.style.opacity = '0';
+            ribbonH.style.transform = 'scaleX(0)';
+          }
+          if (ribbonBow) {
+            ribbonBow.style.opacity = '0';
+            ribbonBow.style.transform = 'scale(0)';
+          }
         }
 
         unboxingCandleRender.setAttribute('data-jar', state.customizer.productType === 'glass-jar' ? state.customizer.vessel : 'gold');
@@ -435,17 +523,58 @@ document.addEventListener('DOMContentLoaded', () => {
           unboxingStage.style.opacity = '1';
         }, 50);
 
-        setTimeout(() => {
-          virtualGiftBox.classList.add('open-lid');
+        const giftState = state.customizer.gifting || { enabled: false };
+
+        if (giftState.enabled) {
+          // Untie Ribbon
           setTimeout(() => {
-            virtualGiftBox.classList.add('open-tissue');
+            virtualGiftBox.classList.add('untie-ribbon');
+            // Remove Lid
             setTimeout(() => {
-              virtualGiftBox.classList.add('reveal-candle');
-              unboxingRevealDetails.style.opacity = '1';
-              unboxingRevealDetails.style.transform = 'translateY(0)';
+              virtualGiftBox.classList.add('open-lid');
+              // Peek Card
+              setTimeout(() => {
+                if (giftCardPreview) {
+                  giftCardPreview.classList.remove('hidden');
+                  // Trigger reflow
+                  giftCardPreview.offsetHeight;
+                  giftCardPreview.classList.add('show-card');
+                }
+              }, 1200);
             }, 800);
+          }, 1000);
+        } else {
+          // Standard transition
+          setTimeout(() => {
+            virtualGiftBox.classList.add('open-lid');
+            setTimeout(() => {
+              virtualGiftBox.classList.add('open-tissue');
+              setTimeout(() => {
+                virtualGiftBox.classList.add('reveal-candle');
+                unboxingRevealDetails.style.opacity = '1';
+                unboxingRevealDetails.style.transform = 'translateY(0)';
+              }, 800);
+            }, 800);
+          }, 1000);
+        }
+      });
+    }
+
+    // Gift Card Preview Click to dismiss and open candle
+    if (giftCardPreview) {
+      giftCardPreview.addEventListener('click', () => {
+        giftCardPreview.classList.remove('show-card');
+        giftCardPreview.classList.add('dismiss-card');
+
+        // Continue remaining animation
+        setTimeout(() => {
+          virtualGiftBox.classList.add('open-tissue');
+          setTimeout(() => {
+            virtualGiftBox.classList.add('reveal-candle');
+            unboxingRevealDetails.style.opacity = '1';
+            unboxingRevealDetails.style.transform = 'translateY(0)';
           }, 800);
-        }, 1000);
+        }, 600);
       });
     }
 

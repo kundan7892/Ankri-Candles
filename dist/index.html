@@ -12,8 +12,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-dYXeKxVx.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-AW3W9bLz.css">
+  <script type="module" crossorigin src="/assets/index-DSbmEMep.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D1ioUMM4.css">
 </head>
 
 <body>
@@ -525,6 +525,53 @@
                         style="background:#161616; color:#FDFBF7; border: 1px solid #333">Craft Charcoal</button>
                       <button type="button" class="theme-btn" data-theme="vintage-gold"
                         style="background:#D4AF37; color:#121212">Gold Foil</button>
+                    </div>
+                  </div>
+
+                  <!-- Premium Gifting Add-on Option -->
+                  <div class="form-group"
+                    style="margin-top: 1.5rem; border-top: 1px dashed var(--border-glass); padding-top: 1.5rem;">
+                    <label
+                      style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 600; color: var(--text-primary);">
+                      <input type="checkbox" id="gift-add-on-toggle"
+                        style="width: 18px; height: 18px; cursor: pointer;">
+                      <span>🎁 Upgrade to Luxury Gifting Experience (FREE)</span>
+                    </label>
+                    <p
+                      style="font-size: 0.75rem; color: var(--text-secondary); margin-left: 28px; margin-top: 4px; line-height: 1.4;">
+                      Includes premium gift wrapping pattern and a personalized greeting card inside the unboxing box.
+                    </p>
+                  </div>
+
+                  <div id="gifting-options-group" class="hidden"
+                    style="margin-left: 28px; margin-top: 15px; display: flex; flex-direction: column; gap: 15px;">
+                    <div class="form-group">
+                      <label
+                        style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 6px;">Select
+                        Luxury Gift Wrap Style</label>
+                      <div class="wrap-selector"
+                        style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        <button type="button" class="wrap-btn active" data-wrap="forest-silk"
+                          style="padding: 10px; border-radius: 4px; font-size: 0.75rem; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.6); color: var(--text-primary); cursor: pointer; text-align: center;">Forest
+                          Silk</button>
+                        <button type="button" class="wrap-btn" data-wrap="gold-deco"
+                          style="padding: 10px; border-radius: 4px; font-size: 0.75rem; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.6); color: var(--text-primary); cursor: pointer; text-align: center;">Gold
+                          Deco</button>
+                        <button type="button" class="wrap-btn" data-wrap="obsidian-velvet"
+                          style="padding: 10px; border-radius: 4px; font-size: 0.75rem; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.6); color: var(--text-primary); cursor: pointer; text-align: center;">Obsidian
+                          Velvet</button>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="gift-card-message"
+                        style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 6px;">Handwritten
+                        Note Card Message</label>
+                      <textarea id="gift-card-message" maxLength="120"
+                        placeholder="e.g. Wishing you a beautiful and relaxing birthday, Mom! With love..."
+                        style="width: 100%; height: 68px; border: 1px solid var(--border-glass); border-radius: 8px; padding: 10px; font-family: var(--font-sans); font-size: 0.8rem; background: rgba(255, 255, 255, 0.45); color: var(--text-primary); outline: none; resize: none; box-sizing: border-box; transition: var(--transition-fast);"></textarea>
+                      <div style="font-size: 0.65rem; color: var(--text-muted); text-align: right; margin-top: 4px;"
+                        id="card-msg-char-count">0 / 120 characters</div>
                     </div>
                   </div>
                 </div>
@@ -1425,12 +1472,12 @@
         style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 300px; position: relative; opacity: 0; transition: all 0.5s ease;">
 
         <!-- Virtual Gift Box -->
-        <div class="virtual-gift-box-container" style="perspective: 1000px; margin-bottom: 25px;">
+        <div class="virtual-gift-box-container" style="perspective: 1000px; margin-bottom: 25px; position: relative;">
           <div class="virtual-gift-box" id="virtual-gift-box"
             style="width: 170px; height: 170px; position: relative; transform-style: preserve-3d; transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);">
 
             <!-- Box Base Container -->
-            <div class="box-base-inner"
+            <div class="box-base-inner" id="box-base-inner"
               style="position: absolute; width: 100%; height: 100%; background: #08090d; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); overflow: hidden; display: flex; align-items: center; justify-content: center;">
 
               <!-- Silk Tissue Paper (Folds open) -->
@@ -1439,6 +1486,23 @@
               </div>
               <div class="box-tissue-flap right-flap" id="tissue-right"
                 style="position: absolute; top: 0; right: 0; width: 50%; height: 100%; background: #e3ded5; z-index: 12; transform-origin: right center; transition: transform 0.8s ease 0.4s; box-shadow: -2px 0 10px rgba(0,0,0,0.15);">
+              </div>
+
+              <!-- Luxury Animated Greeting Card (Slides / scale out) -->
+              <div class="unboxing-gift-card hidden" id="unboxing-gift-card-preview"
+                style="position: absolute; width: 85%; height: 85%; background: #FDFBF7; border: 1px solid #E5DCC6; border-radius: 6px; z-index: 15; box-shadow: 0 10px 30px rgba(0,0,0,0.35); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box; cursor: pointer; transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); transform: scale(0.9) translateY(0); opacity: 0; transform-origin: center center;">
+                <div
+                  style="border: 1px dashed rgba(200,163,56,0.3); width: 100%; height: 100%; padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                  <span
+                    style="font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; color: var(--gold-primary); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">A
+                    Gift For You</span>
+                  <p id="unboxing-card-text"
+                    style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 0.72rem; color: var(--text-primary); line-height: 1.4; max-width: 100%; word-wrap: break-word; text-align: center; margin: 0; padding: 0 5px; font-weight: 500;">
+                  </p>
+                  <span
+                    style="font-size: 0.5rem; text-transform: uppercase; font-family: var(--font-sans); color: var(--text-muted); letter-spacing: 1px; margin-top: 12px; font-weight: 600;">Click
+                    Card to Open Candle</span>
+                </div>
               </div>
 
               <!-- Candle Nested Inside -->
@@ -1465,6 +1529,22 @@
               <span
                 style="font-size: 0.5rem; text-transform: uppercase; letter-spacing: 2px; color: #6e707e; margin-top: 6px;">Bespoke
                 Pour</span>
+            </div>
+
+            <!-- Ribbons decoration overlay (unties/fades on start) -->
+            <div class="box-ribbon-v" id="box-ribbon-v"
+              style="position: absolute; top: -1px; left: calc(50% - 8px); width: 16px; height: calc(100% + 2px); background: var(--accent, #D4AF37); z-index: 21; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: all 0.6s ease; pointer-events: none; opacity: 0; transform: scaleY(0);">
+            </div>
+            <div class="box-ribbon-h" id="box-ribbon-h"
+              style="position: absolute; top: calc(50% - 8px); left: -1px; width: calc(100% + 2px); height: 16px; background: var(--accent, #D4AF37); z-index: 21; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: all 0.6s ease; pointer-events: none; opacity: 0; transform: scaleX(0);">
+            </div>
+            <div class="box-ribbon-bow" id="box-ribbon-bow"
+              style="position: absolute; top: calc(50% - 22px); left: calc(50% - 22px); width: 44px; height: 44px; z-index: 22; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; opacity: 0; transform: scale(0);">
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                <path
+                  d="M50,50 Q20,20 20,35 Q20,48 50,50 Q80,20 80,35 Q80,48 50,50 Q50,80 40,80 Q50,92 50,50 Q50,80 60,80 Q50,92 50,50"
+                  fill="#D4AF37" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.3))" />
+              </svg>
             </div>
 
           </div>

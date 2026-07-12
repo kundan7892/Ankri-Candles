@@ -4169,6 +4169,84 @@ section {
   }
 }
 
+/* --- Gifting Customizer Options & Selector Styles --- */
+.wrap-btn {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.wrap-btn:hover {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(212, 175, 55, 0.4) !important;
+}
+
+.wrap-btn.active {
+  background: rgba(212, 175, 55, 0.08) !important;
+  border-color: var(--accent, #D4AF37) !important;
+  font-weight: 600;
+}
+
+#gift-card-message:focus {
+  border-color: var(--accent, #D4AF37) !important;
+  background: rgba(255, 255, 255, 0.7) !important;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+}
+
+/* --- Gift Wrapping Designs in Unboxing Modal --- */
+.virtual-gift-box[data-wrap="forest-silk"] #box-lid-element,
+.virtual-gift-box[data-wrap="forest-silk"] #box-base-inner {
+  background: radial-gradient(circle at 30% 30%, #fefdf9 0%, #f6f3e6 100%) !important;
+  border: 1.5px solid #e2ddc4 !important;
+  background-image: radial-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 0), radial-gradient(rgba(212, 175, 55, 0.1) 2px, transparent 0) !important;
+  background-size: 24px 24px, 12px 12px !important;
+  background-position: 0 0, 12px 12px !important;
+}
+
+.virtual-gift-box[data-wrap="forest-silk"] #box-lid-element span {
+  color: #1a2c20 !important;
+  border-color: rgba(26, 44, 32, 0.15) !important;
+}
+
+.virtual-gift-box[data-wrap="gold-deco"] #box-lid-element,
+.virtual-gift-box[data-wrap="gold-deco"] #box-base-inner {
+  background: linear-gradient(135deg, #1c1d22 0%, #0e0f12 100%) !important;
+  border: 1.5px solid rgba(212, 175, 55, 0.3) !important;
+  background-image: repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.04) 0px, rgba(212, 175, 55, 0.04) 2px, transparent 2px, transparent 10px) !important;
+}
+
+.virtual-gift-box[data-wrap="obsidian-velvet"] #box-lid-element,
+.virtual-gift-box[data-wrap="obsidian-velvet"] #box-base-inner {
+  background: radial-gradient(circle at 50% 50%, #151515 0%, #050505 100%) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* --- Ribbon Animation States --- */
+.virtual-gift-box.untie-ribbon #box-ribbon-bow {
+  transform: scale(0) rotate(180deg);
+  opacity: 0;
+}
+
+.virtual-gift-box.untie-ribbon #box-ribbon-v {
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+.virtual-gift-box.untie-ribbon #box-ribbon-h {
+  transform: scaleX(0);
+  opacity: 0;
+}
+
+/* --- Greeting Card Animations --- */
+.unboxing-gift-card.show-card {
+  transform: scale(1) translateY(0) rotate(-3deg) !important;
+  opacity: 1 !important;
+}
+
+.unboxing-gift-card.dismiss-card {
+  transform: scale(0.6) translateY(-250px) rotate(15deg) !important;
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
 /* ==========================================================================
    MOBILE VISUAL RESPONSIVENESS FIXES
    ========================================================================== */
