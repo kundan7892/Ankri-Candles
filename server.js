@@ -2,8 +2,47 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 
 dotenv.config();
+
+// Helper to save to local backup JSON when database is offline
+function saveToBackupFile(filename, data) {
+  try {
+    const dir = path.join(process.cwd(), 'data');
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    const filePath = path.join(dir, filename);
+    let currentData = [];
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf8');
+      currentData = JSON.parse(content || '[]');
+    }
+    const record = { ...data };
+    if (!record.timestamp) record.timestamp = new Date();
+    currentData.push({ ...record, _localBackup: true });
+    fs.writeFileSync(filePath, JSON.stringify(currentData, null, 2));
+    console.log(`Successfully saved local backup to data/${filename}`);
+  } catch (err) {
+    console.error(`Local backup error for ${filename}:`, err);
+  }
+}
+
+// Helper to read from local backup JSON when database is offline
+function readFromBackupFile(filename) {
+  try {
+    const filePath = path.join(process.cwd(), 'data', filename);
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf8');
+      return JSON.parse(content || '[]');
+    }
+  } catch (err) {
+    console.error(`Local read error for ${filename}:`, err);
+  }
+  return [];
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,7 +54,12 @@ app.use(express.json());
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/ankri';
 
-mongoose.connect(MONGO_URI)
+// Disable command buffering so queries fail quickly if db is disconnected
+mongoose.set('bufferCommands', false);
+
+mongoose.connect(MONGO_URI, {
+  serverSelectionTimeoutMS: 5000
+})
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log('MongoDB connection error:', err));
 
@@ -92,6 +136,11 @@ app.post('/api/admin/login', (req, res) => {
 
 app.post('/api/inquiries', async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      console.log('Database offline. Saving inquiry to local backup inquiries.json...');
+      saveToBackupFile('inquiries.json', req.body);
+      return res.status(201).json({ message: 'Inquiry saved successfully (Local Backup Fallback)', data: req.body });
+    }
     const newInquiry = new Inquiry(req.body);
     await newInquiry.save();
     res.status(201).json({ message: 'Inquiry saved successfully', data: newInquiry });
@@ -103,6 +152,10 @@ app.post('/api/inquiries', async (req, res) => {
 
 app.get('/api/inquiries', async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      const data = readFromBackupFile('inquiries.json');
+      return res.status(200).json(data);
+    }
     const inquiries = await Inquiry.find().sort({ timestamp: -1 });
     res.status(200).json(inquiries);
   } catch (error) {
@@ -113,6 +166,13 @@ app.get('/api/inquiries', async (req, res) => {
 
 app.delete('/api/inquiries', async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      const filePath = path.join(process.cwd(), 'data', 'inquiries.json');
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      return res.status(200).json({ message: 'Local inquiries file cleared successfully' });
+    }
     await Inquiry.deleteMany({});
     res.status(200).json({ message: 'Inquiries cleared successfully' });
   } catch (error) {
@@ -123,6 +183,11 @@ app.delete('/api/inquiries', async (req, res) => {
 
 app.post('/api/bookings', async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      console.log('Database offline. Saving booking to local backup bookings.json...');
+      saveToBackupFile('bookings.json', req.body);
+      return res.status(201).json({ message: 'Booking saved successfully (Local Backup Fallback)', data: req.body });
+    }
     const newBooking = new Booking(req.body);
     await newBooking.save();
     res.status(201).json({ message: 'Booking saved successfully', data: newBooking });
@@ -134,6 +199,10 @@ app.post('/api/bookings', async (req, res) => {
 
 app.get('/api/bookings', async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      const data = readFromBackupFile('bookings.json');
+      return res.status(200).json(data);
+    }
     const bookings = await Booking.find().sort({ timestamp: -1 });
     res.status(200).json(bookings);
   } catch (error) {
@@ -144,6 +213,13 @@ app.get('/api/bookings', async (req, res) => {
 
 app.delete('/api/bookings', async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      const filePath = path.join(process.cwd(), 'data', 'bookings.json');
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      return res.status(200).json({ message: 'Local bookings file cleared successfully' });
+    }
     await Booking.deleteMany({});
     res.status(200).json({ message: 'Bookings cleared successfully' });
   } catch (error) {
@@ -154,6 +230,11 @@ app.delete('/api/bookings', async (req, res) => {
 
 app.post('/api/payments', async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      console.log('Database offline. Saving payment to local backup payments.json...');
+      saveToBackupFile('payments.json', req.body);
+      return res.status(201).json({ message: 'Payment registered successfully (Local Backup Fallback)', data: req.body });
+    }
     const newPayment = new Payment(req.body);
     await newPayment.save();
     res.status(201).json({ message: 'Payment registered successfully', data: newPayment });
@@ -165,6 +246,10 @@ app.post('/api/payments', async (req, res) => {
 
 app.get('/api/payments', async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      const data = readFromBackupFile('payments.json');
+      return res.status(200).json(data);
+    }
     const payments = await Payment.find().sort({ timestamp: -1 });
     res.status(200).json(payments);
   } catch (error) {
@@ -175,6 +260,13 @@ app.get('/api/payments', async (req, res) => {
 
 app.delete('/api/payments', async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      const filePath = path.join(process.cwd(), 'data', 'payments.json');
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      return res.status(200).json({ message: 'Local payments file cleared successfully' });
+    }
     await Payment.deleteMany({});
     res.status(200).json({ message: 'Payments cleared successfully' });
   } catch (error) {
