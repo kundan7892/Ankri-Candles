@@ -1,6 +1,6 @@
 // main.js - Client-side Interactive Logic for Ankri Candles
 
-document.addEventListener('DOMContentLoaded', () => {
+function initAppFlow() {
   // --- PROCEDURAL ASMR AUDIO STATE ---
   let audioCtx = null;
   let crackleTimer = null;
@@ -2365,6 +2365,12 @@ document.addEventListener('DOMContentLoaded', () => {
       `).join('');
     });
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAppFlow);
+} else {
+  initAppFlow();
+}
 
 

@@ -1,6 +1,6 @@
 // admin.js - Super Admin Dashboard Panel Logic
 
-document.addEventListener('DOMContentLoaded', () => {
+function initAdminPanel() {
   const loginBox = document.getElementById('admin-login-box');
   const dashboardBox = document.getElementById('admin-dashboard-box');
   const loginForm = document.getElementById('admin-login-form');
@@ -361,4 +361,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAdminPanel);
+} else {
+  initAdminPanel();
+}
