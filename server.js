@@ -121,6 +121,148 @@ const paymentSchema = new mongoose.Schema({
 
 const Payment = mongoose.model('Payment', paymentSchema);
 
+// --- WHATSAPP ABANDONED CART SCHEMAS ---
+const abandonedCartSchema = new mongoose.Schema({
+  phone: { type: String, required: true },
+  name: { type: String, default: '' },
+  cartItems: [{
+    id: String,
+    name: String,
+    price: Number,
+    description: String,
+    colors: String,
+    isCustom: Boolean,
+    quantity: Number
+  }],
+  total: { type: Number, default: 0 },
+  status: { type: String, default: 'Pending' }, // 'Pending' | 'Completed' | 'Reminded'
+  timestamp: { type: Date, default: Date.now }
+});
+
+const AbandonedCart = mongoose.model('AbandonedCart', abandonedCartSchema);
+
+const whatsappLogSchema = new mongoose.Schema({
+  phone: { type: String, required: true },
+  customerName: { type: String, default: '' },
+  message: { type: String, required: true },
+  status: { type: String, default: 'Sent' },
+  timestamp: { type: Date, default: Date.now }
+});
+
+const WhatsAppLog = mongoose.model('WhatsAppLog', whatsappLogSchema);
+
+// Helper to save/update active carts in local backup when database is offline
+function saveOrUpdateAbandonedCartInBackup(data) {
+  try {
+    const dir = path.join(process.cwd(), 'data');
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    const filePath = path.join(dir, 'abandoned_carts.json');
+    let currentData = [];
+    if (fs.existsSync(filePath)) {
+      currentData = JSON.parse(fs.readFileSync(filePath, 'utf-8') || '[]');
+    }
+    const index = currentData.findIndex(item => item.phone === data.phone);
+    if (index !== -1) {
+      // Only reset the timestamp and update details if they are still in Pending or Reminded status
+      currentData[index] = {
+        ...currentData[index],
+        ...data,
+        status: 'Pending',
+        timestamp: new Date().toISOString()
+      };
+    } else {
+      currentData.push({
+        ...data,
+        status: 'Pending',
+        timestamp: new Date().toISOString()
+      });
+    }
+    fs.writeFileSync(filePath, JSON.stringify(currentData, null, 2), 'utf-8');
+  } catch (err) {
+    console.error('Backup write error for abandoned carts:', err);
+  }
+}
+
+// Helper to mark backup carts completed on successful purchase
+function markAbandonedCartCompletedInBackup(phone) {
+  try {
+    const filePath = path.join(process.cwd(), 'data', 'abandoned_carts.json');
+    if (fs.existsSync(filePath)) {
+      let currentData = JSON.parse(fs.readFileSync(filePath, 'utf-8') || '[]');
+      const index = currentData.findIndex(item => item.phone === phone && item.status !== 'Completed');
+      if (index !== -1) {
+        currentData[index].status = 'Completed';
+        fs.writeFileSync(filePath, JSON.stringify(currentData, null, 2), 'utf-8');
+      }
+    }
+  } catch (err) {
+    console.error('Error marking backup cart completed:', err);
+  }
+}
+
+// Scheduled Background Reminder Job (runs once every 30s)
+async function checkAndSendWhatsAppReminders() {
+  try {
+    const oneMinuteAgo = new Date(Date.now() - 10000); // 10 seconds threshold
+    if (mongoose.connection.readyState === 1) {
+      const pendingCarts = await AbandonedCart.find({
+        status: 'Pending',
+        timestamp: { $lte: oneMinuteAgo }
+      });
+      for (const cart of pendingCarts) {
+        const itemsSummary = cart.cartItems.map(i => `${i.quantity}x ${i.name}`).join(', ');
+        const message = `Hi ${cart.name || 'Valued Customer'}, you left premium candles [${itemsSummary}] in your cart (Total: ₹${cart.total}) at Ankri Candles! Complete your unboxing ritual today.`;
+
+        const logEntry = new WhatsAppLog({
+          phone: cart.phone,
+          customerName: cart.name,
+          message: message
+        });
+        await logEntry.save();
+
+        cart.status = 'Reminded';
+        await cart.save();
+        console.log(`[WhatsApp Reminder Sent] to ${cart.name} (${cart.phone}): "${message}"`);
+      }
+    } else {
+      const filePath = path.join(process.cwd(), 'data', 'abandoned_carts.json');
+      if (fs.existsSync(filePath)) {
+        let carts = JSON.parse(fs.readFileSync(filePath, 'utf-8') || '[]');
+        let updated = false;
+        for (let cart of carts) {
+          if (cart.status === 'Pending' && new Date(cart.timestamp) <= oneMinuteAgo) {
+            const itemsSummary = cart.cartItems.map(i => `${i.quantity}x ${i.name}`).join(', ');
+            const message = `Hi ${cart.name || 'Valued Customer'}, you left premium candles [${itemsSummary}] in your cart (Total: ₹${cart.total}) at Ankri Candles! Complete your unboxing ritual today.`;
+
+            const logEntry = {
+              phone: cart.phone,
+              customerName: cart.name,
+              message: message,
+              status: 'Sent',
+              timestamp: new Date().toISOString()
+            };
+            saveToBackupFile('whatsapp_logs.json', logEntry);
+
+            cart.status = 'Reminded';
+            updated = true;
+            console.log(`[WhatsApp Offline Reminder Sent] to ${cart.name} (${cart.phone}): "${message}"`);
+          }
+        }
+        if (updated) {
+          fs.writeFileSync(filePath, JSON.stringify(carts, null, 2), 'utf-8');
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Error running WhatsApp reminder job:', err);
+  }
+}
+
+setInterval(checkAndSendWhatsAppReminders, 30000); // 30 seconds interval
+
+
 // Routes
 app.post('/api/admin/login', (req, res) => {
   const { username, password } = req.body;
@@ -186,10 +328,13 @@ app.post('/api/bookings', async (req, res) => {
     if (mongoose.connection.readyState !== 1) {
       console.log('Database offline. Saving booking to local backup bookings.json...');
       saveToBackupFile('bookings.json', req.body);
+      markAbandonedCartCompletedInBackup(req.body.phone);
       return res.status(201).json({ message: 'Booking saved successfully (Local Backup Fallback)', data: req.body });
     }
     const newBooking = new Booking(req.body);
     await newBooking.save();
+    // Mark abandoned cart as Completed
+    await AbandonedCart.findOneAndUpdate({ phone: req.body.phone, status: 'Pending' }, { status: 'Completed' });
     res.status(201).json({ message: 'Booking saved successfully', data: newBooking });
   } catch (error) {
     console.error('Error saving booking:', error);
@@ -272,6 +417,62 @@ app.delete('/api/payments', async (req, res) => {
   } catch (error) {
     console.error('Error deleting payments:', error);
     res.status(500).json({ message: 'Error deleting payments' });
+  }
+});
+
+app.post('/api/abandoned-carts', async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      saveOrUpdateAbandonedCartInBackup(req.body);
+      return res.status(201).json({ message: 'Abandoned cart captured (Local Backup Fallback)', data: req.body });
+    }
+    const { phone, name, cartItems, total } = req.body;
+    let cart = await AbandonedCart.findOne({ phone, status: 'Pending' });
+    if (cart) {
+      cart.name = name;
+      cart.cartItems = cartItems;
+      cart.total = total;
+      cart.timestamp = new Date();
+      await cart.save();
+    } else {
+      cart = new AbandonedCart({ phone, name, cartItems, total });
+      await cart.save();
+    }
+    res.status(201).json({ message: 'Abandoned cart captured successfully', data: cart });
+  } catch (error) {
+    console.error('Error saving abandoned cart:', error);
+    res.status(500).json({ message: 'Error saving abandoned cart' });
+  }
+});
+
+app.get('/api/whatsapp-logs', async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      const data = readFromBackupFile('whatsapp_logs.json');
+      return res.status(200).json(data);
+    }
+    const logs = await WhatsAppLog.find().sort({ timestamp: -1 });
+    res.status(200).json(logs);
+  } catch (error) {
+    console.error('Error fetching WhatsApp logs:', error);
+    res.status(500).json({ message: 'Error fetching WhatsApp logs' });
+  }
+});
+
+app.delete('/api/whatsapp-logs', async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      const filePath = path.join(process.cwd(), 'data', 'whatsapp_logs.json');
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      return res.status(200).json({ message: 'Local WhatsApp logs cleared successfully' });
+    }
+    await WhatsAppLog.deleteMany({});
+    res.status(200).json({ message: 'WhatsApp logs cleared successfully' });
+  } catch (error) {
+    console.error('Error deleting WhatsApp logs:', error);
+    res.status(500).json({ message: 'Error deleting WhatsApp logs' });
   }
 });
 

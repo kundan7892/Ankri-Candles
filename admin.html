@@ -231,6 +231,8 @@
             Bookings</button>
           <button class="filter-btn" data-tab="payments" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Payment
             Transactions</button>
+          <button class="filter-btn" data-tab="whatsapp" style="font-size: 0.9rem; padding: 0.5rem 1rem;">WhatsApp
+            Reminders</button>
         </div>
 
         <!-- Tab 1: Inquiries -->
@@ -294,6 +296,28 @@
                 </tr>
               </thead>
               <tbody id="payments-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 4: WhatsApp Reminders -->
+        <div id="tab-whatsapp-content" class="tab-panel hidden">
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">This dashboard displays the
+            sent WhatsApp reminder log history for abandoned shopping carts.</p>
+          <div class="logs-table-container">
+            <table class="logs-table">
+              <thead>
+                <tr>
+                  <th>Customer Name</th>
+                  <th>Phone</th>
+                  <th>Message Sent</th>
+                  <th>Timestamp</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="whatsapp-table-body">
                 <!-- Rendered by JS -->
               </tbody>
             </table>

@@ -611,6 +611,22 @@ function initAppFlow() {
 
     if (checkoutDetailsForm) {
       checkoutDetailsForm.addEventListener('submit', handlePaymentAndOrderSubmit);
+
+      const billNameInput = document.getElementById('bill-name');
+      const billPhoneInput = document.getElementById('bill-phone');
+
+      let captureTimeout = null;
+      function triggerCartCapture() {
+        clearTimeout(captureTimeout);
+        captureTimeout = setTimeout(captureAbandonedCart, 1000);
+      }
+
+      if (billPhoneInput) {
+        billPhoneInput.addEventListener('input', triggerCartCapture);
+      }
+      if (billNameInput) {
+        billNameInput.addEventListener('input', triggerCartCapture);
+      }
     }
 
 
@@ -1702,6 +1718,52 @@ function initAppFlow() {
     }
   }
 
+  async function captureAbandonedCart() {
+    const nameEl = document.getElementById('bill-name');
+    const phoneEl = document.getElementById('bill-phone');
+    if (!phoneEl) return;
+
+    const phone = phoneEl.value.trim();
+    const name = nameEl ? nameEl.value.trim() : '';
+
+    if (phone.length < 10) return; // Only capture if phone has 10+ digits
+    if (state.cart.length === 0) return; // Don't capture empty carts
+
+    let subtotal = 0;
+    state.cart.forEach(item => {
+      subtotal += item.price * item.quantity;
+    });
+    const discountValue = subtotal * state.discount;
+    const discountedSubtotal = subtotal - discountValue;
+    const shipping = discountedSubtotal >= 999 ? 0 : 100;
+    const total = discountedSubtotal + shipping;
+
+    const cartData = {
+      phone: phone,
+      name: name,
+      cartItems: state.cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        description: item.description,
+        colors: item.colors,
+        isCustom: item.isCustom,
+        quantity: item.quantity
+      })),
+      total: total
+    };
+
+    try {
+      await fetch('http://localhost:5000/api/abandoned-carts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cartData)
+      });
+    } catch (err) {
+      console.error('Failed to log active/abandoned cart:', err);
+    }
+  }
+
   // --- BULK ORDER ENQUIRY MODAL LOGIC ---
   const bulkOrderBtn = document.getElementById('bulk-order-btn');
   const bulkOrderNavLink = document.getElementById('bulk-order-nav-link');
@@ -2035,6 +2097,7 @@ function initAppFlow() {
         if (activeHomeTab === 'inquiries') homepageDashboardTitle.textContent = "Bulk Inquiries Database";
         if (activeHomeTab === 'bookings') homepageDashboardTitle.textContent = "Order Bookings Database";
         if (activeHomeTab === 'payments') homepageDashboardTitle.textContent = "Payment Transaction Records";
+        if (activeHomeTab === 'whatsapp') homepageDashboardTitle.textContent = "WhatsApp Sent Reminders Log";
       }
 
       await renderHomepageActiveTab();
@@ -2048,6 +2111,8 @@ function initAppFlow() {
       await renderHomepageBookings();
     } else if (activeHomeTab === 'payments') {
       await renderHomepagePayments();
+    } else if (activeHomeTab === 'whatsapp') {
+      await renderHomepageWhatsApp();
     }
   }
 
@@ -2223,6 +2288,48 @@ function initAppFlow() {
     });
   }
 
+  async function renderHomepageWhatsApp() {
+    const homepageWhatsAppTableBody = document.getElementById('homepage-whatsapp-table-body');
+    if (!homepageWhatsAppTableBody) return;
+    homepageWhatsAppTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Loading WhatsApp logs...</td></tr>';
+
+    let logs = [];
+    try {
+      const res = await fetch('http://localhost:5000/api/whatsapp-logs');
+      if (res.ok) {
+        logs = await res.json();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (logs.length === 0) {
+      homepageWhatsAppTableBody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 4rem 1.25rem; color: var(--text-secondary);">
+            <div style="font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;">📩</div>
+            No WhatsApp reminder logs sent yet.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    homepageWhatsAppTableBody.innerHTML = '';
+    logs.forEach(log => {
+      const tr = document.createElement('tr');
+      const dateStr = new Date(log.timestamp).toLocaleString();
+      tr.innerHTML = `
+        <td style="padding: 1.25rem; font-weight: bold;">${log.customerName || 'Valued Customer'}</td>
+        <td style="padding: 1.25rem;">${log.phone}</td>
+        <td style="padding: 1.25rem; font-size: 0.8rem; line-height: 1.4;">${log.message}</td>
+        <td style="padding: 1.25rem; white-space: nowrap;">${dateStr}</td>
+        <td style="padding: 1.25rem;"><span class="inquiry-badge bulk">${log.status}</span></td>
+      `;
+      homepageWhatsAppTableBody.appendChild(tr);
+    });
+  }
+
   // Logout Handler
   if (homepageLogoutBtn) {
     homepageLogoutBtn.addEventListener('click', () => {
@@ -2246,6 +2353,9 @@ function initAppFlow() {
       } else if (activeHomeTab === 'payments') {
         deleteUrl = 'http://localhost:5000/api/payments';
         tabLabel = 'payment transaction details';
+      } else if (activeHomeTab === 'whatsapp') {
+        deleteUrl = 'http://localhost:5000/api/whatsapp-logs';
+        tabLabel = 'WhatsApp reminder logs';
       }
 
       if (confirm(`Are you sure you want to delete all local ${tabLabel}? This cannot be undone.`)) {

@@ -1649,6 +1649,8 @@
             style="font-size: 0.9rem; padding: 0.5rem 1rem;">Order Bookings</button>
           <button class="filter-btn" data-homedashboardtab="payments"
             style="font-size: 0.9rem; padding: 0.5rem 1rem;">Payment Transactions</button>
+          <button class="filter-btn" data-homedashboardtab="whatsapp"
+            style="font-size: 0.9rem; padding: 0.5rem 1rem;">WhatsApp Reminders</button>
         </div>
 
         <!-- Tab 1: Inquiries -->
@@ -1744,6 +1746,38 @@
                 </tr>
               </thead>
               <tbody id="homepage-payments-table-body">
+                <!-- Javascript will load here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 4: WhatsApp Reminders -->
+        <div class="tab-panel hidden" id="homepanel-whatsapp-content">
+          <div class="table-container"
+            style="overflow-x: auto; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: 8px;">
+            <table class="logs-table"
+              style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-sans); font-size: 0.85rem;">
+              <thead>
+                <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-glass);">
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Customer Name</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Phone</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Message Sent</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Timestamp</th>
+                  <th
+                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                    Status</th>
+                </tr>
+              </thead>
+              <tbody id="homepage-whatsapp-table-body">
                 <!-- Javascript will load here -->
               </tbody>
             </table>

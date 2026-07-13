@@ -125,6 +125,7 @@ function initAdminPanel() {
           if (activeTab === 'inquiries') dashboardTitle.textContent = "Bulk Inquiries Database";
           if (activeTab === 'bookings') dashboardTitle.textContent = "Order Bookings Database";
           if (activeTab === 'payments') dashboardTitle.textContent = "Payment Transaction Records";
+          if (activeTab === 'whatsapp') dashboardTitle.textContent = "WhatsApp Sent Reminders Log";
         }
 
         await renderActiveTab();
@@ -139,6 +140,8 @@ function initAdminPanel() {
       await renderBookings();
     } else if (activeTab === 'payments') {
       await renderPayments();
+    } else if (activeTab === 'whatsapp') {
+      await renderWhatsApp();
     }
   }
 
@@ -320,6 +323,48 @@ function initAdminPanel() {
     });
   }
 
+  async function renderWhatsApp() {
+    const whatsappTableBody = document.getElementById('whatsapp-table-body');
+    if (!whatsappTableBody) return;
+    whatsappTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Loading WhatsApp logs...</td></tr>';
+
+    let logs = [];
+    try {
+      const res = await fetch('http://localhost:5000/api/whatsapp-logs');
+      if (res.ok) {
+        logs = await res.json();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (logs.length === 0) {
+      whatsappTableBody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 4rem 1.25rem; color: var(--text-secondary);">
+            <div style="font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;">📩</div>
+            No WhatsApp reminder logs sent yet.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    whatsappTableBody.innerHTML = '';
+    logs.forEach(log => {
+      const tr = document.createElement('tr');
+      const dateStr = new Date(log.timestamp).toLocaleString();
+      tr.innerHTML = `
+        <td style="font-weight: bold;">${log.customerName || 'Valued Customer'}</td>
+        <td>${log.phone}</td>
+        <td style="font-size: 0.8rem; line-height: 1.4;">${log.message}</td>
+        <td style="white-space: nowrap;">${dateStr}</td>
+        <td><span class="inquiry-badge bulk">${log.status}</span></td>
+      `;
+      whatsappTableBody.appendChild(tr);
+    });
+  }
+
   // Logout Handler
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
@@ -343,6 +388,9 @@ function initAdminPanel() {
       } else if (activeTab === 'payments') {
         deleteUrl = 'http://localhost:5000/api/payments';
         tabLabel = 'payment transaction details';
+      } else if (activeTab === 'whatsapp') {
+        deleteUrl = 'http://localhost:5000/api/whatsapp-logs';
+        tabLabel = 'WhatsApp reminder logs';
       }
 
       if (confirm(`Are you sure you want to delete all local ${tabLabel}? This cannot be undone.`)) {
