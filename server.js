@@ -213,6 +213,16 @@ async function sendTwilioWhatsAppMessage(phone, message) {
     return { success: true, simulated: true };
   }
 
+  // Format message to conform to default pre-approved template in Twilio Sandbox to prevent WhatsApp blocking:
+  // Template: "Your appointment is coming up on {{1}} at {{2}}."
+  let bodyMessage = message;
+  if (fromNumber.includes('14155238886')) {
+    const totalMatch = message.match(/Total: ₹(\d+)/);
+    const cartAmount = totalMatch ? `Cart (Total: ₹${totalMatch[1]})` : 'Cart';
+    bodyMessage = `Your appointment is coming up on Ankri Candles at ${cartAmount}.`;
+    console.log(`[Twilio Sandbox Override] Formatting body as pre-approved template: "${bodyMessage}"`);
+  }
+
   // Format customer phone for Twilio (prefixes 'whatsapp:' if not already present)
   let cleanPhone = phone.trim();
   if (!cleanPhone.startsWith('whatsapp:')) {
@@ -233,7 +243,7 @@ async function sendTwilioWhatsAppMessage(phone, message) {
     const params = new URLSearchParams();
     params.append('To', cleanPhone);
     params.append('From', fromNumber);
-    params.append('Body', message);
+    params.append('Body', bodyMessage);
 
     const response = await fetch(url, {
       method: 'POST',
