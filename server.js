@@ -202,6 +202,62 @@ function markAbandonedCartCompletedInBackup(phone) {
   }
 }
 
+// Helper to send WhatsApp messages via Twilio REST API (Bypasses if credentials are not configured)
+async function sendTwilioWhatsAppMessage(phone, message) {
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const fromNumber = process.env.TWILIO_WHATSAPP_NUMBER || 'whatsapp:+14155238886';
+
+  if (!accountSid || !authToken) {
+    console.log(`[Twilio Bypass] Credentials not set. Simulating reminder.`);
+    return { success: true, simulated: true };
+  }
+
+  // Format customer phone for Twilio (prefixes 'whatsapp:' if not already present)
+  let cleanPhone = phone.trim();
+  if (!cleanPhone.startsWith('whatsapp:')) {
+    if (!cleanPhone.startsWith('+')) {
+      if (cleanPhone.length === 10) {
+        cleanPhone = '+91' + cleanPhone; // Default country code for India
+      } else {
+        cleanPhone = '+' + cleanPhone;
+      }
+    }
+    cleanPhone = 'whatsapp:' + cleanPhone;
+  }
+
+  try {
+    const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+    const auth = Buffer.from(`${accountSid}:${authToken}`).toString('base64');
+
+    const params = new URLSearchParams();
+    params.append('To', cleanPhone);
+    params.append('From', fromNumber);
+    params.append('Body', message);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${auth}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: params.toString()
+    });
+
+    const responseData = await response.json();
+    if (response.ok) {
+      console.log(`[Twilio Success] Live reminder sent to ${cleanPhone}. SID: ${responseData.sid}`);
+      return { success: true, sid: responseData.sid };
+    } else {
+      console.error(`[Twilio API Error] Status: ${response.status}`, responseData);
+      return { success: false, error: responseData.message || 'Unknown Twilio error' };
+    }
+  } catch (err) {
+    console.error('[Twilio HTTP Connection Error]:', err);
+    return { success: false, error: err.message };
+  }
+}
+
 // Scheduled Background Reminder Job (runs once every 30s)
 async function checkAndSendWhatsAppReminders() {
   try {
@@ -215,16 +271,21 @@ async function checkAndSendWhatsAppReminders() {
         const itemsSummary = cart.cartItems.map(i => `${i.quantity}x ${i.name}`).join(', ');
         const message = `Hi ${cart.name || 'Valued Customer'}, you left premium candles [${itemsSummary}] in your cart (Total: ₹${cart.total}) at Ankri Candles! Complete your unboxing ritual today.`;
 
+        // Attempt Twilio Dispatch
+        const twilioResult = await sendTwilioWhatsAppMessage(cart.phone, message);
+        const status = twilioResult.success ? 'Sent' : 'Failed';
+
         const logEntry = new WhatsAppLog({
           phone: cart.phone,
           customerName: cart.name,
-          message: message
+          message: message,
+          status: status
         });
         await logEntry.save();
 
         cart.status = 'Reminded';
         await cart.save();
-        console.log(`[WhatsApp Reminder Sent] to ${cart.name} (${cart.phone}): "${message}"`);
+        console.log(`[WhatsApp Reminder Handled] Status: ${status} to ${cart.name} (${cart.phone})`);
       }
     } else {
       const filePath = path.join(process.cwd(), 'data', 'abandoned_carts.json');
@@ -236,18 +297,22 @@ async function checkAndSendWhatsAppReminders() {
             const itemsSummary = cart.cartItems.map(i => `${i.quantity}x ${i.name}`).join(', ');
             const message = `Hi ${cart.name || 'Valued Customer'}, you left premium candles [${itemsSummary}] in your cart (Total: ₹${cart.total}) at Ankri Candles! Complete your unboxing ritual today.`;
 
+            // Attempt Twilio Dispatch
+            const twilioResult = await sendTwilioWhatsAppMessage(cart.phone, message);
+            const status = twilioResult.success ? 'Sent' : 'Failed';
+
             const logEntry = {
               phone: cart.phone,
               customerName: cart.name,
               message: message,
-              status: 'Sent',
+              status: status,
               timestamp: new Date().toISOString()
             };
             saveToBackupFile('whatsapp_logs.json', logEntry);
 
             cart.status = 'Reminded';
             updated = true;
-            console.log(`[WhatsApp Offline Reminder Sent] to ${cart.name} (${cart.phone}): "${message}"`);
+            console.log(`[WhatsApp Offline Reminder Handled] Status: ${status} to ${cart.name} (${cart.phone})`);
           }
         }
         if (updated) {
