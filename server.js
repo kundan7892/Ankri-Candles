@@ -205,7 +205,7 @@ function markAbandonedCartCompletedInBackup(phone) {
 // Scheduled Background Reminder Job (runs once every 30s)
 async function checkAndSendWhatsAppReminders() {
   try {
-    const oneMinuteAgo = new Date(Date.now() - 10000); // 10 seconds threshold
+    const oneMinuteAgo = new Date(Date.now() - 1200000); // 20 minutes threshold
     if (mongoose.connection.readyState === 1) {
       const pendingCarts = await AbandonedCart.find({
         status: 'Pending',
