@@ -12,8 +12,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-D1t8fFN7.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-l6RYe17z.css">
+  <script type="module" crossorigin src="/assets/index-DDbGoBpX.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CE1Ome86.css">
 </head>
 
 <body>
@@ -1437,12 +1437,39 @@
     </div>
   </footer>
 
-  <!-- Floating WhatsApp Widget -->
-  <a href="https://wa.me/917760612765" class="whatsapp-float-widget" target="_blank" rel="noopener noreferrer"
-    aria-label="Chat with Ankri Candles on WhatsApp">
-    <i data-lucide="message-square" class="wa-icon"></i>
-    <span class="wa-tooltip">Quick Help on WhatsApp!</span>
-  </a>
+  <!-- Floating WhatsApp Widget & Support Card -->
+  <div class="whatsapp-widget-container">
+    <!-- Chat Support Card -->
+    <div class="whatsapp-support-card" id="whatsapp-support-card">
+      <div class="support-card-header">
+        <div class="support-avatar-wrapper">
+          <div class="support-avatar">
+            <span>A</span>
+          </div>
+          <div class="support-meta">
+            <span class="support-name">Ankri Support</span>
+            <span class="support-status"><span class="status-dot"></span> Online</span>
+          </div>
+        </div>
+        <button class="support-close-btn" id="close-support-card"
+          aria-label="Close support chat message">&times;</button>
+      </div>
+      <div class="support-card-body">
+        <p class="support-message">Hi there, let me know if you have any questions :)</p>
+        <a href="https://wa.me/917760612765" target="_blank" rel="noopener noreferrer" class="support-reply-btn"
+          id="support-reply-action">
+          Click to reply
+        </a>
+      </div>
+    </div>
+
+    <!-- Floating Trigger Icon -->
+    <a href="https://wa.me/917760612765" class="whatsapp-float-widget" id="whatsapp-trigger-btn" target="_blank"
+      rel="noopener noreferrer" aria-label="Chat with Ankri Candles on WhatsApp">
+      <i data-lucide="message-square" class="wa-icon"></i>
+      <span class="wa-tooltip">Quick Help on WhatsApp!</span>
+    </a>
+  </div>
 
   <!-- Luxury Unboxing Modal Overlay -->
   <div class="modal-overlay hidden" id="unboxing-modal-overlay"
@@ -1692,7 +1719,8 @@
             <h4
               style="font-size: 0.85rem; color: var(--accent, #D4AF37); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0;">
               <i data-lucide="music" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
-              Ambient Soundscapes</h4>
+              Ambient Soundscapes
+            </h4>
             <div class="sound-sliders" style="display: flex; flex-direction: column; gap: 12px;">
               <!-- Sound 1: Master Volume -->
               <div class="slider-row"
@@ -1733,7 +1761,8 @@
               <h4
                 style="font-size: 0.85rem; color: var(--accent, #D4AF37); text-transform: uppercase; letter-spacing: 1px; margin: 0;">
                 <i data-lucide="flame"
-                  style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i> Flame Height</h4>
+                  style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i> Flame Height
+              </h4>
               <span id="zen-flame-height-label" style="font-size: 0.75rem; color: #EAE6DF;">Gentle</span>
             </div>
             <input type="range" id="zen-flame-height-slider" min="0.5" max="1.5" step="0.1" value="1.0"
@@ -1745,7 +1774,8 @@
             <h4
               style="font-size: 0.85rem; color: var(--accent, #D4AF37); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0;">
               <i data-lucide="home" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
-              Environment Tone</h4>
+              Environment Tone
+            </h4>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
               <button class="zen-env-btn active" data-env="dark-studio"
                 style="padding: 10px; border-radius: 6px; font-size: 0.72rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; text-align: center; transition: all 0.3s ease;">Dim
@@ -1765,7 +1795,8 @@
           <h4
             style="font-size: 0.85rem; color: var(--accent, #D4AF37); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0; text-align: center;">
             <i data-lucide="timer" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
-            Focus Timer</h4>
+            Focus Timer
+          </h4>
 
           <div style="display: flex; justify-content: center; gap: 6px; margin-bottom: 15px;">
             <button class="zen-time-preset active" data-time="300"

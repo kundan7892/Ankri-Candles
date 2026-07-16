@@ -1,0 +1,2 @@
+Line 892: showToast(`Thank you, ${name}! Your inquiry has been sent. We'll reply within 24 hours.`);
+Line 1515: console.warn("Web Audio API not supported or blocked: ", e);

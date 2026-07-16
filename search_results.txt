@@ -1,0 +1,8 @@
+Line 650: <div class="quiz-question-wrapper hidden" id="quiz-question-step">
+Line 656: <div class="quiz-question-box">
+Line 657: <span class="quiz-question-number" id="quiz-question-number">Question 1 of 3</span>
+Line 658: <h3 id="quiz-question-title">What atmosphere do you wish to invite?</h3>
+Line 713: <p>Infused with therapeutic essential oils. Rich hot and cold scent throw that supports respiratory wellness.
+Line 1439: <!-- Floating WhatsApp Widget -->
+Line 1440: <a href="https://wa.me/917760612765" class="whatsapp-float-widget" target="_blank" rel="noopener noreferrer"
+Line 1441: aria-label="Chat with Ankri Candles on WhatsApp">

@@ -255,6 +255,12 @@ function initAppFlow() {
   const zenTimerResetBtn = document.getElementById('zen-timer-reset-btn');
   const zenAsmrWaveformCanvas = document.getElementById('zen-asmr-waveform-canvas');
 
+  // WhatsApp Support selectors
+  const whatsappSupportCard = document.getElementById('whatsapp-support-card');
+  const closeSupportCardBtn = document.getElementById('close-support-card');
+  const whatsappTriggerBtn = document.getElementById('whatsapp-trigger-btn');
+  const supportReplyAction = document.getElementById('support-reply-action');
+
   // --- INITIALIZATION ---
   initApp();
 
@@ -1313,6 +1319,40 @@ function initAppFlow() {
       ctx.closePath();
       ctx.fillStyle = color;
       ctx.fill();
+    }
+
+    // --- WHATSAPP SUPPORT CARD LOGIC ---
+    if (whatsappSupportCard && closeSupportCardBtn) {
+      // Auto-show support card after 2.5 seconds if not closed in this session
+      setTimeout(() => {
+        if (!sessionStorage.getItem('support-card-dismissed')) {
+          whatsappSupportCard.classList.add('show');
+        }
+      }, 2500);
+
+      // Close button clicked
+      closeSupportCardBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        whatsappSupportCard.classList.remove('show');
+        sessionStorage.setItem('support-card-dismissed', 'true');
+      });
+
+      // Reply button clicked
+      if (supportReplyAction) {
+        supportReplyAction.addEventListener('click', () => {
+          whatsappSupportCard.classList.remove('show');
+          sessionStorage.setItem('support-card-dismissed', 'true');
+        });
+      }
+
+      // Trigger button clicked
+      if (whatsappTriggerBtn) {
+        whatsappTriggerBtn.addEventListener('click', () => {
+          whatsappSupportCard.classList.remove('show');
+          sessionStorage.setItem('support-card-dismissed', 'true');
+        });
+      }
     }
   }
 
