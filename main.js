@@ -255,11 +255,20 @@ function initAppFlow() {
   const zenTimerResetBtn = document.getElementById('zen-timer-reset-btn');
   const zenAsmrWaveformCanvas = document.getElementById('zen-asmr-waveform-canvas');
 
-  // WhatsApp Support selectors
+  // WhatsApp Support & AI Chat selectors
   const whatsappSupportCard = document.getElementById('whatsapp-support-card');
   const closeSupportCardBtn = document.getElementById('close-support-card');
   const whatsappTriggerBtn = document.getElementById('whatsapp-trigger-btn');
   const supportReplyAction = document.getElementById('support-reply-action');
+
+  const supportChatPanel = document.getElementById('support-chat-panel');
+  const chatBackBtn = document.getElementById('chat-back-btn');
+  const chatCartBtn = document.getElementById('chat-cart-btn');
+  const chatTrackBtn = document.getElementById('chat-track-btn');
+  const chatCloseBtn = document.getElementById('chat-close-btn');
+  const chatMessagesList = document.getElementById('chat-messages-list');
+  const chatInputForm = document.getElementById('chat-input-form');
+  const chatUserInput = document.getElementById('chat-user-input');
 
   // --- INITIALIZATION ---
   initApp();
@@ -1321,16 +1330,17 @@ function initAppFlow() {
       ctx.fill();
     }
 
-    // --- WHATSAPP SUPPORT CARD LOGIC ---
-    if (whatsappSupportCard && closeSupportCardBtn) {
+    // --- WHATSAPP SUPPORT & AI CHAT LOGIC ---
+    if (whatsappSupportCard && closeSupportCardBtn && supportChatPanel) {
       // Auto-show support card after 2.5 seconds if not closed in this session
       setTimeout(() => {
-        if (!sessionStorage.getItem('support-card-dismissed')) {
+        const closed = sessionStorage.getItem('support-card-dismissed') || sessionStorage.getItem('chat-panel-opened');
+        if (!closed) {
           whatsappSupportCard.classList.add('show');
         }
       }, 2500);
 
-      // Close button clicked
+      // Welcome bubble close button clicked
       closeSupportCardBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -1338,19 +1348,166 @@ function initAppFlow() {
         sessionStorage.setItem('support-card-dismissed', 'true');
       });
 
-      // Reply button clicked
+      // Show Chat Panel helper
+      const openChatPanel = () => {
+        whatsappSupportCard.classList.remove('show');
+        supportChatPanel.classList.remove('hidden');
+        // Force reflow for fade in transition
+        supportChatPanel.offsetHeight;
+        supportChatPanel.classList.add('show');
+
+        // Hide trigger button when panel is open
+        if (whatsappTriggerBtn) {
+          whatsappTriggerBtn.style.opacity = '0';
+          whatsappTriggerBtn.style.pointerEvents = 'none';
+        }
+        sessionStorage.setItem('support-card-dismissed', 'true');
+        sessionStorage.setItem('chat-panel-opened', 'true');
+
+        // Auto scroll message list
+        if (chatMessagesList) {
+          chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
+        }
+      };
+
+      // Hide Chat Panel helper
+      const closeChatPanel = () => {
+        supportChatPanel.classList.remove('show');
+        setTimeout(() => {
+          supportChatPanel.classList.add('hidden');
+          if (whatsappTriggerBtn) {
+            whatsappTriggerBtn.style.opacity = '1';
+            whatsappTriggerBtn.style.pointerEvents = 'all';
+          }
+        }, 400); // match CSS duration
+      };
+
+      // Click to reply clicks
       if (supportReplyAction) {
-        supportReplyAction.addEventListener('click', () => {
-          whatsappSupportCard.classList.remove('show');
-          sessionStorage.setItem('support-card-dismissed', 'true');
+        supportReplyAction.addEventListener('click', (e) => {
+          e.preventDefault();
+          openChatPanel();
         });
       }
 
-      // Trigger button clicked
+      // Floating trigger button clicks
       if (whatsappTriggerBtn) {
-        whatsappTriggerBtn.addEventListener('click', () => {
-          whatsappSupportCard.classList.remove('show');
-          sessionStorage.setItem('support-card-dismissed', 'true');
+        whatsappTriggerBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (supportChatPanel.classList.contains('show')) {
+            closeChatPanel();
+          } else {
+            openChatPanel();
+          }
+        });
+      }
+
+      // Top Back / Close button actions
+      if (chatBackBtn) chatBackBtn.addEventListener('click', closeChatPanel);
+      if (chatCloseBtn) chatCloseBtn.addEventListener('click', closeChatPanel);
+
+      // Connect Shop Cart button straight to header drawer
+      if (chatCartBtn) {
+        chatCartBtn.addEventListener('click', () => {
+          closeChatPanel();
+          const mainCartBtn = document.getElementById('cart-btn');
+          if (mainCartBtn) mainCartBtn.click();
+        });
+      }
+
+      // Track Orders Button action
+      if (chatTrackBtn) {
+        chatTrackBtn.addEventListener('click', () => {
+          addAgentMessage("Sure! To track your order status, please enter your order number starting with your AC order ID (e.g. AC-98216) prefix below.");
+        });
+      }
+
+      // Helper to dynamically add agent message bubble
+      const addAgentMessage = (text) => {
+        if (!chatMessagesList) return;
+        const msgHtml = `
+          <div class="chat-msg-row support-agent-row">
+            <div class="support-avatar"><span>A</span></div>
+            <div class="chat-msg-bubble-container">
+              <span class="support-agent-name">Ankri Support</span>
+              <div class="chat-msg-bubble">${text}</div>
+            </div>
+          </div>`;
+        chatMessagesList.insertAdjacentHTML('beforeend', msgHtml);
+        chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
+      };
+
+      // Helper to dynamically add user message bubble
+      const addUserMessage = (text) => {
+        if (!chatMessagesList) return;
+        const msgHtml = `
+          <div class="chat-msg-row user-msg-row">
+            <div class="chat-msg-bubble-container">
+              <div class="chat-msg-bubble">${text}</div>
+            </div>
+          </div>`;
+        chatMessagesList.insertAdjacentHTML('beforeend', msgHtml);
+        chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
+      };
+
+      // Form submission handling for the Chat Panel
+      if (chatInputForm && chatUserInput) {
+        chatInputForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const query = chatUserInput.value.trim();
+          if (!query) return;
+
+          // Render user query bubble
+          addUserMessage(query);
+          chatUserInput.value = '';
+
+          // Add typing indicator
+          const typingId = 'typing-indicator-temp-' + Date.now();
+          const typingHtml = `
+            <div class="chat-msg-row support-agent-row" id="${typingId}">
+              <div class="support-avatar"><span>A</span></div>
+              <div class="chat-msg-bubble-container">
+                <span class="support-agent-name">Ankri Support</span>
+                <div class="chat-msg-bubble typing-indicator">
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                </div>
+              </div>
+            </div>`;
+          chatMessagesList.insertAdjacentHTML('beforeend', typingHtml);
+          chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
+
+          // Process response after delay
+          setTimeout(() => {
+            const typingElem = document.getElementById(typingId);
+            if (typingElem) typingElem.remove();
+
+            const queryLower = query.toLowerCase();
+            let reply = "";
+
+            if (queryLower.includes('custom') || queryLower.includes('create') || queryLower.includes('design') || queryLower.includes('recipe') || queryLower.includes('scent')) {
+              reply = "In our Artisan Customizer overlay, you can select custom wax ratios (Heart, Depth, Twist) and vessel color to craft your bespoke candles. Take our Scent Finder Quiz above to discover custom synergistic recipes!";
+            } else if (queryLower.includes('shipping') || queryLower.includes('delivery') || queryLower.includes('how long') || queryLower.includes('bangalore')) {
+              reply = "We offer free shipping on orders above ₹999. In Bangalore, delivery takes 1-2 corporate working days, and 3-5 days across all other parts of India.";
+            } else if (queryLower.startsWith('ac-') || queryLower.includes('track') || queryLower.includes('status') || queryLower.includes('order')) {
+              if (queryLower.includes('98216') || queryLower.includes('ac-98216')) {
+                reply = "Order #AC-98216 has been successfully delivered on July 05, 2026! Total Amount Paid: $64.00. Thank you for your support.";
+              } else {
+                reply = "We located your order query! It is currently in 'Processing' status. Once dispatched, we'll send a live notification alert to you directly.";
+              }
+            } else if (queryLower.includes('vessel') || queryLower.includes('jar') || queryLower.includes('color') || queryLower.includes('gold')) {
+              reply = "Our customizer supports Classic Gold, Classic Silver, Shiny Black, and Warm Amber vessels. Every vessel has unique thermal dissipation properties tailored to custom soy wax throws.";
+            } else if (queryLower.includes('wax') || queryLower.includes('soy') || queryLower.includes('vegan')) {
+              reply = "Ankri Candles are hand-poured with 100% natural, biodegradable soy wax, blended with vegan components and premium therapeutic fragrance oils.";
+            } else if (queryLower.includes('hi') || queryLower.includes('hello') || queryLower.includes('hey') || queryLower.includes('help') || queryLower.includes('support')) {
+              reply = "Hello! I am your Ankri AI Support avatar. Ask me anything about our premium custom soy candles, scent synergy ratios, or order shipping!";
+            } else {
+              reply = "That's a lovely question! As an AI guide at Ankri Candles, I can help you select scent blends, analyze vessel compatibility, or track order statuses. Let me know if you would like me to explain anything else!";
+            }
+
+            addAgentMessage(reply);
+          }, 1200 + Math.random() * 600);
         });
       }
     }

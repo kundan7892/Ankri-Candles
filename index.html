@@ -1438,7 +1438,7 @@
 
   <!-- Floating WhatsApp Widget & Support Card -->
   <div class="whatsapp-widget-container">
-    <!-- Chat Support Card -->
+    <!-- Chat Support Card (Welcome Bubble) -->
     <div class="whatsapp-support-card" id="whatsapp-support-card">
       <div class="support-card-header">
         <div class="support-avatar-wrapper">
@@ -1455,19 +1455,66 @@
       </div>
       <div class="support-card-body">
         <p class="support-message">Hi there, let me know if you have any questions :)</p>
-        <a href="https://wa.me/917760612765" target="_blank" rel="noopener noreferrer" class="support-reply-btn"
-          id="support-reply-action">
+        <button class="support-reply-btn" id="support-reply-action">
           Click to reply
-        </a>
+        </button>
+      </div>
+    </div>
+
+    <!-- AI Assistant Chat Panel -->
+    <div class="support-chat-panel hidden" id="support-chat-panel">
+      <!-- Chat Header -->
+      <div class="chat-panel-header">
+        <button class="chat-header-btn" id="chat-back-btn" aria-label="Go back">
+          <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i>
+        </button>
+        <div class="chat-header-actions">
+          <button class="chat-header-btn" id="chat-cart-btn" aria-label="Open cart">
+            <i data-lucide="shopping-cart" style="width: 20px; height: 20px;"></i>
+          </button>
+          <button class="chat-track-orders-btn" id="chat-track-btn">Track orders</button>
+          <button class="chat-header-btn" id="chat-close-btn" aria-label="Close chat">
+            <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Chat Body -->
+      <div class="chat-panel-body">
+        <div class="chat-ai-notice">This chat is AI-powered for faster assistance.</div>
+
+        <div class="chat-messages-list" id="chat-messages-list">
+          <!-- Initial Welcome Message from Avatar -->
+          <div class="chat-msg-row support-agent-row">
+            <div class="support-avatar">
+              <span>A</span>
+            </div>
+            <div class="chat-msg-bubble-container">
+              <span class="support-agent-name">Ankri Support</span>
+              <div class="chat-msg-bubble">
+                Hi there, let me know if you have any questions :)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Footer / Input -->
+      <div class="chat-panel-footer">
+        <form id="chat-input-form" style="width: 100%; display: flex; align-items: center; gap: 8px; margin: 0;">
+          <input type="text" id="chat-user-input" placeholder="Ask anything..." autocomplete="off">
+          <button type="submit" class="chat-send-btn" id="chat-send-btn" aria-label="Send message">
+            <i data-lucide="send" style="width: 20px; height: 20px;"></i>
+          </button>
+        </form>
       </div>
     </div>
 
     <!-- Floating Trigger Icon -->
-    <a href="https://wa.me/917760612765" class="whatsapp-float-widget" id="whatsapp-trigger-btn" target="_blank"
-      rel="noopener noreferrer" aria-label="Chat with Ankri Candles on WhatsApp">
+    <button class="whatsapp-float-widget" id="whatsapp-trigger-btn" aria-label="Chat with Ankri AI Assistant">
       <i data-lucide="message-square" class="wa-icon"></i>
       <span class="wa-tooltip">Quick Help on WhatsApp!</span>
-    </a>
+    </button>
   </div>
 
   <!-- Luxury Unboxing Modal Overlay -->
