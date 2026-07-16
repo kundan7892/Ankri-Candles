@@ -4536,3 +4536,129 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
     gap: 1rem !important;
   }
 }
+
+/* ==========================================================================
+   ZEN WORKSPACE COMPANION & BREATHING GUIDE STYLING
+   ========================================================================== */
+.zen-ambient-bg {
+  background-size: cover;
+  background-position: center;
+  filter: blur(4px);
+}
+
+.zen-ambient-bg[data-env="dark-studio"] {
+  background: radial-gradient(circle at center, #0F1A15 0%, #060B08 100%);
+}
+
+.zen-ambient-bg[data-env="rainy-cabin"] {
+  background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
+}
+
+.zen-ambient-bg[data-env="meditation-room"] {
+  background: radial-gradient(circle at center, #2b1f1d 0%, #110b0a 100%);
+}
+
+/* Breathing Halo Animation Styles */
+.breathing-halo {
+  --breathing-scale: 1;
+  transform: translate(-50%, -50%) scale(var(--breathing-scale));
+  transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 80px rgba(212, 175, 55, 0.1);
+  pointer-events: none;
+  left: 50%;
+  top: 50%;
+}
+
+.breathing-halo.inhale {
+  --breathing-scale: 1.4;
+  box-shadow: 0 0 140px rgba(212, 175, 55, 0.25);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0) 70%);
+}
+
+.breathing-halo.hold {
+  --breathing-scale: 1.4;
+  box-shadow: 0 0 160px rgba(212, 175, 55, 0.32);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.16) 0%, rgba(212, 175, 55, 0) 70%);
+}
+
+.breathing-halo.exhale {
+  --breathing-scale: 1.0;
+  box-shadow: 0 0 80px rgba(212, 175, 55, 0.08);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0) 70%);
+}
+
+/* Large interactive candle in Zen Mode */
+.large-preview {
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin-bottom: 0 !important;
+}
+
+.large-preview:hover {
+  transform: scale(1.03);
+}
+
+.zen-env-btn {
+  transition: all 0.3s ease;
+}
+
+.zen-env-btn:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.zen-env-btn.active {
+  background: rgba(212, 175, 55, 0.12) !important;
+  border-color: var(--accent, #D4AF37) !important;
+  font-weight: 600;
+  color: var(--accent, #D4AF37) !important;
+}
+
+.zen-time-preset {
+  transition: all 0.3s ease;
+}
+
+.zen-time-preset:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.zen-time-preset.active {
+  background: var(--accent, #D4AF37) !important;
+  border-color: var(--accent, #D4AF37) !important;
+  color: #121212 !important;
+  font-weight: 600;
+}
+
+/* Master volume and ranges */
+.zen-controls-panel input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  outline: none;
+  transition: background 0.3s ease;
+}
+
+.zen-controls-panel input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent, #D4AF37);
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  transition: transform 0.1s ease;
+}
+
+.zen-controls-panel input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+}
+
+.back-zen-btn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  transform: translateX(-3px);
+}

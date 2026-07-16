@@ -224,6 +224,37 @@ function initAppFlow() {
   const applyQuizBtn = document.getElementById('apply-quiz-btn');
   const retakeQuizBtn = document.getElementById('retake-quiz-btn');
 
+  // Zen Space Workspace Companion Elements
+  const enterZenSpaceBtn = document.getElementById('enter-zen-space-btn');
+  const zenSpaceOverlay = document.getElementById('zen-space-overlay');
+  const exitZenSpaceBtn = document.getElementById('exit-zen-space-btn');
+  const breathingHaloElement = document.getElementById('breathing-halo-element');
+  const zenFlameSystem = document.getElementById('zen-flame-system');
+  const zenInteractiveFlame = document.getElementById('zen-interactive-flame');
+  const zenCandleInstructions = document.getElementById('zen-candle-instructions');
+  const zenCandleBody = document.getElementById('zen-candle-body');
+  const zenJarElement = document.getElementById('zen-jar-element');
+  const zenPreviewLabelTitle = document.getElementById('zen-preview-label-title');
+  const zenPreviewLabelScents = document.getElementById('zen-preview-label-scents');
+  const zenWaxTwistVisual = document.getElementById('zen-wax-twist-visual');
+  const zenWaxHeartVisual = document.getElementById('zen-wax-heart-visual');
+  const zenWaxDepthVisual = document.getElementById('zen-wax-depth-visual');
+  const zenJarLabelElement = document.getElementById('zen-jar-label-element');
+  const zenVibeTag = document.getElementById('zen-vibe-tag');
+  const zenLitTag = document.getElementById('zen-lit-tag');
+  const zenBreathingPrompt = document.getElementById('zen-breathing-prompt');
+  const zenBreathingTimer = document.getElementById('zen-breathing-timer');
+  const zenVolumeMaster = document.getElementById('zen-volume-master');
+  const zenVolumeCrackle = document.getElementById('zen-volume-crackle');
+  const zenVolumeRain = document.getElementById('zen-volume-rain');
+  const zenVolumeDrone = document.getElementById('zen-volume-drone');
+  const zenFlameHeightSlider = document.getElementById('zen-flame-height-slider');
+  const zenFlameHeightLabel = document.getElementById('zen-flame-height-label');
+  const zenTimeDisplay = document.getElementById('zen-time-display');
+  const zenTimerPlayBtn = document.getElementById('zen-timer-play-btn');
+  const zenTimerResetBtn = document.getElementById('zen-timer-reset-btn');
+  const zenAsmrWaveformCanvas = document.getElementById('zen-asmr-waveform-canvas');
+
   // --- INITIALIZATION ---
   initApp();
 
@@ -915,6 +946,374 @@ function initAppFlow() {
         updateRoomSimulator();
       });
     }
+
+    // --- ZEN SPACE EVENT BINDINGS ---
+    let zenTimer = null;
+    let zenTimeTotal = 300; // default 5m
+    let zenTimeLeft = 300;
+    let isZenTimerRunning = false;
+
+    let breathingInterval = null;
+    let breathingState = 0; // 0=inhale, 1=hold, 2=exhale, 3=hold
+    let breathingSeconds = 0;
+
+    if (enterZenSpaceBtn) {
+      enterZenSpaceBtn.addEventListener('click', () => {
+        // Sync Zen Candle label details
+        zenPreviewLabelTitle.textContent = state.customizer.label.title;
+        zenPreviewLabelScents.textContent = state.customizer.label.scents;
+        zenJarLabelElement.setAttribute('data-theme', state.customizer.label.theme);
+        zenJarLabelElement.setAttribute('data-font', state.customizer.label.font);
+        zenPreviewLabelTitle.style.fontFamily = state.customizer.label.font === 'serif' ? "'Cormorant Garamond', serif" : "'Jost', sans-serif";
+
+        // Sync vessel type
+        const pType = state.customizer.productType;
+        zenJarElement.setAttribute('data-jar', pType === 'glass-jar' ? state.customizer.vessel : 'gold');
+
+        // Sync Wax layers visuals
+        const hColor = SCENT_POOL[state.customizer.scents.heart].color;
+        const dColor = SCENT_POOL[state.customizer.scents.depth].color;
+        const tColor = SCENT_POOL[state.customizer.scents.twist].color;
+
+        zenWaxHeartVisual.style.background = hColor;
+        zenWaxDepthVisual.style.background = dColor;
+        zenWaxTwistVisual.style.background = tColor;
+
+        // Custom vibes label
+        const heartScentName = SCENT_POOL[state.customizer.scents.heart].name;
+        const depthScentName = SCENT_POOL[state.customizer.scents.depth].name;
+        zenVibeTag.textContent = `${heartScentName} & ${depthScentName}`;
+
+        // Sync Lit status
+        syncZenLitState(state.customizer.isLit);
+
+        // Open Overlay
+        zenSpaceOverlay.classList.remove('hidden');
+
+        // Setup audio context if needed
+        if (!audioCtx) initAudioContext();
+        updateAudioState();
+      });
+    }
+
+    if (exitZenSpaceBtn) {
+      exitZenSpaceBtn.addEventListener('click', () => {
+        pauseZenTimer();
+        stopBreathingGuide();
+        zenSpaceOverlay.classList.add('hidden');
+        updateAudioState();
+      });
+    }
+
+    function syncZenLitState(isLit) {
+      if (isLit) {
+        zenInteractiveFlame.classList.add('active');
+        zenLitTag.textContent = "LIT";
+        zenLitTag.style.background = "rgba(212,175,55,0.2)";
+        zenLitTag.style.color = "var(--accent, #D4AF37)";
+        zenCandleInstructions.textContent = "Click Wick to Extinguish";
+        startBreathingGuide();
+
+        // Show waveform visualizer
+        zenAsmrWaveformCanvas.style.opacity = "0.25";
+        startZenWaveform();
+      } else {
+        zenInteractiveFlame.classList.remove('active');
+        zenLitTag.textContent = "UNLIT";
+        zenLitTag.style.background = "rgba(255,255,255,0.05)";
+        zenLitTag.style.color = "#fff";
+        zenCandleInstructions.textContent = "Click Wick to Begin Focus Ritual";
+        stopBreathingGuide();
+
+        zenAsmrWaveformCanvas.style.opacity = "0";
+      }
+      updateAudioState();
+    }
+
+    // Connect Wick click inside Zen
+    zenCandleBody.addEventListener('click', () => {
+      state.customizer.isLit = !state.customizer.isLit;
+      // also update primary customizer wick state
+      if (state.customizer.isLit) {
+        interactiveFlame.classList.add('active');
+        flameStatus.textContent = "LIT";
+        flameToggleHint.textContent = "Click the flame to extinguish it";
+      } else {
+        interactiveFlame.classList.remove('active');
+        flameStatus.textContent = "UNLIT";
+        flameToggleHint.textContent = "Click the wick to light the candle";
+      }
+      syncZenLitState(state.customizer.isLit);
+    });
+
+    // Environment Tone selectors
+    document.querySelectorAll('.zen-env-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.zen-env-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+
+        const env = e.target.getAttribute('data-env');
+        const themeBg = document.getElementById('zen-ambient-theme');
+
+        // Remove old animation class names if any
+        themeBg.setAttribute('data-env', env);
+
+        // Update backing overlay gradients
+        if (env === 'dark-studio') {
+          themeBg.style.background = 'radial-gradient(circle at center, #0F1A15 0%, #060B08 100%)';
+          themeBg.style.opacity = '0.15';
+        } else if (env === 'rainy-cabin') {
+          themeBg.style.background = 'linear-gradient(135deg, #121A28 0%, #070B12 100%)';
+          themeBg.style.opacity = '0.35';
+          zenVolumeRain.value = 0.6;
+          updateAudioState();
+        } else if (env === 'meditation-room') {
+          themeBg.style.background = 'radial-gradient(circle at center, #261613 0%, #0b0504 100%)';
+          themeBg.style.opacity = '0.25';
+          zenVolumeDrone.value = 0.7;
+          updateAudioState();
+        }
+      });
+    });
+
+    // Timer presets
+    document.querySelectorAll('.zen-time-preset').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        if (isZenTimerRunning) return;
+
+        document.querySelectorAll('.zen-time-preset').forEach(preset => preset.classList.remove('active'));
+        e.target.classList.add('active');
+
+        const sec = parseInt(e.target.getAttribute('data-time'));
+        zenTimeTotal = sec;
+        zenTimeLeft = sec;
+        updateZenTimerDisplay();
+      });
+    });
+
+    // Play/Pause timer buttons
+    zenTimerPlayBtn.addEventListener('click', () => {
+      if (isZenTimerRunning) {
+        pauseZenTimer();
+      } else {
+        startZenTimer();
+      }
+    });
+
+    zenTimerResetBtn.addEventListener('click', () => {
+      pauseZenTimer();
+      zenTimeLeft = zenTimeTotal;
+      updateZenTimerDisplay();
+    });
+
+    function updateZenTimerDisplay() {
+      const minutes = Math.floor(zenTimeLeft / 60);
+      const seconds = zenTimeLeft % 60;
+      zenTimeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function startZenTimer() {
+      isZenTimerRunning = true;
+      zenTimerPlayBtn.innerHTML = '<i data-lucide="pause"></i> Pause Focus';
+      if (window.lucide) window.lucide.createIcons();
+
+      // Light the candle if unlit to start focus ritual
+      if (!state.customizer.isLit) {
+        state.customizer.isLit = true;
+        // sync back page
+        interactiveFlame.classList.add('active');
+        flameStatus.textContent = "LIT";
+        flameToggleHint.textContent = "Click the flame to extinguish it";
+        syncZenLitState(true);
+      }
+
+      zenTimer = setInterval(() => {
+        zenTimeLeft--;
+        updateZenTimerDisplay();
+
+        if (zenTimeLeft <= 0) {
+          clearInterval(zenTimer);
+          isZenTimerRunning = false;
+          // Extinguish flame
+          state.customizer.isLit = false;
+          syncZenLitState(false);
+          // sync back page
+          interactiveFlame.classList.remove('active');
+          flameStatus.textContent = "UNLIT";
+          flameToggleHint.textContent = "Click the wick to light the candle";
+
+          zenTimerPlayBtn.innerHTML = '<i data-lucide="play"></i> Start Session';
+          if (window.lucide) window.lucide.createIcons();
+
+          showToast("Focus session complete. Well done.");
+          playFocusGong();
+        }
+      }, 1000);
+    }
+
+    function pauseZenTimer() {
+      clearInterval(zenTimer);
+      isZenTimerRunning = false;
+      zenTimerPlayBtn.innerHTML = '<i data-lucide="play"></i> Resume Focus';
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function playFocusGong() {
+      if (!audioCtx) return;
+      try {
+        const dest = audioCtx.destination;
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(220, audioCtx.currentTime); // A3
+        osc1.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 2.5);
+
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(330, audioCtx.currentTime); // E4
+        osc2.frequency.exponentialRampToValueAtTime(165, audioCtx.currentTime + 2.5);
+
+        gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3);
+
+        osc1.connect(gainNode);
+        osc2.connect(gainNode);
+        gainNode.connect(dest);
+
+        osc1.start();
+        osc2.start();
+        osc1.stop(audioCtx.currentTime + 3.1);
+        osc2.stop(audioCtx.currentTime + 3.1);
+      } catch (err) {
+        console.error("Gong playback fail", err);
+      }
+    }
+
+    // Breathing Companion Guide Loops
+    function startBreathingGuide() {
+      stopBreathingGuide();
+
+      zenBreathingPrompt.style.opacity = '1';
+      zenBreathingTimer.style.opacity = '1';
+
+      breathingState = 0; // 0=inhale, 1=hold, 2=exhale, 3=hold
+      breathingSeconds = 4;
+      runBreathingTick();
+
+      breathingInterval = setInterval(() => {
+        breathingSeconds--;
+        if (breathingSeconds <= 0) {
+          breathingState = (breathingState + 1) % 4;
+          if (breathingState === 0) { // inhale
+            breathingSeconds = 4;
+            breathingHaloElement.className = 'breathing-halo inhale';
+            zenBreathingPrompt.textContent = "Inhale Deeply";
+          } else if (breathingState === 1) { // hold
+            breathingSeconds = 4;
+            breathingHaloElement.className = 'breathing-halo hold';
+            zenBreathingPrompt.textContent = "Hold Breath";
+          } else if (breathingState === 2) { // exhale
+            breathingSeconds = 4;
+            breathingHaloElement.className = 'breathing-halo exhale';
+            zenBreathingPrompt.textContent = "Exhale Slowly";
+          } else if (breathingState === 3) { // hold
+            breathingSeconds = 4;
+            breathingHaloElement.className = 'breathing-halo hold';
+            zenBreathingPrompt.textContent = "Rest Calmly";
+          }
+        }
+        runBreathingTick();
+      }, 1000);
+    }
+
+    function runBreathingTick() {
+      zenBreathingTimer.textContent = `${breathingSeconds} seconds remaining`;
+    }
+
+    function stopBreathingGuide() {
+      clearInterval(breathingInterval);
+      breathingHaloElement.className = 'breathing-halo';
+      zenBreathingPrompt.style.opacity = '0';
+      zenBreathingTimer.style.opacity = '0';
+    }
+
+    // Audio mixers listeners
+    zenVolumeMaster.addEventListener('input', updateAudioState);
+    zenVolumeCrackle.addEventListener('input', updateAudioState);
+    zenVolumeRain.addEventListener('input', updateAudioState);
+    zenVolumeDrone.addEventListener('input', updateAudioState);
+
+    // Flame Height control listener
+    zenFlameHeightSlider.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      let text = "Standard";
+      if (val < 0.8) {
+        text = "Whisper";
+      } else if (val > 1.2) {
+        text = "Crackling";
+      }
+      zenFlameHeightLabel.textContent = text;
+
+      // Update flame CSS scaling
+      zenInteractiveFlame.style.transform = `scale(${val})`;
+    });
+
+    // Waveform visualization inside Zen
+    let isZenAnimRunning = false;
+    function startZenWaveform() {
+      if (isZenAnimRunning) return;
+      isZenAnimRunning = true;
+
+      const ctx = zenAsmrWaveformCanvas.getContext('2d');
+
+      let phase = 0;
+      function animateZen() {
+        if (!state.customizer.isLit || zenSpaceOverlay.classList.contains('hidden')) {
+          isZenAnimRunning = false;
+          return;
+        }
+
+        // Keep canvas matching overlay width
+        if (zenAsmrWaveformCanvas.width !== zenSpaceOverlay.clientWidth) {
+          zenAsmrWaveformCanvas.width = zenSpaceOverlay.clientWidth;
+        }
+
+        ctx.clearRect(0, 0, zenAsmrWaveformCanvas.width, zenAsmrWaveformCanvas.height);
+
+        const width = zenAsmrWaveformCanvas.width;
+        const height = zenAsmrWaveformCanvas.height;
+        const hSliderVal = parseFloat(zenFlameHeightSlider.value);
+
+        const baseAmp = 15 * hSliderVal;
+
+        // Draw Wave 1 (meditation drone light green tint)
+        drawZenWave(ctx, width, height, phase, baseAmp, 0.005, 'rgba(138, 158, 146, 0.15)', height * 0.55);
+        // Draw Wave 2 (rain blue tint)
+        drawZenWave(ctx, width, height, phase * 1.5, baseAmp * 0.7, 0.008, 'rgba(174, 214, 241, 0.12)', height * 0.58);
+        // Draw Wave 3 (crackle gold tint)
+        drawZenWave(ctx, width, height, -phase * 2.0, baseAmp * 0.4, 0.012, 'rgba(212, 175, 55, 0.18)', height * 0.6);
+
+        phase += 0.02 * hSliderVal;
+        requestAnimationFrame(animateZen);
+      }
+
+      requestAnimationFrame(animateZen);
+    }
+
+    function drawZenWave(ctx, width, height, phase, amplitude, frequency, color, offsetY) {
+      ctx.beginPath();
+      ctx.moveTo(0, offsetY);
+      for (let x = 0; x < width; x++) {
+        const y = Math.sin(x * frequency + phase) * amplitude + offsetY;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(width, height);
+      ctx.lineTo(0, height);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
   }
 
 
@@ -1132,8 +1531,9 @@ function initAppFlow() {
             popFilter.Q.value = 6;
 
             const popGain = audioCtx.createGain();
+            const crackleMult = typeof window !== 'undefined' && window.zenCrackleLevel !== undefined ? window.zenCrackleLevel : 1.0;
             popGain.gain.setValueAtTime(0, audioCtx.currentTime);
-            popGain.gain.linearRampToValueAtTime(0.04 * (0.2 + Math.random() * 0.8), audioCtx.currentTime + 0.001);
+            popGain.gain.linearRampToValueAtTime(0.04 * (0.2 + Math.random() * 0.8) * crackleMult, audioCtx.currentTime + 0.001);
             popGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.005 + Math.random() * 0.015);
 
             popSrc.connect(popFilter);
@@ -1158,10 +1558,28 @@ function initAppFlow() {
 
     const shouldPlay = state.customizer.isLit && !audioState.isMuted;
 
+    // Check if Zen Overlay is active
+    const isZenActive = zenSpaceOverlay && !zenSpaceOverlay.classList.contains('hidden');
+
+    if (isZenActive) {
+      const masterVal = parseFloat(zenVolumeMaster.value);
+      mainGainNode.gain.setTargetAtTime(state.customizer.isLit ? masterVal : 0.0, audioCtx.currentTime, 0.15);
+
+      const rainVal = parseFloat(zenVolumeRain.value) * 0.35;
+      const droneVal = parseFloat(zenVolumeDrone.value) * 0.4;
+
+      rainGainNode.gain.setTargetAtTime(state.customizer.isLit ? rainVal : 0.0, audioCtx.currentTime, 0.35);
+      droneGainNode.gain.setTargetAtTime(state.customizer.isLit ? droneVal : 0.0, audioCtx.currentTime, 0.35);
+
+      window.zenCrackleLevel = parseFloat(zenVolumeCrackle.value);
+      return;
+    }
+
     const targetGain = shouldPlay ? 1.0 : 0.0;
     mainGainNode.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.15);
 
     if (shouldPlay) {
+      window.zenCrackleLevel = 1.0;
       if (audioState.activeSoundscape === 'crackle') {
         rainGainNode.gain.setTargetAtTime(0.0, audioCtx.currentTime, 0.3);
         droneGainNode.gain.setTargetAtTime(0.0, audioCtx.currentTime, 0.3);

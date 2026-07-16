@@ -207,6 +207,12 @@
                 style="margin-top: 10px; width: 100%; max-width: 320px; margin-left: auto; margin-right: auto; border-color: var(--accent, #D4AF37); color: var(--accent, #D4AF37); display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 20px;">
                 <i data-lucide="package-open"></i> Preview Unboxing Experience
               </button>
+
+              <!-- Enter Zen Space Companion Button -->
+              <button class="btn btn-outline btn-small" id="enter-zen-space-btn"
+                style="margin-top: 10px; width: 100%; max-width: 320px; margin-left: auto; margin-right: auto; border-color: var(--accent, #D4AF37); color: var(--accent, #D4AF37); display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 20px;">
+                <i data-lucide="wind"></i> Open Zen Workspace Companion
+              </button>
             </div>
           </div>
         </div>
@@ -1560,6 +1566,231 @@
             Lavender, Coffee & Clove</p>
           <div style="font-size: 0.8rem; color: #8c8e9b; line-height: 1.5;">Hand-wrapped in raw cotton twine, wax
             sealed, and accompanied by a gold-foiled card.</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Zen Workspace Companion Overlay -->
+  <div class="modal-overlay hidden" id="zen-space-overlay"
+    style="z-index: 9998; display: flex; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #0F1A15 0%, #060B08 100%); transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);">
+
+    <!-- Background Ambient Overlays -->
+    <div class="zen-ambient-bg" id="zen-ambient-theme"
+      style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none; opacity: 0.15; transition: background 1.5s ease;">
+    </div>
+
+    <!-- Immersive sound wave canvas when candle lit -->
+    <canvas id="zen-asmr-waveform-canvas"
+      style="position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; pointer-events: none; opacity: 0; transition: opacity 1.5s ease; z-index: 1;"></canvas>
+
+    <div class="zen-modal-container"
+      style="position: relative; width: 95%; max-width: 1100px; height: 90vh; display: grid; grid-template-columns: 1fr 380px; gap: 30px; box-sizing: border-box; overflow: hidden; z-index: 10;">
+
+      <!-- Left: Ambient Candle Stage & Breathing Companion -->
+      <div class="zen-stage-area"
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+        <!-- Back Button inside overlay -->
+        <button class="back-zen-btn" id="exit-zen-space-btn" aria-label="Exit Zen Space"
+          style="position: absolute; top: 0; left: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 8px 16px; color: #EAE6DF; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease;">
+          <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> Exit Zen Space
+        </button>
+
+        <!-- Dynamic Halo Circle for breathing visualizer -->
+        <div class="breathing-halo" id="breathing-halo-element"
+          style="position: absolute; width: 340px; height: 340px; border-radius: 50%; background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, rgba(212,175,55,0) 70%); transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; z-index: 2;">
+        </div>
+
+        <!-- Central Candle Holder -->
+        <div class="zen-candle-focus-holder" id="zen-candle-focus-target"
+          style="position: relative; display: flex; flex-direction: column; align-items: center; z-index: 5; transition: transform 0.5s ease;">
+          <!-- Flame indicator / instructions -->
+          <div id="zen-candle-instructions"
+            style="color: rgba(234, 230, 223, 0.5); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 25px; cursor: pointer; transition: opacity 0.3s ease;">
+            Click Wick to Begin Focus Ritual</div>
+
+          <!-- Candle Preview Body (Larger rendering) -->
+          <div class="candle-preview large-preview" id="zen-candle-body"
+            style="width: 220px; height: 310px; cursor: pointer;">
+            <!-- Wick and Flame -->
+            <div class="preview-flame-system" id="zen-flame-system" style="bottom: 300px;">
+              <div class="wick-graphic"></div>
+              <div class="candle-flame" id="zen-interactive-flame">
+                <div class="flicker-flame-outer"></div>
+                <div class="flicker-flame-inner"></div>
+                <div class="flicker-flame-blue"></div>
+              </div>
+            </div>
+
+            <!-- Vessel Outer Layer -->
+            <div class="jar-body" id="zen-jar-element" data-jar="gold">
+              <!-- Wax Layers -->
+              <div class="wax-fill-layers" id="zen-wax-fill-element">
+                <div class="wax-layer-twist" id="zen-wax-twist-visual" style="height: 10%"></div>
+                <div class="wax-layer-heart" id="zen-wax-heart-visual" style="height: 60%"></div>
+                <div class="wax-layer-depth" id="zen-wax-depth-visual" style="height: 30%">
+                  <div class="wax-melt-layer"></div>
+                </div>
+              </div>
+
+              <!-- Main Label Content -->
+              <div class="jar-label" id="zen-jar-label-element" data-font="serif" data-theme="warm-cream">
+                <div class="label-border">
+                  <div class="label-content">
+                    <div class="label-custom-title" id="zen-preview-label-title">SUNDAY COFFEE</div>
+                    <div class="label-custom-scents" id="zen-preview-label-scents">Lavender, Coffee & Clove</div>
+                    <div class="label-footer-note">Hand-Poured Soy Candle</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="jar-overlay-highlight"></div>
+            <div class="jar-shadow"></div>
+          </div>
+
+          <!-- Active Scent Tags -->
+          <div style="display: flex; gap: 8px; margin-top: 25px;">
+            <span id="zen-vibe-tag" class="percentage-badge"
+              style="background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.2); color: var(--accent, #D4AF37);">Warm
+              Botanical</span>
+            <span id="zen-lit-tag" class="percentage-badge"
+              style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.15)">UNLIT</span>
+          </div>
+        </div>
+
+        <!-- Breathing Instruction Captions -->
+        <div class="zen-breathing-caption-wrapper"
+          style="margin-top: 35px; min-height: 48px; text-align: center; z-index: 5;">
+          <h4 id="zen-breathing-prompt"
+            style="font-family: var(--font-sans); font-size: 1.1rem; letter-spacing: 3px; text-transform: uppercase; color: #EAE6DF; margin: 0; font-weight: 400; opacity: 0; transition: opacity 0.5s ease;">
+            Inhale Deeply</h4>
+          <p id="zen-breathing-timer"
+            style="font-size: 0.8rem; color: #8A9E92; margin: 4px 0 0 0; opacity: 0; transition: opacity 0.5s ease;">4
+            seconds remaining</p>
+        </div>
+      </div>
+
+      <!-- Right: Zen Customizer Control Panel -->
+      <div class="zen-controls-panel"
+        style="background: rgba(8,11,10,0.7); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 30px; backdrop-filter: blur(15px); box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto;">
+
+        <div style="display: flex; flex-direction: column; gap: 25px;">
+          <!-- Title -->
+          <div style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px;">
+            <h3 style="font-size: 1.6rem; color: #fff; margin: 0 0 4px 0; font-family: var(--font-serif);">Zen Sanctuary
+            </h3>
+            <p style="font-size: 0.78rem; color: #8A9E92; margin: 0; font-family: var(--font-sans);">A distraction-free
+              focus workspace companion.</p>
+          </div>
+
+          <!-- Section 1: Ambient Sound Mixer -->
+          <div class="zen-group">
+            <h4
+              style="font-size: 0.85rem; color: var(--accent, #D4AF37); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0;">
+              <i data-lucide="music" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
+              Ambient Soundscapes</h4>
+            <div class="sound-sliders" style="display: flex; flex-direction: column; gap: 12px;">
+              <!-- Sound 1: Master Volume -->
+              <div class="slider-row"
+                style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                <span
+                  style="font-size: 0.8rem; color: #EAE6DF; width: 90px; display: flex; align-items: center; gap: 6px;"><i
+                    data-lucide="volume-2" style="width: 12px; height:12px;"></i> Master</span>
+                <input type="range" id="zen-volume-master" min="0" max="1" step="0.05" value="0.5"
+                  style="flex:1; accent-color: var(--accent, #D4AF37); height: 4px;">
+              </div>
+              <!-- Sound 2: Wood-Wick Crackle -->
+              <div class="slider-row"
+                style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                <span style="font-size: 0.8rem; color: #8A9E92; width: 90px;">🔥 Crackling</span>
+                <input type="range" id="zen-volume-crackle" min="0" max="1" step="0.05" value="1.0"
+                  style="flex:1; accent-color: var(--accent, #D4AF37); height: 4px;">
+              </div>
+              <!-- Sound 3: Rainy Window -->
+              <div class="slider-row"
+                style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                <span style="font-size: 0.8rem; color: #8A9E92; width: 90px;">🌧️ Rain</span>
+                <input type="range" id="zen-volume-rain" min="0" max="1" step="0.05" value="0"
+                  style="flex:1; accent-color: var(--accent, #D4AF37); height: 4px;">
+              </div>
+              <!-- Sound 4: Meditation Drone -->
+              <div class="slider-row"
+                style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                <span style="font-size: 0.8rem; color: #8A9E92; width: 90px;">🧘 Meditation</span>
+                <input type="range" id="zen-volume-drone" min="0" max="1" step="0.05" value="0"
+                  style="flex:1; accent-color: var(--accent, #D4AF37); height: 4px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Interactive Flame Height Controls -->
+          <div class="zen-group" style="margin-top: 5px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h4
+                style="font-size: 0.85rem; color: var(--accent, #D4AF37); text-transform: uppercase; letter-spacing: 1px; margin: 0;">
+                <i data-lucide="flame"
+                  style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i> Flame Height</h4>
+              <span id="zen-flame-height-label" style="font-size: 0.75rem; color: #EAE6DF;">Gentle</span>
+            </div>
+            <input type="range" id="zen-flame-height-slider" min="0.5" max="1.5" step="0.1" value="1.0"
+              style="width:100%; accent-color: var(--accent, #D4AF37); height: 4px;">
+          </div>
+
+          <!-- Section 3: Backdrop Environment -->
+          <div class="zen-group" style="margin-top: 5px;">
+            <h4
+              style="font-size: 0.85rem; color: var(--accent, #D4AF37); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0;">
+              <i data-lucide="home" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
+              Environment Tone</h4>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+              <button class="zen-env-btn active" data-env="dark-studio"
+                style="padding: 10px; border-radius: 6px; font-size: 0.72rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; text-align: center; transition: all 0.3s ease;">Dim
+                Studio</button>
+              <button class="zen-env-btn" data-env="rainy-cabin"
+                style="padding: 10px; border-radius: 6px; font-size: 0.72rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; text-align: center; transition: all 0.3s ease;">Rainy
+                Cabin</button>
+              <button class="zen-env-btn" data-env="meditation-room"
+                style="padding: 10px; border-radius: 6px; font-size: 0.72rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; text-align: center; transition: all 0.3s ease;">Loom
+                Room</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Focus Timer Controls -->
+        <div style="margin-top: 25px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;">
+          <h4
+            style="font-size: 0.85rem; color: var(--accent, #D4AF37); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px 0; text-align: center;">
+            <i data-lucide="timer" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
+            Focus Timer</h4>
+
+          <div style="display: flex; justify-content: center; gap: 6px; margin-bottom: 15px;">
+            <button class="zen-time-preset active" data-time="300"
+              style="padding: 6px 12px; border-radius: 15px; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #EAE6DF; cursor: pointer;">5m</button>
+            <button class="zen-time-preset" data-time="900"
+              style="padding: 6px 12px; border-radius: 15px; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #EAE6DF; cursor: pointer;">15m</button>
+            <button class="zen-time-preset" data-time="1500"
+              style="padding: 6px 12px; border-radius: 15px; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #EAE6DF; cursor: pointer;">25m</button>
+            <button class="zen-time-preset" data-time="2700"
+              style="padding: 6px 12px; border-radius: 15px; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #EAE6DF; cursor: pointer;">45m</button>
+          </div>
+
+          <div
+            style="text-align: center; font-size: 3.5rem; color: #fff; font-family: monospace; font-weight: 300; letter-spacing: 2px; margin-bottom: 15px; line-height: 1;"
+            id="zen-time-display">05:00</div>
+
+          <div style="display: flex; gap: 10px;">
+            <button class="btn btn-primary btn-grow" id="zen-timer-play-btn"
+              style="padding: 12px; font-weight: bold; border-radius: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <i data-lucide="play" style="width: 14px; height: 14px;"></i> Start Session
+            </button>
+            <button class="btn btn-outline" id="zen-timer-reset-btn"
+              style="padding: 12px; border-radius: 20px; color: #fff; border-color: rgba(255,255,255,0.2);">
+              Reset
+            </button>
+          </div>
         </div>
 
       </div>
