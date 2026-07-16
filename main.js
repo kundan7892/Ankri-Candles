@@ -1450,9 +1450,33 @@ function initAppFlow() {
         chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
       };
 
+      // Local rule-based fallback response engine
+      const getLocalFallbackReply = (query) => {
+        const queryLower = query.toLowerCase();
+        if (queryLower.includes('custom') || queryLower.includes('create') || queryLower.includes('design') || queryLower.includes('recipe') || queryLower.includes('scent')) {
+          return "In our Artisan Customizer overlay, you can select custom wax ratios (Heart, Depth, Twist) and vessel color to craft your bespoke candles. Take our Scent Finder Quiz above to discover custom synergistic recipes!";
+        } else if (queryLower.includes('shipping') || queryLower.includes('delivery') || queryLower.includes('how long') || queryLower.includes('bangalore')) {
+          return "We offer free shipping on orders above ₹999. In Bangalore, delivery takes 1-2 corporate working days, and 3-5 days across all other parts of India.";
+        } else if (queryLower.startsWith('ac-') || queryLower.includes('track') || queryLower.includes('status') || queryLower.includes('order')) {
+          if (queryLower.includes('98216') || queryLower.includes('ac-98216')) {
+            return "Order #AC-98216 has been successfully delivered on July 05, 2026! Total Amount Paid: $64.00. Thank you for your support.";
+          } else {
+            return "We located your order query! It is currently in 'Processing' status. Once dispatched, we'll send a live notification alert to you directly.";
+          }
+        } else if (queryLower.includes('vessel') || queryLower.includes('jar') || queryLower.includes('color') || queryLower.includes('gold')) {
+          return "Our customizer supports Classic Gold, Classic Silver, Shiny Black, and Warm Amber vessels. Every vessel has unique thermal dissipation properties tailored to custom soy wax throws.";
+        } else if (queryLower.includes('wax') || queryLower.includes('soy') || queryLower.includes('vegan')) {
+          return "Ankri Candles are hand-poured with 100% natural, biodegradable soy wax, blended with vegan components and premium therapeutic fragrance oils.";
+        } else if (queryLower.includes('hi') || queryLower.includes('hello') || queryLower.includes('hey') || queryLower.includes('help') || queryLower.includes('support')) {
+          return "Hello! I am your Ankri AI Support avatar. Ask me anything about our premium custom soy candles, scent synergy ratios, or order shipping!";
+        } else {
+          return "That's a lovely question! As an AI guide at Ankri Candles, I can help you select scent blends, analyze vessel compatibility, or track order statuses. Let me know if you would like me to explain anything else!";
+        }
+      };
+
       // Form submission handling for the Chat Panel
       if (chatInputForm && chatUserInput) {
-        chatInputForm.addEventListener('submit', (e) => {
+        chatInputForm.addEventListener('submit', async (e) => {
           e.preventDefault();
           const query = chatUserInput.value.trim();
           if (!query) return;
@@ -1478,36 +1502,35 @@ function initAppFlow() {
           chatMessagesList.insertAdjacentHTML('beforeend', typingHtml);
           chatMessagesList.scrollTop = chatMessagesList.scrollHeight;
 
-          // Process response after delay
-          setTimeout(() => {
+          try {
+            // Dispatch live chat request to backend Express Support Route
+            const response = await fetch('/api/support-chat', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ message: query })
+            });
+
             const typingElem = document.getElementById(typingId);
             if (typingElem) typingElem.remove();
 
-            const queryLower = query.toLowerCase();
-            let reply = "";
-
-            if (queryLower.includes('custom') || queryLower.includes('create') || queryLower.includes('design') || queryLower.includes('recipe') || queryLower.includes('scent')) {
-              reply = "In our Artisan Customizer overlay, you can select custom wax ratios (Heart, Depth, Twist) and vessel color to craft your bespoke candles. Take our Scent Finder Quiz above to discover custom synergistic recipes!";
-            } else if (queryLower.includes('shipping') || queryLower.includes('delivery') || queryLower.includes('how long') || queryLower.includes('bangalore')) {
-              reply = "We offer free shipping on orders above ₹999. In Bangalore, delivery takes 1-2 corporate working days, and 3-5 days across all other parts of India.";
-            } else if (queryLower.startsWith('ac-') || queryLower.includes('track') || queryLower.includes('status') || queryLower.includes('order')) {
-              if (queryLower.includes('98216') || queryLower.includes('ac-98216')) {
-                reply = "Order #AC-98216 has been successfully delivered on July 05, 2026! Total Amount Paid: $64.00. Thank you for your support.";
-              } else {
-                reply = "We located your order query! It is currently in 'Processing' status. Once dispatched, we'll send a live notification alert to you directly.";
+            if (response.ok) {
+              const resData = await response.json();
+              if (resData.success && resData.reply) {
+                addAgentMessage(resData.reply);
+                return;
               }
-            } else if (queryLower.includes('vessel') || queryLower.includes('jar') || queryLower.includes('color') || queryLower.includes('gold')) {
-              reply = "Our customizer supports Classic Gold, Classic Silver, Shiny Black, and Warm Amber vessels. Every vessel has unique thermal dissipation properties tailored to custom soy wax throws.";
-            } else if (queryLower.includes('wax') || queryLower.includes('soy') || queryLower.includes('vegan')) {
-              reply = "Ankri Candles are hand-poured with 100% natural, biodegradable soy wax, blended with vegan components and premium therapeutic fragrance oils.";
-            } else if (queryLower.includes('hi') || queryLower.includes('hello') || queryLower.includes('hey') || queryLower.includes('help') || queryLower.includes('support')) {
-              reply = "Hello! I am your Ankri AI Support avatar. Ask me anything about our premium custom soy candles, scent synergy ratios, or order shipping!";
-            } else {
-              reply = "That's a lovely question! As an AI guide at Ankri Candles, I can help you select scent blends, analyze vessel compatibility, or track order statuses. Let me know if you would like me to explain anything else!";
             }
 
-            addAgentMessage(reply);
-          }, 1200 + Math.random() * 600);
+            // Fallback to local rule engine if reply was empty or server prompted fallback
+            addAgentMessage(getLocalFallbackReply(query));
+          } catch (err) {
+            console.error('Support Chat AJAX failed, checking local database:', err);
+            const typingElem = document.getElementById(typingId);
+            if (typingElem) typingElem.remove();
+            addAgentMessage(getLocalFallbackReply(query));
+          }
         });
       }
     }

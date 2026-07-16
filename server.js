@@ -476,6 +476,67 @@ app.delete('/api/whatsapp-logs', async (req, res) => {
   }
 });
 
+// AI Support Chat Integration Route
+app.post('/api/support-chat', async (req, res) => {
+  try {
+    const { message } = req.body;
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey || apiKey.trim() === '' || apiKey.includes('your_gemini_api_key')) {
+      console.warn('[Support Chat] Gemini API key not found or using placeholder. Falling back to local offline mode.');
+      return res.status(200).json({ useFallback: true });
+    }
+
+    // Call Google Gemini API (gemini-2.5-flash) using standard fetch
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: `System Prompt: You are Ankri Support, a helpful AI assistant for Ankri Candles. Ankri Candles sells premium hand-poured soy candles. We offer an interactive Candle Customizer builder where customers select wax ratios (Heart, Depth, Twist) and vessel color styles (Classic Gold, Classic Silver, Shiny Black, Warm Amber). Shipping is free on orders above Rs.999. In Bangalore, delivery takes 1-2 corporate working days, and 3-5 days across all other parts of India. Order returns/replacements are only supported for damaged items by emailing support@ankricandles.com. Keep replies short, warm, and professional, under 70 words. Do not use markdown headers, lists, or bold tags in responses. Respond to the customer below.\n\nCustomer: ${message}`
+          }]
+        }],
+        generationConfig: {
+          maxOutputTokens: 120,
+          temperature: 0.7
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error(`[Support Chat] Gemini API request failed: ${errText}`);
+      return res.status(200).json({ useFallback: true });
+    }
+
+    const data = await response.json();
+    let reply = '';
+
+    // Extract text from Gemini structure
+    if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+      reply = data.candidates[0].content.parts[0].text;
+    }
+
+    if (!reply) {
+      return res.status(200).json({ useFallback: true });
+    }
+
+    // Safe formatting clean
+    reply = reply.replace(/\*\*/g, '').replace(/###/g, '').trim();
+
+    return res.status(200).json({ success: true, reply });
+  } catch (error) {
+    console.error('[Support Chat] Backend error:', error);
+    return res.status(200).json({ useFallback: true });
+  }
+});
+
 
 // Start Server
 app.listen(PORT, () => {
