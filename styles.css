@@ -5407,8 +5407,8 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
 }
 
 .gift-cat-card[data-occasion="housewarming"] .gift-cat-icon {
-  color: rgba(46, 125, 50, 0.6);
-  background: rgba(143, 188, 143, 0.02);
+  color: rgba(178, 83, 41, 0.65);
+  background: rgba(178, 83, 41, 0.02);
 }
 
 /* Birthday Selector Card: Celebratory Soft Amber Gold */
@@ -5486,19 +5486,19 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
   }
 }
 
-/* Housewarming Selector Card: Cozy Deep Sage & Copper Sanctuary */
+/* Housewarming Selector Card: Cozy Terracotta Brick & Warm Hearth */
 .gift-cat-card[data-occasion="housewarming"]:hover,
 .gift-cat-card.active[data-occasion="housewarming"] {
-  background: rgba(143, 188, 143, 0.04) !important;
-  border-color: rgba(143, 188, 143, 0.5) !important;
-  box-shadow: 0 10px 30px rgba(143, 188, 143, 0.08) !important;
+  background: rgba(178, 83, 41, 0.04) !important;
+  border-color: rgba(178, 83, 41, 0.45) !important;
+  box-shadow: 0 10px 30px rgba(178, 83, 41, 0.08) !important;
 }
 
 .gift-cat-card[data-occasion="housewarming"]:hover .gift-cat-icon,
 .gift-cat-card.active[data-occasion="housewarming"] .gift-cat-icon {
-  background: rgba(143, 188, 143, 0.1) !important;
-  color: #2E7D32 !important;
-  box-shadow: 0 0 10px rgba(143, 188, 143, 0.25);
+  background: rgba(178, 83, 41, 0.12) !important;
+  color: #B25329 !important;
+  box-shadow: 0 0 10px rgba(178, 83, 41, 0.25);
 }
 
 /* Dynamic Gifting Showcase Panel */
