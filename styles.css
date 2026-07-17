@@ -6019,3 +6019,102 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================
+   PREMIUM DARK THEME OVERRIDES & ACCENTS
+========================================== */
+body.dark-theme {
+  --bg-primary: #0A0E0C;
+  /* Obsidian Black */
+  --bg-secondary: #121815;
+  /* Deep Charcoal Forest */
+  --bg-tertiary: #19211C;
+  /* Dark Charcoal Sage */
+  --text-primary: #ECEFF1;
+  /* Off-White Cream */
+  --text-secondary: #9EB0A5;
+  /* Muted Sage */
+  --text-muted: #6B7C72;
+  /* Cold Slate Green */
+
+  --gold-primary: #D4AF37;
+  /* Brighter Metallic Gold */
+  --gold-hover: #F3E5AB;
+  /* Golden Silk Glow */
+  --gold-glow: rgba(212, 175, 55, 0.25);
+  --gold-text: #E5C158;
+  /* Gold text legible on dark */
+
+  --sage-accent: #4CAF50;
+  /* Brighter glowing sage */
+  --border-glass: rgba(255, 255, 255, 0.09);
+  --bg-glass: rgba(18, 24, 21, 0.88);
+}
+
+/* Specific component overrides for Glassmorphism in Dark Mode */
+body.dark-theme .gift-showcase-panel,
+body.dark-theme .gift-cat-card,
+body.dark-theme .quiz-card,
+body.dark-theme .chat-msg-bubble,
+body.dark-theme .checkout-modal,
+body.dark-theme .cart-drawer,
+body.dark-theme .config-step-content,
+body.dark-theme .support-chat-panel,
+body.dark-theme .chat-msg-row {
+  background: rgba(18, 24, 21, 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-theme input[type="text"],
+body.dark-theme input[type="email"],
+body.dark-theme input[type="tel"],
+body.dark-theme select,
+body.dark-theme textarea {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+body.dark-theme input[type="text"]:focus,
+body.dark-theme textarea:focus,
+body.dark-theme select:focus {
+  border-color: var(--gold-primary) !important;
+}
+
+body.dark-theme select option {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Room simulator overlay in dark theme */
+body.dark-theme .room-preview-container {
+  background: radial-gradient(circle at center, rgba(18, 24, 21, 0.3) 0%, #0A0E0C 85%) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Modals overlays in dark mode */
+body.dark-theme .checkout-modal-overlay,
+body.dark-theme .success-modal-overlay,
+body.dark-theme .cart-drawer-overlay {
+  background: rgba(0, 0, 0, 0.75) !important;
+}
+
+/* Custom scrollbar track overrides */
+body.dark-theme ::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-color: var(--border-glass);
+}
+
+/* Glowing accents on flame unboxing and other features */
+body.dark-theme .unboxing-glow-ring {
+  box-shadow: 0 0 50px rgba(212, 175, 55, 0.3) !important;
+}
+
+body.dark-theme .custom-candle-preview-container {
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%) !important;
+}
