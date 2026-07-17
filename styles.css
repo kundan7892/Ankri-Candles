@@ -4899,24 +4899,40 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
   }
 
   /* Storefront Dialog / Success Modals */
+  .modal-overlay {
+    align-items: flex-start !important;
+    padding: 1.5rem 1rem !important;
+    overflow-y: auto !important;
+  }
+
   .enquiry-modal,
   .success-modal,
   .success-modal-card,
   .bulk-order-modal,
   .modal-card {
-    padding: 2rem 1.5rem !important;
-    width: 92% !important;
-    margin: 0 auto !important;
+    padding: 2.2rem 1.5rem 1.8rem !important;
+    width: 100% !important;
+    max-width: 580px !important;
+    margin: 2rem auto !important;
+    box-sizing: border-box !important;
   }
 
   .enquiry-modal h2,
   .success-modal h2 {
     font-size: 1.8rem !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 1.25rem !important;
   }
 
   .enquiry-form {
     gap: 1rem !important;
+  }
+
+  .enquiry-form input,
+  .enquiry-form select,
+  .enquiry-form textarea {
+    padding: 0.8rem 1.0rem !important;
+    border-radius: 4px !important;
+    font-size: 0.9rem !important;
   }
 }
 
