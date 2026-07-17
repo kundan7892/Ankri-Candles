@@ -1,0 +1,24 @@
+﻿294031b Undo dynamic test mode parameter check, restoring developer controls to default visibility
+fcefadb Hide Spin Wheel testing helpers from public view, enabled via ?test=true query string
+b514625 Enhance Spin Wheel contrast, luxury styling, and implement strict checkout phone Validation
+b5e63ee feat: implement offers spin wheel popup, MongoDB rewards schema, and super admin dashboard integration
+87d4498 fix: resolve dark theme logo contrast by toggling between light and dark SVG logo variations based on theme
+7269cbb Implement premium Dark Mode toggle and styling overrides with obsidian themes and glowing accents
+d2f25c3 Implement Ankri Gifting Studio section with themed category previews and checkout integration
+8984912 style: remove focus timer and hero sound; implement high-fidelity van delivery animation
+cc1e1da feat: Replace WhatsApp redirect with AI Assistant support chat panel
+27c0585 feat: Add Ankri Support chat card WhatsApp widget
+061e9f4 feat: Add immersive Zen Workspace & Breathing Companion
+c65deba Implement WhatsApp abandoned cart reminder system and Admin log panels
+005a6bd feat: add interactive gifting experience and note card builder
+bcc4413 feat: Add responsive click listeners, close actions, and search filtering for Search, Wishlist, and Profile buttons
+0c22f00 feat: Add bold, circular SVG logo and scale header/footer layout to 64px
+9b0f626 feat: Integrate approved brand logo image into header and footer
+f708d3a feat: Integrate Super Admin visual portal as overlay modal on homepage
+03ad895 feat: Add Super Admin Portal hyperlink to website footer
+63fc334 feat: Implement MongoDB schemas, Checkout form details capture, and Super Admin Portal dashboard tabs for bookings and payments
+f154cb1 Fix hero section CTA buttons alignment, height matching, and mobile layout stacking
+75f1089 Make Explore Collection CTA button curved
+425089a Upgrade hero CTA button to premium gold gradient glow and craft copy
+2081f70 Update WhatsApp floating widget redirect phone number
+7515cd4 Add premium visual features and glassmorphic redesign

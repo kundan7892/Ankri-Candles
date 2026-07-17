@@ -1742,7 +1742,7 @@ function initAppFlow() {
         } else if (queryLower.includes('wax') || queryLower.includes('soy') || queryLower.includes('vegan')) {
           return "Ankri Candles are hand-poured with 100% natural, biodegradable soy wax, blended with vegan components and premium therapeutic fragrance oils.";
         } else if (queryLower.includes('hi') || queryLower.includes('hello') || queryLower.includes('hey') || queryLower.includes('help') || queryLower.includes('support')) {
-          return "Hello! I am your Ankri AI Support avatar. Ask me anything about our premium custom soy candles, scent synergy ratios, or order shipping!";
+          return "Hi! I am here to help you. You can ask me about our custom candle builder, scent combinations, shipping/returns policy, or tracking orders. What can I assist you with today?";
         } else {
           return "That's a lovely question! As an AI guide at Ankri Candles, I can help you select scent blends, analyze vessel compatibility, or track order statuses. Let me know if you would like me to explain anything else!";
         }
@@ -1778,7 +1778,7 @@ function initAppFlow() {
 
           try {
             // Dispatch live chat request to backend Express Support Route
-            const response = await fetch('/api/support-chat', {
+            const response = await fetch('http://localhost:5000/api/support-chat', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
@@ -2675,7 +2675,10 @@ function initAppFlow() {
     const discountedSubtotal = subtotal - discountValue;
 
     // Shipping calculations: FREE above ₹999, else ₹100
-    const shipping = discountedSubtotal >= 999 ? 0 : 100;
+    let shipping = discountedSubtotal >= 999 ? 0 : 100;
+    if (state.promoApplied && state.appliedPromoCode === "ANKRISHIP") {
+      shipping = 0;
+    }
     const finalTotal = discountedSubtotal + shipping;
 
     cartSubtotal.textContent = `₹${subtotal.toFixed(0)}`;
@@ -2744,10 +2747,29 @@ function initAppFlow() {
     if (code === "LIGHTUP") {
       state.discount = 0.15; // 15% discount
       state.promoApplied = true;
+      state.appliedPromoCode = "LIGHTUP";
       showToast("Promo Code LIGHTUP applied! 15% Off.");
       renderCart();
+    } else if (code === "ANKRI10") {
+      state.discount = 0.10; // 10% discount
+      state.promoApplied = true;
+      state.appliedPromoCode = "ANKRI10";
+      showToast("Wheel Code ANKRI10 applied! Locked to winning phone number.");
+      renderCart();
+    } else if (code === "ANKRISHIP") {
+      state.discount = 0.0;
+      state.promoApplied = true;
+      state.appliedPromoCode = "ANKRISHIP";
+      showToast("Wheel Code ANKRISHIP applied! Locked to winning phone number.");
+      renderCart();
+    } else if (code === "ANKRIB2G1") {
+      state.discount = 0.20; // 20% off
+      state.promoApplied = true;
+      state.appliedPromoCode = "ANKRIB2G1";
+      showToast("Wheel Code ANKRIB2G1 applied (20% Off)! Locked to winning phone number.");
+      renderCart();
     } else {
-      showToast("Invalid promo code. Hint: LIGHTUP");
+      showToast("Invalid promo code.");
     }
   }
 
@@ -2778,6 +2800,33 @@ function initAppFlow() {
     payBtn.disabled = true;
     payBtn.textContent = "Processing Payment...";
 
+    if (state.promoApplied && ["ANKRI10", "ANKRISHIP", "ANKRIB2G1"].includes(state.appliedPromoCode)) {
+      try {
+        const checkRes = await fetch('http://localhost:5000/api/spin-rewards/validate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: phone, code: state.appliedPromoCode })
+        });
+        const checkObj = await checkRes.json();
+        if (!checkRes.ok || !checkObj.valid) {
+          showToast(checkObj.message || "Promo validation failed. Phone number mismatch!");
+          payBtn.disabled = false;
+          payBtn.textContent = originalText;
+          return;
+        }
+      } catch (err) {
+        console.error('Validation error:', err);
+        const wonPhoneDigits = localStorage.getItem('ankri_won_phone_digits') || '';
+        const inputDigits = phone.replace(/\D/g, '');
+        if (wonPhoneDigits && !inputDigits.endsWith(wonPhoneDigits) && !wonPhoneDigits.endsWith(inputDigits)) {
+          showToast("Local validation: Phone number mismatch for spin reward code.");
+          payBtn.disabled = false;
+          payBtn.textContent = originalText;
+          return;
+        }
+      }
+    }
+
     // Calculate totals
     let subtotal = 0;
     state.cart.forEach(item => {
@@ -2785,7 +2834,10 @@ function initAppFlow() {
     });
     const discountValue = subtotal * state.discount;
     const discountedSubtotal = subtotal - discountValue;
-    const shipping = discountedSubtotal >= 999 ? 0 : 100;
+    let shipping = discountedSubtotal >= 999 ? 0 : 100;
+    if (state.promoApplied && state.appliedPromoCode === "ANKRISHIP") {
+      shipping = 0;
+    }
     const total = discountedSubtotal + shipping;
 
     const randomSuffix = Math.floor(10000 + Math.random() * 90000);
@@ -3712,6 +3764,154 @@ function initAppFlow() {
       `).join('');
     });
   }
+
+  // --- SPIN & WIN OFFERS WHEEL LOGIC ---
+  function initOffersWheel() {
+    const overlay = document.getElementById('spin-wheel-overlay');
+    const closeBtn = document.getElementById('close-spin-wheel-btn');
+    const formStep = document.getElementById('spin-step-phone');
+    const phoneForm = document.getElementById('spin-phone-form');
+    const phoneInput = document.getElementById('spin-phone-input');
+    const countryCodeSelect = document.getElementById('spin-country-code');
+    const randomBtn = document.getElementById('btn-generate-rand-phone');
+    const declineBtn = document.getElementById('btn-spin-decline');
+
+    const wheelStep = document.getElementById('spin-step-wheel');
+    const wheelSvg = document.getElementById('wheel-svg');
+    const spinBtn = document.getElementById('btn-spin-wheel');
+
+    const revealStep = document.getElementById('spin-step-reveal');
+    const prizeTxt = document.getElementById('spin-win-prize-txt');
+    const couponCodeTxt = document.getElementById('spin-win-coupon-code');
+    const copyBtn = document.getElementById('btn-copy-code-spin');
+    const revealCloseBtn = document.getElementById('btn-spin-reward-close');
+
+    const devFloater = document.getElementById('floating-test-wheel-btn');
+
+    let customerPhone = '';
+    let customerCountry = '';
+    let isSpinning = false;
+
+    const rewards = [
+      { name: "10% OFF", code: "ANKRI10", sliceIndex: 0 },
+      { name: "Free Shipping", code: "ANKRISHIP", sliceIndex: 1 },
+      { name: "Buy 2 Get 1", code: "ANKRIB2G1", sliceIndex: 2 }
+    ];
+
+    function showWheelPopup() {
+      formStep.classList.remove('hidden');
+      wheelStep.classList.add('hidden');
+      revealStep.classList.add('hidden');
+      if (overlay) overlay.classList.remove('hidden');
+      isSpinning = false;
+      if (wheelSvg) {
+        wheelSvg.style.transform = 'rotate(0deg)';
+        wheelSvg.style.transition = 'none';
+      }
+      localStorage.setItem('ankri_shown_spin_wheel', 'true');
+    }
+
+    const hasShown = localStorage.getItem('ankri_shown_spin_wheel') === 'true';
+    if (!hasShown) {
+      setTimeout(() => {
+        showWheelPopup();
+      }, 4500);
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', () => overlay.classList.add('hidden'));
+    if (declineBtn) declineBtn.addEventListener('click', () => overlay.classList.add('hidden'));
+    if (revealCloseBtn) revealCloseBtn.addEventListener('click', () => overlay.classList.add('hidden'));
+
+    if (randomBtn) {
+      randomBtn.addEventListener('click', () => {
+        const randNum = Math.floor(1000000000 + Math.random() * 9000000000);
+        phoneInput.value = randNum.toString();
+        showToast("Generated test phone number!");
+      });
+    }
+
+    if (devFloater) {
+      devFloater.addEventListener('click', () => {
+        localStorage.removeItem('ankri_shown_spin_wheel');
+        showWheelPopup();
+        showToast("Spin Wheel reset! Popup triggered.");
+      });
+    }
+
+    if (phoneForm) {
+      phoneForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        customerPhone = phoneInput.value.trim();
+        customerCountry = countryCodeSelect.value;
+
+        if (!customerPhone) return;
+
+        localStorage.setItem('ankri_won_phone_digits', customerPhone.replace(/\D/g, ''));
+
+        formStep.classList.add('hidden');
+        wheelStep.classList.remove('hidden');
+      });
+    }
+
+    if (spinBtn) {
+      spinBtn.addEventListener('click', () => {
+        if (isSpinning) return;
+        isSpinning = true;
+
+        const wonIndex = Math.floor(Math.random() * 3);
+        const reward = rewards[wonIndex];
+
+        let sliceAngle = 0;
+        if (wonIndex === 0) sliceAngle = 30;
+        else if (wonIndex === 1) sliceAngle = 90;
+        else sliceAngle = 150;
+
+        const targetRotation = (360 * 6) + (270 - sliceAngle);
+
+        if (wheelSvg) {
+          wheelSvg.style.transition = 'transform 6s cubic-bezier(0.15, 0.9, 0.25, 1)';
+          wheelSvg.style.transform = `rotate(${targetRotation}deg)`;
+        }
+
+        setTimeout(async () => {
+          try {
+            await fetch('http://localhost:5000/api/spin-rewards', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                phone: customerPhone,
+                country: customerCountry,
+                reward: reward.name
+              })
+            });
+          } catch (err) {
+            console.error('Failed to save spin reward:', err);
+          }
+
+          if (prizeTxt) prizeTxt.textContent = reward.name;
+          if (couponCodeTxt) couponCodeTxt.textContent = reward.code;
+
+          wheelStep.classList.add('hidden');
+          revealStep.classList.remove('hidden');
+
+          showToast(`Won ${reward.name}! Coupon Code: ${reward.code}`);
+        }, 6200);
+      });
+    }
+
+    if (copyBtn && couponCodeTxt) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(couponCodeTxt.innerText).then(() => {
+          showToast("Coupon code copied to clipboard!");
+        }).catch(err => {
+          console.error('Failed to copy code: ', err);
+        });
+      });
+    }
+  }
+
+  // Initialize Offer Wheel logic execution
+  initOffersWheel();
 }
 
 if (document.readyState === 'loading') {

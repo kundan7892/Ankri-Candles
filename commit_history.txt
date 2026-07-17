@@ -1,0 +1,25 @@
+﻿294031b Undo dynamic test mode parameter check, restoring developer controls to default visibility
+fcefadb Hide Spin Wheel testing helpers from public view, enabled via ?test=true query string
+b514625 Enhance Spin Wheel contrast, luxury styling, and implement strict checkout phone Validation
+b5e63ee feat: implement offers spin wheel popup, MongoDB rewards schema, and super admin dashboard integration
+87d4498 fix: resolve dark theme logo contrast by toggling between light and dark SVG logo variations based on theme
+1ebdefc fix: change backend Gemini model to gemini-3.1-flash-lite to resolve deprecation error and enable active free-tier quota
+f969bd4 fix: change relative API support-chat endpoint to absolute localhost:5000 address to allow Vite dev client to reach Express backend
+57dc2a4 feat: configure Gemini API Key for AI support assistant, improve local offline fallback response, and fix dark mode input & bubble contrast
+c900948 Fix bulk enquiry and checkout details modal responsiveness and scroll support on mobile devices
+9c7b8a7 Update Ankri Candles logo mark to luxury line-art candle jar with glowing flame and sprout
+7269cbb Implement premium Dark Mode toggle and styling overrides with obsidian themes and glowing accents
+d99829a Change Housewarming color to terracotta brick theme to distinguish from Christmas evergreen green
+fe97824 Color code occasion selector cards with individual theme accents and glowing lighting effects
+d2f25c3 Implement Ankri Gifting Studio section with themed category previews and checkout integration
+8984912 style: remove focus timer and hero sound; implement high-fidelity van delivery animation
+e8d869d feat: Integrate live Google Gemini support API and frontend fetch connection
+cc1e1da feat: Replace WhatsApp redirect with AI Assistant support chat panel
+27c0585 feat: Add Ankri Support chat card WhatsApp widget
+061e9f4 feat: Add immersive Zen Workspace & Breathing Companion
+98a5db4 chore: ignore database backups / debug script, add test whatsapp runner
+3f2dfc8 Cancel Twilio configuration; return WhatsApp reminders to local simulation
+fc39121 Update server.js template message syntax to support Twilio Sandbox
+aa81812 Configure Twilio API gateway integration under 20-minute threshold
+5519dbd Change WhatsApp reminder threshold to 20 minutes
+c65deba Implement WhatsApp abandoned cart reminder system and Admin log panels
