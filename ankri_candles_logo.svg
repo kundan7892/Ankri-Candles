@@ -10,14 +10,26 @@
 
   <!-- Left Side: Circular Logo Mark -->
   <g transform="translate(8, 6)">
-    <!-- Main outer circle (Bolder) -->
-    <circle cx="26" cy="26" r="23" fill="none" stroke="url(#luxuryGold)" stroke-width="3" />
-    <!-- Candle Flame within Circle (Bolder) -->
-    <line x1="26" y1="35" x2="26" y2="28" stroke="#13221C" stroke-width="3.5" stroke-linecap="round" />
-    <!-- Flame Solid Contour -->
-    <path d="M 26 12 C 21.5 19.5 21.5 26.5 26 28.5 C 30.5 26.5 30.5 19.5 26 12 Z" fill="url(#luxuryGold)" stroke="url(#luxuryGold)" stroke-width="0.5" />
-    <!-- Flame Sparkle accent -->
-    <path d="M 26 8 L 27.5 11 L 30 11.5 L 27.5 12.5 L 26 15 L 24.5 12.5 L 22 11.5 L 24.5 11 Z" fill="#F3E5AB" />
+    <!-- Main outer circle -->
+    <circle cx="26" cy="26" r="23" fill="none" stroke="url(#luxuryGold)" stroke-width="2.5" />
+    <!-- Secondary dotted inner circle -->
+    <circle cx="26" cy="26" r="20" fill="none" stroke="url(#luxuryGold)" stroke-width="0.5" stroke-dasharray="1.5, 1.5" />
+    
+    <!-- Minimalist Candle Jar Base -->
+    <path d="M 19 42 L 33 42 M 21 42 L 21 32 C 21 31, 22 30, 23 30 L 29 30 C 30 30, 31 31, 31 32 L 31 42" fill="none" stroke="url(#luxuryGold)" stroke-width="1.8" stroke-linejoin="round" />
+    
+    <!-- Wick -->
+    <line x1="26" y1="30" x2="26" y2="25" stroke="url(#luxuryGold)" stroke-width="1.5" stroke-linecap="round" />
+    
+    <!-- Outer Flame Glow -->
+    <path d="M 26 11 C 29 16, 30.5 20, 30.5 22.5 C 30.5 25, 28.5 27, 26 27 C 23.5 27, 21.5 25, 21.5 22.5 C 21.5 20, 23 16, 26 11 Z" fill="rgba(243, 229, 171, 0.2)" stroke="url(#luxuryGold)" stroke-width="0.5" />
+    
+    <!-- Inner Flame Contour -->
+    <path d="M 26 13 C 28.5 17.5, 29.5 20.5, 29.5 22.5 C 29.5 24.5, 28 26, 26 26 C 24 26, 22.5 24.5, 22.5 22.5 C 22.5 20.5, 23.5 17.5, 26 13 Z" fill="none" stroke="url(#luxuryGold)" stroke-width="1.5" />
+    
+    <!-- Leaf Sprout leaves inside the flame -->
+    <path d="M 26 24 C 26 24, 27.5 22, 27.5 20.5 C 27.5 19, 26 19, 26 19" fill="none" stroke="url(#luxuryGold)" stroke-width="1.1" stroke-linecap="round" />
+    <path d="M 26 22 C 26 22, 24.5 20.5, 24.5 19 C 24.5 17.5, 26 17.5, 26 17.5" fill="none" stroke="url(#luxuryGold)" stroke-width="1.1" stroke-linecap="round" />
   </g>
 
   <!-- Right Side: Bold Brand Typography -->
