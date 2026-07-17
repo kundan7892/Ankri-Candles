@@ -1742,7 +1742,7 @@ function initAppFlow() {
         } else if (queryLower.includes('wax') || queryLower.includes('soy') || queryLower.includes('vegan')) {
           return "Ankri Candles are hand-poured with 100% natural, biodegradable soy wax, blended with vegan components and premium therapeutic fragrance oils.";
         } else if (queryLower.includes('hi') || queryLower.includes('hello') || queryLower.includes('hey') || queryLower.includes('help') || queryLower.includes('support')) {
-          return "Hello! I am your Ankri AI Support avatar. Ask me anything about our premium custom soy candles, scent synergy ratios, or order shipping!";
+          return "Hi! I am here to help you. You can ask me about our custom candle builder, scent combinations, shipping/returns policy, or tracking orders. What can I assist you with today?";
         } else {
           return "That's a lovely question! As an AI guide at Ankri Candles, I can help you select scent blends, analyze vessel compatibility, or track order statuses. Let me know if you would like me to explain anything else!";
         }

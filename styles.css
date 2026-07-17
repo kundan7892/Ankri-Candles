@@ -6071,15 +6071,64 @@ body.dark-theme {
 body.dark-theme .gift-showcase-panel,
 body.dark-theme .gift-cat-card,
 body.dark-theme .quiz-card,
-body.dark-theme .chat-msg-bubble,
 body.dark-theme .checkout-modal,
 body.dark-theme .cart-drawer,
 body.dark-theme .config-step-content,
-body.dark-theme .support-chat-panel,
-body.dark-theme .chat-msg-row {
+body.dark-theme .support-chat-panel {
   background: rgba(18, 24, 21, 0.7) !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* AI Support Assistant Chat Message Overrides in Dark Mode */
+body.dark-theme .chat-msg-bubble {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+  font-weight: 550;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.dark-theme .user-msg-row .chat-msg-bubble {
+  background: var(--gold-primary) !important;
+  color: #0A0E0C !important;
+  font-weight: 600;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2) !important;
+}
+
+body.dark-theme .chat-panel-header,
+body.dark-theme .chat-panel-footer {
+  background: var(--bg-secondary) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-theme #chat-user-input {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+body.dark-theme .chat-header-btn {
+  color: var(--text-primary) !important;
+}
+
+body.dark-theme .chat-header-btn:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+body.dark-theme .chat-track-orders-btn {
+  background: var(--bg-tertiary) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: var(--text-primary) !important;
+}
+
+body.dark-theme .chat-track-orders-btn:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+body.dark-theme #chat-user-input::placeholder {
+  color: var(--text-muted) !important;
 }
 
 body.dark-theme input[type="text"],
