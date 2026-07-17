@@ -71,6 +71,74 @@ function initAppFlow() {
     amber: 'Warm Amber'
   };
 
+  const GIFT_OCCASIONS = {
+    birthday: {
+      badge: "Birthday Curated Selection",
+      title: "Enchanted Birthday",
+      description: "A sweet, celebratory blend crafted to make birthdays feel magical and cozy. Premium packaging features a sleek charcoal gold-embossed design.",
+      scents: { heart: 'vanilla', depth: 'coconut', twist: 'chocolate' },
+      wrap: 'obsidian-velvet',
+      jar: 'black',
+      theme: 'midnight-black',
+      labelTitle: 'BIRTHDAY CAKE',
+      labelText: 'Vanilla, Coconut & Chocolate',
+      msg: 'Wishing you a beautiful year ahead filled with warm light, cozy moments, and sweet memories. Happy Birthday!',
+      price: 849
+    },
+    anniversary: {
+      badge: "Anniversary Curated Selection",
+      title: "Golden Union",
+      description: "A timeless, sophisticated fragrance representing harmony and enduring warmth. Accompanied by a gold-embellished vintage wrap.",
+      scents: { heart: 'sandalwood', depth: 'rose', twist: 'vanilla' },
+      wrap: 'gold-deco',
+      jar: 'gold',
+      theme: 'vintage-gold',
+      labelTitle: 'GOLDEN UNION',
+      labelText: 'Sandalwood, Rose & Vanilla',
+      msg: 'Cheers to a lifetime of love, laughter, and beautiful memories. Happy Anniversary!',
+      price: 849
+    },
+    valentine: {
+      badge: "Valentine Curated Selection",
+      title: "Crimson Spark",
+      description: "A deeply romantic, botanical blend featuring luscious florals and sweet notes that set the perfect candlelit mood.",
+      scents: { heart: 'rose', depth: 'vanilla', twist: 'ylang-ylang' },
+      wrap: 'obsidian-velvet',
+      jar: 'amber',
+      theme: 'warm-cream',
+      labelTitle: 'CRIMSON SPARK',
+      labelText: 'Rose, Vanilla & Ylang Ylang',
+      msg: 'You light up my soul. Happy Valentine\'s Day, my love!',
+      price: 849
+    },
+    christmas: {
+      badge: "Christmas Curated Selection",
+      title: "Holiday Hearth",
+      description: "Wrap your space in the festive warmth of holiday baking, forest pines, and mulled spices.",
+      scents: { heart: 'cinnamon', depth: 'clove', twist: 'orange' },
+      wrap: 'forest-silk',
+      jar: 'amber',
+      theme: 'warm-cream',
+      labelTitle: 'HOLIDAY HEARTH',
+      labelText: 'Cinnamon, Clove & Orange',
+      msg: 'Wishing you a merry and bright Christmas season, filled with joy, peace, and cozy wonders!',
+      price: 849
+    },
+    housewarming: {
+      badge: "Housewarming Curated Selection",
+      title: "Earthy Sanctuary",
+      description: "Grounding woods and crisp clean aromas designed to cleanse, welcome, and warm up a new living space.",
+      scents: { heart: 'first-rain', depth: 'sandalwood', twist: 'lemongrass' },
+      wrap: 'forest-silk',
+      jar: 'silver',
+      theme: 'warm-cream',
+      labelTitle: 'NEW SANCTUARY',
+      labelText: 'First Rain, Sandalwood & Lemongrass',
+      msg: 'May your new home be filled with warmth, love, delicious scents, and endless happy moments. Congratulations!',
+      price: 849
+    }
+  };
+
   const QUIZ_QUESTIONS = [
     {
       id: 1,
@@ -1737,6 +1805,214 @@ function initAppFlow() {
             if (typingElem) typingElem.remove();
             addAgentMessage(getLocalFallbackReply(query));
           }
+        });
+      }
+
+      // --- INTERACTIVE GIFTING STUDIO EVENT LISTENERS ---
+      const giftSelectors = document.querySelectorAll('.gift-cat-card');
+      const giftShowcase = document.getElementById('gift-showcase');
+      const giftAddCartBtn = document.getElementById('gift-add-cart-btn');
+      const giftLoadCustomizerBtn = document.getElementById('gift-load-customizer-btn');
+
+      let selectedGiftingOccasion = 'birthday';
+
+      if (giftSelectors && giftSelectors.length > 0) {
+        giftSelectors.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const occasion = btn.getAttribute('data-occasion');
+            selectedGiftingOccasion = occasion;
+
+            // Update selectors active class
+            giftSelectors.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Update showcase theme attributes
+            if (giftShowcase) {
+              giftShowcase.setAttribute('data-active-occasion', occasion);
+            }
+
+            // Get occasion data
+            const data = GIFT_OCCASIONS[occasion];
+            if (!data) return;
+
+            // DOM updates details
+            const badge = document.getElementById('gift-badge-element');
+            const title = document.getElementById('gift-title-element');
+            const description = document.getElementById('gift-description-element');
+
+            const recipeHeart = document.getElementById('gift-recipe-heart');
+            const recipeDepth = document.getElementById('gift-recipe-depth');
+            const recipeTwist = document.getElementById('gift-recipe-twist');
+
+            const colorHeart = document.getElementById('gift-color-heart');
+            const colorDepth = document.getElementById('gift-color-depth');
+            const colorTwist = document.getElementById('gift-color-twist');
+
+            const cardMsg = document.getElementById('gift-card-message-text');
+            const priceNum = document.getElementById('gift-price-numeric');
+
+            const glowEffect = document.getElementById('gift-candle-glow-effect');
+            const wrapPreview = document.getElementById('gift-wrap-preview-element');
+            const renderElement = document.getElementById('gift-candle-render-element');
+            const labelElement = document.getElementById('gift-candle-label-element');
+
+            const miniTitle = document.getElementById('gift-label-title-preview');
+            const miniScents = document.getElementById('gift-label-scents-preview');
+
+            if (badge) badge.textContent = data.badge;
+            if (title) title.textContent = data.title;
+            if (description) description.textContent = data.description;
+
+            // Recipes
+            if (recipeHeart) recipeHeart.textContent = SCENT_POOL[data.scents.heart].name;
+            if (recipeDepth) recipeDepth.textContent = SCENT_POOL[data.scents.depth].name;
+            if (recipeTwist) recipeTwist.textContent = SCENT_POOL[data.scents.twist].name;
+
+            // Colors
+            if (colorHeart) colorHeart.style.background = SCENT_POOL[data.scents.heart].color;
+            if (colorDepth) colorDepth.style.background = SCENT_POOL[data.scents.depth].color;
+            if (colorTwist) colorTwist.style.background = SCENT_POOL[data.scents.twist].color;
+
+            if (cardMsg) cardMsg.textContent = `"${data.msg}"`;
+            if (priceNum) priceNum.textContent = `₹${data.price}`;
+
+            // Gifting ambient preview glow
+            if (glowEffect) {
+              const mixColor = SCENT_POOL[data.scents.heart].color;
+              glowEffect.style.background = `radial-gradient(circle, ${mixColor}4D 0%, transparent 65%)`;
+            }
+
+            // Wrappers and Candle jar/themes
+            if (wrapPreview) wrapPreview.setAttribute('data-wrap', data.wrap);
+            if (renderElement) renderElement.setAttribute('data-jar', data.jar);
+            if (labelElement) labelElement.setAttribute('data-theme', data.theme);
+            if (miniTitle) miniTitle.textContent = data.labelTitle;
+            if (miniScents) miniScents.textContent = data.labelText;
+          });
+        });
+      }
+
+      // Add selection to bag directly
+      if (giftAddCartBtn) {
+        giftAddCartBtn.addEventListener('click', () => {
+          const data = GIFT_OCCASIONS[selectedGiftingOccasion];
+          if (!data) return;
+
+          // Push new gift set item to cart state
+          const giftId = `gift-set-${selectedGiftingOccasion}`;
+
+          const heartName = SCENT_POOL[data.scents.heart].name;
+          const depthName = SCENT_POOL[data.scents.depth].name;
+          const twistName = SCENT_POOL[data.scents.twist].name;
+
+          const existing = state.cart.find(item => item.id === giftId);
+          if (existing) {
+            existing.quantity++;
+          } else {
+            const heartColor = SCENT_POOL[data.scents.heart].color;
+            const depthColor = SCENT_POOL[data.scents.depth].color;
+            const twistColor = SCENT_POOL[data.scents.twist].color;
+            const colorMix = `${twistColor}, ${heartColor}, ${depthColor}`;
+
+            state.cart.push({
+              id: giftId,
+              name: `Curated Gift Set: ${data.title}`,
+              price: data.price,
+              description: `Curated Occasion: ${selectedGiftingOccasion.toUpperCase()} | Recipe: ${heartName}, ${depthName} & ${twistName} | Wrap: ${data.wrap.replace('-', ' ')} | Greeting Note: "${data.msg}"`,
+              colors: colorMix,
+              isCustom: true,
+              quantity: 1
+            });
+          }
+
+          renderCart();
+          showToast(`"${data.title}" Gifting Set added to bag!`);
+          setTimeout(toggleCartDrawer, 400);
+        });
+      }
+
+      // Customize Gift - Load into Artisan Customizer
+      if (giftLoadCustomizerBtn) {
+        giftLoadCustomizerBtn.addEventListener('click', () => {
+          const data = GIFT_OCCASIONS[selectedGiftingOccasion];
+          if (!data) return;
+
+          // Apply state updates to Customizer state
+          state.customizer.productType = 'glass-jar';
+          state.customizer.vessel = data.jar === 'black' ? 'black' : (data.jar === 'gold' ? 'gold' : (data.jar === 'silver' ? 'silver' : 'amber'));
+          state.customizer.scents.heart = data.scents.heart;
+          state.customizer.scents.depth = data.scents.depth;
+          state.customizer.scents.twist = data.scents.twist;
+
+          state.customizer.label.title = data.labelTitle;
+          state.customizer.label.scents = data.labelText;
+          state.customizer.label.theme = data.theme;
+
+          // Gifting add-ons configuration pre-filled
+          state.customizer.gifting.enabled = true;
+          state.customizer.gifting.wrap = data.wrap;
+          state.customizer.gifting.message = data.msg;
+
+          // Sync Customizer Input Form UI
+          const productTypeRefill = document.querySelector('input[name="product-type"][value="glass-jar"]');
+          if (productTypeRefill) productTypeRefill.checked = true;
+          // Trigger product type visual update
+          document.querySelectorAll('.product-type-card').forEach(card => {
+            const radio = card.querySelector('input');
+            card.classList.toggle('active', radio && radio.value === 'glass-jar');
+          });
+
+          // Sync Vessel Jars Selection Buttons
+          document.querySelectorAll('.vessel-swatch-card').forEach(card => {
+            const cardVessel = card.getAttribute('data-vessel');
+            card.classList.toggle('active', cardVessel === state.customizer.vessel);
+          });
+
+          // Sync scent selector values
+          if (scentSelectHeart) scentSelectHeart.value = data.scents.heart;
+          if (scentSelectDepth) scentSelectDepth.value = data.scents.depth;
+          if (scentSelectTwist) scentSelectTwist.value = data.scents.twist;
+
+          // Sync label input UI elements
+          if (labelInputTitle) labelInputTitle.value = data.labelTitle;
+          if (labelInputScents) labelInputScents.value = data.labelText;
+          if (previewLabelTitle) previewLabelTitle.textContent = data.labelTitle;
+          if (previewLabelScents) previewLabelScents.textContent = data.labelText;
+
+          document.querySelectorAll('input[name="label-theme"]').forEach(radio => {
+            radio.checked = radio.value === data.theme;
+          });
+          document.querySelectorAll('.label-theme-card').forEach(card => {
+            const radio = card.querySelector('input');
+            card.classList.toggle('active', radio && radio.value === data.theme);
+          });
+
+          // Sync Gifting check box and fields in builder
+          const giftCheckbox = document.getElementById('gift-add-on-toggle');
+          if (giftCheckbox) giftCheckbox.checked = true;
+
+          const giftOptionsRowSection = document.getElementById('gifting-customizer-options-row');
+          if (giftOptionsRowSection) giftOptionsRowSection.classList.remove('hidden');
+
+          // Sync customizer gift wrapping preview
+          document.querySelectorAll('.wrap-btn').forEach(btn => {
+            const wrapId = btn.getAttribute('data-wrap');
+            btn.classList.toggle('active', wrapId === data.wrap);
+          });
+
+          const customizerGiftMsgInput = document.getElementById('gift-card-message');
+          if (customizerGiftMsgInput) customizerGiftMsgInput.value = data.msg;
+
+          // Run internal UI engine updates
+          updateVisualWaxLayers();
+          updateScentSynergy();
+
+          // Scroll smoothly to the customizer section
+          const customizerSec = document.getElementById('customizer');
+          if (customizerSec) {
+            customizerSec.scrollIntoView({ behavior: 'smooth' });
+          }
+          showToast(`Curated recipe for "${data.title}" loaded in Customizer!`);
         });
       }
     }

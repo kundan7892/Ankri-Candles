@@ -5290,3 +5290,616 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
     transform: translateX(450px);
   }
 }
+
+/* ==========================================================================
+   INTERACTIVE GIFT STUDIO SECTION STYLING
+   ========================================================================== */
+.gifting-section {
+  padding: 6rem 2rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.gifting-ambient-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+  transition: background 0.8s ease;
+}
+
+.gifting-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Occasion Selector Cards */
+.gift-category-selector {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 3.5rem;
+}
+
+.gift-cat-card {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  cursor: pointer;
+  border-radius: 16px;
+}
+
+.gift-cat-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(212, 175, 55, 0.3);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.06);
+}
+
+.gift-cat-card.active {
+  background: var(--bg-primary);
+  border-color: var(--accent, #D4AF37);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.12);
+}
+
+.gift-cat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(19, 34, 28, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+}
+
+.gift-cat-card:hover .gift-cat-icon,
+.gift-cat-card.active .gift-cat-icon {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--accent, #D4AF37);
+  transform: scale(1.1);
+}
+
+.gift-cat-name {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+/* Dynamic Gifting Showcase Panel */
+.gift-showcase-panel {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  gap: 3.5rem;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left: Interactive Preview Side */
+.gift-preview-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.gift-candle-stage {
+  width: 100%;
+  height: 340px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px dashed rgba(212, 175, 55, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.gift-candle-wrapper {
+  position: relative;
+  width: 160px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gift-candle-glow {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 1;
+  transition: background 0.8s ease;
+}
+
+/* 3D Box Wrap Design Preview */
+.gift-box-wrap-preview {
+  position: absolute;
+  top: -15px;
+  left: -20px;
+  right: -20px;
+  bottom: -15px;
+  border-radius: 12px;
+  z-index: 3;
+  opacity: 0.65;
+  transition: all 0.5s ease;
+  pointer-events: none;
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.1), 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.gift-box-wrap-preview[data-wrap="forest-silk"] {
+  background: radial-gradient(circle at 30% 30%, #fefdf9 0%, #f6f3e6 100%);
+  border: 1px solid #e2ddc4;
+  background-image: radial-gradient(rgba(212, 175, 55, 0.2) 1px, transparent 0), radial-gradient(rgba(212, 175, 55, 0.1) 2px, transparent 0);
+  background-size: 16px 16px, 8px 8px;
+  background-position: 0 0, 8px 8px;
+}
+
+.gift-box-wrap-preview[data-wrap="gold-deco"] {
+  background: linear-gradient(135deg, #1c1d22 0%, #0e0f12 100%);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  background-image: repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.04) 0px, rgba(212, 175, 55, 0.04) 2px, transparent 2px, transparent 8px);
+}
+
+.gift-box-wrap-preview[data-wrap="obsidian-velvet"] {
+  background: radial-gradient(circle at 50% 50%, #151515 0%, #050505 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Ribbon Bow Accent on Box Preview */
+.gift-box-ribbon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.gift-box-ribbon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: var(--accent, #D4AF37);
+  transform: translateY(-50%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.gift-box-ribbon::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 20px;
+  background: var(--accent, #D4AF37);
+  transform: translateX(-50%);
+  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Candle Preview rendering */
+.gift-candle-preview-render {
+  position: relative;
+  width: 110px;
+  height: 145px;
+  border-radius: 6px;
+  z-index: 4;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease;
+}
+
+/* Different jars */
+.gift-candle-preview-render[data-jar="gold"] {
+  background: linear-gradient(135deg, #e5c060 0%, #b88d2f 100%);
+}
+
+.gift-candle-preview-render[data-jar="silver"] {
+  background: linear-gradient(135deg, #e2e2e2 0%, #a8a8a8 100%);
+}
+
+.gift-candle-preview-render[data-jar="black"] {
+  background: linear-gradient(135deg, #24252a 0%, #0d0d0f 100%);
+}
+
+.gift-candle-preview-render[data-jar="amber"] {
+  background: linear-gradient(135deg, #d38b35 0%, #82470f 100%);
+}
+
+.gift-candle-label {
+  width: 75%;
+  height: 60%;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.gift-candle-label[data-theme="warm-cream"] {
+  background: #fdfbf7;
+  color: #121212;
+}
+
+.gift-candle-label[data-theme="midnight-black"] {
+  background: #161616;
+  color: #fdfbf7;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.gift-candle-label[data-theme="vintage-gold"] {
+  background: #d4af37;
+  color: #121212;
+}
+
+.label-mini-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+}
+
+.label-mini-title {
+  font-family: var(--font-serif);
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.label-mini-scents {
+  font-family: var(--font-sans);
+  font-size: 0.4rem;
+  opacity: 0.8;
+}
+
+/* Float chips */
+.gift-perks-chips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.perk-chip {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--border-glass);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.perk-chip i,
+.perk-chip svg {
+  width: 12px;
+  height: 12px;
+  color: var(--accent, #D4AF37);
+}
+
+/* Right Side: details and actions */
+.gift-details-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.gift-badge {
+  align-self: flex-start;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent, #D4AF37);
+  padding: 0.3rem 0.8rem;
+  border-radius: 30px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 0.5px solid rgba(212, 175, 55, 0.2);
+}
+
+.gift-title {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.gift-description {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.curated-recipe-card {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.curated-recipe-card h4 {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.curated-recipe-card h4 i,
+.curated-recipe-card h4 svg {
+  width: 14px;
+  height: 14px;
+  color: var(--accent, #D4AF37);
+}
+
+.recipe-swatches {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.recipe-swatch-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.recipe-swatch-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: block;
+}
+
+.recipe-swatch-info {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Greeting note card bubble */
+.gift-card-preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-preview-tag {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.gift-card-bubble {
+  background: #fdfbf7;
+  border: 1px solid #e8e4d3;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
+}
+
+.gift-card-bubble i,
+.gift-card-bubble svg {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 14px;
+  height: 14px;
+  color: rgba(212, 175, 55, 0.2);
+}
+
+.gift-card-bubble p {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  margin: 0;
+  color: #3b3a36;
+  text-align: center;
+  line-height: 1.4;
+  padding: 0 10px;
+}
+
+/* CTA and price tag container */
+.offer-buy-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed var(--border-glass);
+  padding-top: 1.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.gift-price-tag {
+  display: flex;
+  flex-direction: column;
+}
+
+.gift-price-num {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.gift-price-details {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.gift-actions-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Thematic Coloring Overrides mapping occasion selection */
+.gift-showcase-panel[data-active-occasion="birthday"] {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 213, 79, 0.05) 100%);
+  border-color: rgba(255, 158, 128, 0.15);
+}
+
+.gift-showcase-panel[data-active-occasion="birthday"] .gift-badge {
+  color: #e65100;
+  background: rgba(255, 112, 67, 0.08);
+  border-color: rgba(255, 112, 67, 0.2);
+}
+
+.gift-showcase-panel[data-active-occasion="anniversary"] {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(212, 175, 55, 0.05) 100%);
+  border-color: rgba(212, 175, 55, 0.2);
+}
+
+.gift-showcase-panel[data-active-occasion="anniversary"] .gift-badge {
+  color: #b88d2f;
+  background: rgba(212, 175, 55, 0.06);
+  border-color: rgba(212, 175, 55, 0.2);
+}
+
+.gift-showcase-panel[data-active-occasion="valentine"] {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(233, 30, 99, 0.04) 100%);
+  border-color: rgba(233, 30, 99, 0.15);
+}
+
+.gift-showcase-panel[data-active-occasion="valentine"] .gift-badge {
+  color: #ad1457;
+  background: rgba(233, 30, 99, 0.06);
+  border-color: rgba(233, 30, 99, 0.2);
+}
+
+.gift-showcase-panel[data-active-occasion="christmas"] {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(27, 77, 62, 0.05) 100%);
+  border-color: rgba(196, 30, 58, 0.15);
+}
+
+.gift-showcase-panel[data-active-occasion="christmas"] .gift-badge {
+  color: #c41e3a;
+  background: rgba(196, 30, 58, 0.06);
+  border-color: rgba(196, 30, 58, 0.2);
+}
+
+.gift-showcase-panel[data-active-occasion="housewarming"] {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(143, 188, 143, 0.05) 100%);
+  border-color: rgba(143, 188, 143, 0.2);
+}
+
+.gift-showcase-panel[data-active-occasion="housewarming"] .gift-badge {
+  color: #2e7d32;
+  background: rgba(143, 188, 143, 0.08);
+  border-color: rgba(143, 188, 143, 0.2);
+}
+
+/* ==========================================================================
+   GIFTING MEDIA RESPONSIVENESS OVERRIDES
+   ========================================================================== */
+@media (max-width: 992px) {
+  .gift-category-selector {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .gift-showcase-panel {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2rem;
+  }
+
+  .gift-candle-stage {
+    height: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .gift-category-selector {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .gift-cat-card {
+    padding: 1rem 0.75rem;
+  }
+
+  .gift-title {
+    font-size: 2rem;
+  }
+
+  .gift-actions-row {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .gift-actions-row button {
+    width: 100%;
+  }
+
+  .offer-buy-box {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .gift-category-selector {
+    grid-template-columns: 1fr;
+  }
+}
