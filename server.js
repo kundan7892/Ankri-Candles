@@ -490,8 +490,8 @@ app.post('/api/support-chat', async (req, res) => {
       return res.status(200).json({ useFallback: true });
     }
 
-    // Call Google Gemini API (gemini-2.5-flash) using standard fetch
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+    // Call Google Gemini API (gemini-3.1-flash-lite) using standard fetch
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
