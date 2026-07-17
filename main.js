@@ -3788,6 +3788,15 @@ function initAppFlow() {
 
     const devFloater = document.getElementById('floating-test-wheel-btn');
 
+    const isTestMode = window.location.search.includes('test=true') || window.location.search.includes('debug=true');
+    if (isTestMode) {
+      if (randomBtn) randomBtn.classList.remove('hidden');
+      if (devFloater) devFloater.classList.remove('hidden');
+    } else {
+      if (randomBtn) randomBtn.classList.add('hidden');
+      if (devFloater) devFloater.classList.add('hidden');
+    }
+
     let customerPhone = '';
     let customerCountry = '';
     let isSpinning = false;
