@@ -5385,6 +5385,122 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
   text-transform: uppercase;
 }
 
+/* Color specific default icon accents */
+.gift-cat-card[data-occasion="birthday"] .gift-cat-icon {
+  color: rgba(230, 81, 0, 0.6);
+  background: rgba(255, 112, 67, 0.02);
+}
+
+.gift-cat-card[data-occasion="anniversary"] .gift-cat-icon {
+  color: rgba(184, 141, 47, 0.6);
+  background: rgba(212, 175, 55, 0.02);
+}
+
+.gift-cat-card[data-occasion="valentine"] .gift-cat-icon {
+  color: rgba(233, 30, 99, 0.6);
+  background: rgba(233, 30, 99, 0.02);
+}
+
+.gift-cat-card[data-occasion="christmas"] .gift-cat-icon {
+  color: rgba(27, 77, 62, 0.6);
+  background: rgba(27, 77, 62, 0.02);
+}
+
+.gift-cat-card[data-occasion="housewarming"] .gift-cat-icon {
+  color: rgba(46, 125, 50, 0.6);
+  background: rgba(143, 188, 143, 0.02);
+}
+
+/* Birthday Selector Card: Celebratory Soft Amber Gold */
+.gift-cat-card[data-occasion="birthday"]:hover,
+.gift-cat-card.active[data-occasion="birthday"] {
+  background: rgba(255, 112, 67, 0.04) !important;
+  border-color: rgba(255, 112, 67, 0.45) !important;
+  box-shadow: 0 10px 30px rgba(255, 112, 67, 0.08) !important;
+}
+
+.gift-cat-card[data-occasion="birthday"]:hover .gift-cat-icon,
+.gift-cat-card.active[data-occasion="birthday"] .gift-cat-icon {
+  background: rgba(255, 112, 67, 0.1) !important;
+  color: #E65100 !important;
+  box-shadow: 0 0 10px rgba(255, 112, 67, 0.2);
+}
+
+/* Anniversary Selector Card: Elegant Champagne Gold Deco */
+.gift-cat-card[data-occasion="anniversary"]:hover,
+.gift-cat-card.active[data-occasion="anniversary"] {
+  background: rgba(212, 175, 55, 0.04) !important;
+  border-color: rgba(212, 175, 55, 0.45) !important;
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.12) !important;
+}
+
+.gift-cat-card[data-occasion="anniversary"]:hover .gift-cat-icon,
+.gift-cat-card.active[data-occasion="anniversary"] .gift-cat-icon {
+  background: rgba(212, 175, 55, 0.1) !important;
+  color: #B88D2F !important;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
+}
+
+/* Valentine's Day Selector Card: Romantic Passion Rose Red */
+.gift-cat-card[data-occasion="valentine"]:hover,
+.gift-cat-card.active[data-occasion="valentine"] {
+  background: rgba(233, 30, 99, 0.04) !important;
+  border-color: rgba(233, 30, 99, 0.4) !important;
+  box-shadow: 0 10px 30px rgba(233, 30, 99, 0.08) !important;
+}
+
+.gift-cat-card[data-occasion="valentine"]:hover .gift-cat-icon,
+.gift-cat-card.active[data-occasion="valentine"] .gift-cat-icon {
+  background: rgba(233, 30, 99, 0.1) !important;
+  color: #E91E63 !important;
+  box-shadow: 0 0 15px rgba(233, 30, 99, 0.3);
+}
+
+/* Christmas Selector Card: Glowing Evergreen and Warm Holly Star */
+.gift-cat-card[data-occasion="christmas"]:hover,
+.gift-cat-card.active[data-occasion="christmas"] {
+  background: rgba(27, 77, 62, 0.04) !important;
+  border-color: rgba(196, 30, 58, 0.4) !important;
+  /* holiday red borders */
+  box-shadow: 0 10px 30px rgba(27, 77, 62, 0.08) !important;
+}
+
+.gift-cat-card[data-occasion="christmas"]:hover .gift-cat-icon,
+.gift-cat-card.active[data-occasion="christmas"] .gift-cat-icon {
+  background: rgba(27, 77, 62, 0.12) !important;
+  color: #1B4D3E !important;
+  /* forest green */
+  box-shadow: 0 0 15px rgba(27, 77, 62, 0.25);
+  animation: christmasTreeGlow 2s infinite alternate ease-in-out;
+}
+
+@keyframes christmasTreeGlow {
+  0% {
+    box-shadow: 0 0 5px rgba(27, 77, 62, 0.2);
+    filter: drop-shadow(0 0 2px rgba(27, 77, 62, 0.1));
+  }
+
+  100% {
+    box-shadow: 0 0 15px rgba(196, 30, 58, 0.4);
+    filter: drop-shadow(0 0 6px rgba(196, 30, 58, 0.4));
+  }
+}
+
+/* Housewarming Selector Card: Cozy Deep Sage & Copper Sanctuary */
+.gift-cat-card[data-occasion="housewarming"]:hover,
+.gift-cat-card.active[data-occasion="housewarming"] {
+  background: rgba(143, 188, 143, 0.04) !important;
+  border-color: rgba(143, 188, 143, 0.5) !important;
+  box-shadow: 0 10px 30px rgba(143, 188, 143, 0.08) !important;
+}
+
+.gift-cat-card[data-occasion="housewarming"]:hover .gift-cat-icon,
+.gift-cat-card.active[data-occasion="housewarming"] .gift-cat-icon {
+  background: rgba(143, 188, 143, 0.1) !important;
+  color: #2E7D32 !important;
+  box-shadow: 0 0 10px rgba(143, 188, 143, 0.25);
+}
+
 /* Dynamic Gifting Showcase Panel */
 .gift-showcase-panel {
   display: grid;
