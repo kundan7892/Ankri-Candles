@@ -233,6 +233,8 @@
             Transactions</button>
           <button class="filter-btn" data-tab="whatsapp" style="font-size: 0.9rem; padding: 0.5rem 1rem;">WhatsApp
             Reminders</button>
+          <button class="filter-btn" data-tab="wheel-rewards" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Wheel
+            Rewards</button>
         </div>
 
         <!-- Tab 1: Inquiries -->
@@ -318,6 +320,27 @@
                 </tr>
               </thead>
               <tbody id="whatsapp-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 5: Wheel Rewards -->
+        <div id="tab-wheel-rewards-content" class="tab-panel hidden">
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">This dashboard displays the
+            customer phone numbers and rewards claimed from the Spin & Win wheel.</p>
+          <div class="logs-table-container">
+            <table class="logs-table text-primary">
+              <thead>
+                <tr>
+                  <th>Phone Number</th>
+                  <th>Country</th>
+                  <th>Reward Won</th>
+                  <th>Won Date & Time</th>
+                </tr>
+              </thead>
+              <tbody id="wheel-rewards-table-body">
                 <!-- Rendered by JS -->
               </tbody>
             </table>

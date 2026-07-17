@@ -3712,6 +3712,152 @@ function initAppFlow() {
       `).join('');
     });
   }
+
+  // --- SPIN & WIN OFFERS WHEEL LOGIC ---
+  function initOffersWheel() {
+    const overlay = document.getElementById('spin-wheel-overlay');
+    const closeBtn = document.getElementById('close-spin-wheel-btn');
+    const formStep = document.getElementById('spin-step-phone');
+    const phoneForm = document.getElementById('spin-phone-form');
+    const phoneInput = document.getElementById('spin-phone-input');
+    const countryCodeSelect = document.getElementById('spin-country-code');
+    const randomBtn = document.getElementById('btn-generate-rand-phone');
+    const declineBtn = document.getElementById('btn-spin-decline');
+
+    const wheelStep = document.getElementById('spin-step-wheel');
+    const wheelSvg = document.getElementById('wheel-svg');
+    const spinBtn = document.getElementById('btn-spin-wheel');
+
+    const revealStep = document.getElementById('spin-step-reveal');
+    const prizeTxt = document.getElementById('spin-win-prize-txt');
+    const couponCodeTxt = document.getElementById('spin-win-coupon-code');
+    const copyBtn = document.getElementById('btn-copy-code-spin');
+    const revealCloseBtn = document.getElementById('btn-spin-reward-close');
+
+    const devFloater = document.getElementById('floating-test-wheel-btn');
+
+    let customerPhone = '';
+    let customerCountry = '';
+    let isSpinning = false;
+
+    const rewards = [
+      { name: "10% OFF", code: "ANKRI10", sliceIndex: 0 },
+      { name: "Free Shipping", code: "ANKRISHIP", sliceIndex: 1 },
+      { name: "Buy 2 Get 1", code: "ANKRIB2G1", sliceIndex: 2 }
+    ];
+
+    function showWheelPopup() {
+      formStep.classList.remove('hidden');
+      wheelStep.classList.add('hidden');
+      revealStep.classList.add('hidden');
+      if (overlay) overlay.classList.remove('hidden');
+      isSpinning = false;
+      if (wheelSvg) {
+        wheelSvg.style.transform = 'rotate(0deg)';
+        wheelSvg.style.transition = 'none';
+      }
+      localStorage.setItem('ankri_shown_spin_wheel', 'true');
+    }
+
+    const hasShown = localStorage.getItem('ankri_shown_spin_wheel') === 'true';
+    if (!hasShown) {
+      setTimeout(() => {
+        showWheelPopup();
+      }, 4500);
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', () => overlay.classList.add('hidden'));
+    if (declineBtn) declineBtn.addEventListener('click', () => overlay.classList.add('hidden'));
+    if (revealCloseBtn) revealCloseBtn.addEventListener('click', () => overlay.classList.add('hidden'));
+
+    if (randomBtn) {
+      randomBtn.addEventListener('click', () => {
+        const randNum = Math.floor(1000000000 + Math.random() * 9000000000);
+        phoneInput.value = randNum.toString();
+        showToast("Generated test phone number!");
+      });
+    }
+
+    if (devFloater) {
+      devFloater.addEventListener('click', () => {
+        localStorage.removeItem('ankri_shown_spin_wheel');
+        showWheelPopup();
+        showToast("Spin Wheel reset! Popup triggered.");
+      });
+    }
+
+    if (phoneForm) {
+      phoneForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        customerPhone = phoneInput.value.trim();
+        customerCountry = countryCodeSelect.value;
+
+        if (!customerPhone) return;
+
+        formStep.classList.add('hidden');
+        wheelStep.classList.remove('hidden');
+      });
+    }
+
+    if (spinBtn) {
+      spinBtn.addEventListener('click', () => {
+        if (isSpinning) return;
+        isSpinning = true;
+
+        const wonIndex = Math.floor(Math.random() * 3);
+        const reward = rewards[wonIndex];
+
+        let sliceAngle = 0;
+        if (wonIndex === 0) sliceAngle = 30;
+        else if (wonIndex === 1) sliceAngle = 90;
+        else sliceAngle = 150;
+
+        const targetRotation = (360 * 6) + (270 - sliceAngle);
+
+        if (wheelSvg) {
+          wheelSvg.style.transition = 'transform 6s cubic-bezier(0.15, 0.9, 0.25, 1)';
+          wheelSvg.style.transform = `rotate(${targetRotation}deg)`;
+        }
+
+        setTimeout(async () => {
+          try {
+            await fetch('http://localhost:5000/api/spin-rewards', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                phone: customerPhone,
+                country: customerCountry,
+                reward: reward.name
+              })
+            });
+          } catch (err) {
+            console.error('Failed to save spin reward:', err);
+          }
+
+          if (prizeTxt) prizeTxt.textContent = reward.name;
+          if (couponCodeTxt) couponCodeTxt.textContent = reward.code;
+
+          wheelStep.classList.add('hidden');
+          revealStep.classList.remove('hidden');
+
+          showToast(`Won ${reward.name}! Coupon Code: ${reward.code}`);
+        }, 6200);
+      });
+    }
+
+    if (copyBtn && couponCodeTxt) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(couponCodeTxt.innerText).then(() => {
+          showToast("Coupon code copied to clipboard!");
+        }).catch(err => {
+          console.error('Failed to copy code: ', err);
+        });
+      });
+    }
+  }
+
+  // Initialize Offer Wheel logic execution
+  initOffersWheel();
 }
 
 if (document.readyState === 'loading') {

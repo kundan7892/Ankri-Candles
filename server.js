@@ -151,6 +151,16 @@ const whatsappLogSchema = new mongoose.Schema({
 
 const WhatsAppLog = mongoose.model('WhatsAppLog', whatsappLogSchema);
 
+// Spin Wheel Rewards Schema
+const spinRewardSchema = new mongoose.Schema({
+  phone: { type: String, required: true },
+  country: { type: String, required: true },
+  reward: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now }
+});
+
+const SpinReward = mongoose.model('SpinReward', spinRewardSchema);
+
 // Helper to save/update active carts in local backup when database is offline
 function saveOrUpdateAbandonedCartInBackup(data) {
   try {
@@ -473,6 +483,59 @@ app.delete('/api/whatsapp-logs', async (req, res) => {
   } catch (error) {
     console.error('Error deleting WhatsApp logs:', error);
     res.status(500).json({ message: 'Error deleting WhatsApp logs' });
+  }
+});
+
+// --- SPIN WHEEL REWARDS ROUTES ---
+app.post('/api/spin-rewards', async (req, res) => {
+  try {
+    const { phone, country, reward } = req.body;
+    if (!phone || !country || !reward) {
+      return res.status(400).json({ message: 'Missing phone, country, or reward information' });
+    }
+
+    if (mongoose.connection.readyState !== 1) {
+      saveToBackupFile('spin_rewards.json', req.body);
+      return res.status(201).json({ message: 'Spin reward saved (Local Backup Fallback)', data: req.body });
+    }
+
+    const newReward = new SpinReward({ phone, country, reward });
+    await newReward.save();
+    res.status(201).json({ message: 'Spin reward registered successfully', data: newReward });
+  } catch (error) {
+    console.error('Error registering spin reward:', error);
+    res.status(500).json({ message: 'Error registering spin reward' });
+  }
+});
+
+app.get('/api/spin-rewards', async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      const data = readFromBackupFile('spin_rewards.json');
+      return res.status(200).json(data);
+    }
+    const rewards = await SpinReward.find().sort({ timestamp: -1 });
+    res.status(200).json(rewards);
+  } catch (error) {
+    console.error('Error fetching spin rewards:', error);
+    res.status(500).json({ message: 'Error fetching spin rewards' });
+  }
+});
+
+app.delete('/api/spin-rewards', async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      const filePath = path.join(process.cwd(), 'data', 'spin_rewards.json');
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      return res.status(200).json({ message: 'Local spin rewards file cleared successfully' });
+    }
+    await SpinReward.deleteMany({});
+    res.status(200).json({ message: 'Spin rewards cleared successfully' });
+  } catch (error) {
+    console.error('Error deleting spin rewards:', error);
+    res.status(500).json({ message: 'Error deleting spin rewards' });
   }
 });
 

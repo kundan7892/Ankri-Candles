@@ -126,6 +126,7 @@ function initAdminPanel() {
           if (activeTab === 'bookings') dashboardTitle.textContent = "Order Bookings Database";
           if (activeTab === 'payments') dashboardTitle.textContent = "Payment Transaction Records";
           if (activeTab === 'whatsapp') dashboardTitle.textContent = "WhatsApp Sent Reminders Log";
+          if (activeTab === 'wheel-rewards') dashboardTitle.textContent = "Wheel Spin Rewards Log";
         }
 
         await renderActiveTab();
@@ -142,6 +143,8 @@ function initAdminPanel() {
       await renderPayments();
     } else if (activeTab === 'whatsapp') {
       await renderWhatsApp();
+    } else if (activeTab === 'wheel-rewards') {
+      await renderWheelRewards();
     }
   }
 
@@ -365,6 +368,47 @@ function initAdminPanel() {
     });
   }
 
+  async function renderWheelRewards() {
+    const wheelRewardsTableBody = document.getElementById('wheel-rewards-table-body');
+    if (!wheelRewardsTableBody) return;
+    wheelRewardsTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Loading spin rewards...</td></tr>';
+
+    let logs = [];
+    try {
+      const res = await fetch('http://localhost:5000/api/spin-rewards');
+      if (res.ok) {
+        logs = await res.json();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (logs.length === 0) {
+      wheelRewardsTableBody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align: center; padding: 4rem 1.25rem; color: var(--text-secondary);">
+            <div style="font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;">🎁</div>
+            No spin rewards won yet.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    wheelRewardsTableBody.innerHTML = '';
+    logs.forEach(log => {
+      const tr = document.createElement('tr');
+      const dateStr = new Date(log.timestamp).toLocaleString();
+      tr.innerHTML = `
+        <td style="font-weight: bold; color: var(--gold-primary);">${log.phone}</td>
+        <td>${log.country}</td>
+        <td><span class="inquiry-badge bulk" style="background: var(--gold-primary) !important; color: #0A0E0C !important; font-weight: bold;">${log.reward}</span></td>
+        <td style="white-space: nowrap;">${dateStr}</td>
+      `;
+      wheelRewardsTableBody.appendChild(tr);
+    });
+  }
+
   // Logout Handler
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
@@ -391,6 +435,9 @@ function initAdminPanel() {
       } else if (activeTab === 'whatsapp') {
         deleteUrl = 'http://localhost:5000/api/whatsapp-logs';
         tabLabel = 'WhatsApp reminder logs';
+      } else if (activeTab === 'wheel-rewards') {
+        deleteUrl = 'http://localhost:5000/api/spin-rewards';
+        tabLabel = 'spin wheel rewards';
       }
 
       if (confirm(`Are you sure you want to delete all local ${tabLabel}? This cannot be undone.`)) {

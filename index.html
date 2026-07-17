@@ -2493,6 +2493,175 @@
     </div>
   </div>
 
+  <!-- ====== OFFERS SPIN WHEEL POPUP ====== -->
+  <div class="modal-overlay hidden" id="spin-wheel-overlay"
+    style="z-index: 9999; backdrop-filter: blur(12px); background: rgba(0, 0, 0, 0.8);">
+    <div class="enquiry-modal spin-modal"
+      style="max-width: 500px; width: 95%; padding: 2.5rem; text-align: center; border: 1px solid var(--border-glass); border-radius: 12px; background: var(--bg-primary); position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+
+      <!-- Close Button -->
+      <button class="close-enquiry-btn" id="close-spin-wheel-btn" aria-label="Close offers wheel"
+        style="position: absolute; right: 1.5rem; top: 1.5rem; border: none; background: none; color: var(--text-secondary); cursor: pointer; transition: color var(--transition-fast);">
+        <i data-lucide="x"></i>
+      </button>
+
+      <!-- Step 1: Phone submission form -->
+      <div id="spin-step-phone">
+        <h2
+          style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 0.5rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">
+          Unlock Luxury Rewards</h2>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.5;">First-time
+          visitors get an exclusive spin on our luxury fortune wheel. Claim up to 10% OFF, free shipping, or a free
+          candle!</p>
+
+        <form id="spin-phone-form" style="text-align: left;">
+          <!-- Country code and phone container -->
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label
+              style="font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem; color: var(--text-primary);">Enter
+              Phone Number</label>
+            <div style="display: flex; gap: 8px;">
+              <select id="spin-country-code"
+                style="padding: 0.85rem; border: 1px solid var(--border-glass); border-radius: 6px; background: var(--bg-tertiary); color: var(--text-primary); outline: none; font-size: 0.9rem; width: 110px;">
+                <option value="India (+91)" selected>🇮🇳 +91</option>
+                <option value="USA (+1)">🇺🇸 +1</option>
+                <option value="Canada (+1)">🇨🇦 +1</option>
+                <option value="Germany (+49)">🇩🇪 +49</option>
+                <option value="Belgium (+32)">🇧🇪 +32</option>
+                <option value="Switzerland (+41)">🇨🇭 +41</option>
+              </select>
+              <input type="tel" id="spin-phone-input" required placeholder="Phone number"
+                style="flex: 1; padding: 0.85rem; border: 1px solid var(--border-glass); border-radius: 6px; background: var(--bg-tertiary); color: var(--text-primary); outline: none; font-size: 0.9rem;">
+            </div>
+
+            <!-- Generate Random Number (Helper for unlimited spins test) -->
+            <button type="button" id="btn-generate-rand-phone"
+              style="background: none; border: none; color: var(--gold-text); font-size: 0.85rem; cursor: pointer; margin-top: 0.75rem; text-decoration: underline; font-family: var(--font-sans); outline: none; padding: 0;">
+              ✨ Generate Test Phone Number (Infinite Spins Mode)
+            </button>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary btn-large btn-grow" style="padding: 1.1rem; width: 100%;">
+              Claim My Free Spin
+            </button>
+            <button type="button" id="btn-spin-decline"
+              style="background: none; border: none; color: var(--text-muted); font-size: 0.8rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.5rem; text-decoration: underline; font-family: var(--font-sans); outline: none;">
+              No thanks, I will pay full price
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 2: Spinning Wheel Canvas/SVG -->
+      <div id="spin-step-wheel" class="hidden"
+        style="animation: fadeIn 0.4s ease; display: flex; flex-direction: column; align-items: center;">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 0.5rem; color: var(--text-primary);">
+          Spin the Wheel</h2>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Click SPIN below to reveal
+          your prize!</p>
+
+        <!-- Wheel Visual Container -->
+        <div class="wheel-canvas-container"
+          style="position: relative; width: 280px; height: 280px; margin: 1rem 0 2rem 0; border: 4px solid var(--gold-primary); border-radius: 50%; box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(212,175,55,0.2);">
+
+          <!-- Indicator Ticker -->
+          <div class="wheel-ticker"
+            style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 20px solid var(--gold-primary); z-index: 10;">
+          </div>
+
+          <!-- Inner SVG Wheel -->
+          <svg id="wheel-svg" viewBox="0 0 200 200"
+            style="width: 100%; height: 100%; border-radius: 50%; transform: rotate(0deg); transition: transform 6s cubic-bezier(0.1, 0.8, 0.1, 1);">
+            <!-- Slices: total 6 slices (60 deg each) -->
+            <!-- Slice 1: 10% OFF -->
+            <path d="M 100 100 L 100 0 A 100 100 0 0 1 186.6 50 Z" fill="#13221C" stroke="rgba(255,255,255,0.1)"
+              stroke-width="0.5" />
+            <!-- Slice 2: Free Shipping -->
+            <path d="M 100 100 L 186.6 50 A 100 100 0 0 1 186.6 150 Z" fill="#192A22" stroke="rgba(255,255,255,0.1)"
+              stroke-width="0.5" />
+            <!-- Slice 3: Buy 2 Get 1 -->
+            <path d="M 100 100 L 186.6 150 A 100 100 0 0 1 100 200 Z" fill="#20362B" stroke="rgba(255,255,255,0.1)"
+              stroke-width="0.5" />
+            <!-- Slice 4: 10% OFF -->
+            <path d="M 100 100 L 100 200 A 100 100 0 0 1 13.4 150 Z" fill="#13221C" stroke="rgba(255,255,255,0.1)"
+              stroke-width="0.5" />
+            <!-- Slice 5: Free Shipping -->
+            <path d="M 100 100 L 13.4 150 A 100 100 0 0 1 13.4 50 Z" fill="#192A22" stroke="rgba(255,255,255,0.1)"
+              stroke-width="0.5" />
+            <!-- Slice 6: Buy 2 Get 1 -->
+            <path d="M 100 100 L 13.4 50 A 100 100 0 0 1 100 0 Z" fill="#20362B" stroke="rgba(255,255,255,0.1)"
+              stroke-width="0.5" />
+
+            <!-- Slice Texts -->
+            <g transform="translate(100, 100)">
+              <!-- Slice 1: 10% OFF -->
+              <text x="0" y="-60" transform="rotate(30)" font-family="var(--font-sans)" font-size="7.5"
+                font-weight="700" fill="var(--gold-text)" text-anchor="middle">10% OFF</text>
+              <!-- Slice 2: Free Shipping -->
+              <text x="0" y="-60" transform="rotate(90)" font-family="var(--font-sans)" font-size="7.5"
+                font-weight="700" fill="#fff" text-anchor="middle">FREE SHIP</text>
+              <!-- Slice 3: Buy 2 Get 1 -->
+              <text x="0" y="-60" transform="rotate(150)" font-family="var(--font-sans)" font-size="7.5"
+                font-weight="700" fill="var(--gold-text)" text-anchor="middle">BUY 2 GET 1</text>
+              <!-- Slice 4: 10% OFF -->
+              <text x="0" y="-60" transform="rotate(210)" font-family="var(--font-sans)" font-size="7.5"
+                font-weight="700" fill="var(--gold-text)" text-anchor="middle">10% OFF</text>
+              <!-- Slice 5: Free Shipping -->
+              <text x="0" y="-60" transform="rotate(270)" font-family="var(--font-sans)" font-size="7.5"
+                font-weight="700" fill="#fff" text-anchor="middle">FREE SHIP</text>
+              <!-- Slice 6: Buy 2 Get 1 -->
+              <text x="0" y="-60" transform="rotate(330)" font-family="var(--font-sans)" font-size="7.5"
+                font-weight="700" fill="var(--gold-text)" text-anchor="middle">BUY 2 GET 1</text>
+            </g>
+
+            <!-- Center Gold Pin -->
+            <circle cx="100" cy="100" r="14" fill="var(--bg-primary)" stroke="var(--gold-primary)" stroke-width="2" />
+            <circle cx="100" cy="100" r="6" fill="var(--gold-primary)" />
+          </svg>
+        </div>
+
+        <button type="button" id="btn-spin-wheel" class="btn btn-primary btn-large btn-grow"
+          style="padding: 1rem 3rem;">
+          SPIN NOW
+        </button>
+      </div>
+
+      <!-- Step 3: Win Reveal -->
+      <div id="spin-step-reveal" class="hidden" style="animation: fadeIn 0.4s ease;">
+        <div style="font-size: 3.5rem; margin-bottom: 1rem; animation: bounce 1s infinite alternate;">🎉</div>
+        <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--gold-text);">
+          Congratulations!</h2>
+        <p style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1.5rem; font-weight: 500;">
+          You won: <span id="spin-win-prize-txt"
+            style="color: var(--gold-primary); font-weight: bold; text-decoration: underline;">10% OFF</span>
+        </p>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.5;">
+          Copy your premium coupon code below and enter it at checkout to claim your reward.
+        </p>
+
+        <!-- Coupon code box -->
+        <div
+          style="background: rgba(212,175,55,0.08); border: 2px dashed rgba(212,175,55,0.3); border-radius: 8px; padding: 1.25rem; font-family: var(--font-sans); font-size: 1.6rem; font-weight: bold; color: var(--gold-primary); letter-spacing: 0.1em; text-align: center; margin-bottom: 2.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;"
+          id="btn-copy-code-spin" title="Click to copy coupon code">
+          <span id="spin-win-coupon-code">ANKRI10</span>
+          <i data-lucide="copy" style="width: 18px; height: 18px; color: var(--gold-text);"></i>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="btn-spin-reward-close" style="width: 100%; padding: 1.1rem;">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== FLOATING TEST WHEEL FLOATER ====== -->
+  <button id="floating-test-wheel-btn" class="chat-toggle-btn"
+    style="position: fixed; bottom: 20px; left: 20px; right: auto; background: var(--bg-tertiary); border: 1px solid var(--border-glass); box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 9998;"
+    title="Reset and Test Spin Wheel (Developer Mode)">
+    <i data-lucide="gift" style="color: var(--gold-primary); width: 22px; height: 22px;"></i>
+  </button>
+
   <!-- Lucide Icons initialization -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Main Script -->
