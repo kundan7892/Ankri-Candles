@@ -2675,7 +2675,10 @@ function initAppFlow() {
     const discountedSubtotal = subtotal - discountValue;
 
     // Shipping calculations: FREE above ₹999, else ₹100
-    const shipping = discountedSubtotal >= 999 ? 0 : 100;
+    let shipping = discountedSubtotal >= 999 ? 0 : 100;
+    if (state.promoApplied && state.appliedPromoCode === "ANKRISHIP") {
+      shipping = 0;
+    }
     const finalTotal = discountedSubtotal + shipping;
 
     cartSubtotal.textContent = `₹${subtotal.toFixed(0)}`;
@@ -2744,10 +2747,29 @@ function initAppFlow() {
     if (code === "LIGHTUP") {
       state.discount = 0.15; // 15% discount
       state.promoApplied = true;
+      state.appliedPromoCode = "LIGHTUP";
       showToast("Promo Code LIGHTUP applied! 15% Off.");
       renderCart();
+    } else if (code === "ANKRI10") {
+      state.discount = 0.10; // 10% discount
+      state.promoApplied = true;
+      state.appliedPromoCode = "ANKRI10";
+      showToast("Wheel Code ANKRI10 applied! Locked to winning phone number.");
+      renderCart();
+    } else if (code === "ANKRISHIP") {
+      state.discount = 0.0;
+      state.promoApplied = true;
+      state.appliedPromoCode = "ANKRISHIP";
+      showToast("Wheel Code ANKRISHIP applied! Locked to winning phone number.");
+      renderCart();
+    } else if (code === "ANKRIB2G1") {
+      state.discount = 0.20; // 20% off
+      state.promoApplied = true;
+      state.appliedPromoCode = "ANKRIB2G1";
+      showToast("Wheel Code ANKRIB2G1 applied (20% Off)! Locked to winning phone number.");
+      renderCart();
     } else {
-      showToast("Invalid promo code. Hint: LIGHTUP");
+      showToast("Invalid promo code.");
     }
   }
 
@@ -2778,6 +2800,33 @@ function initAppFlow() {
     payBtn.disabled = true;
     payBtn.textContent = "Processing Payment...";
 
+    if (state.promoApplied && ["ANKRI10", "ANKRISHIP", "ANKRIB2G1"].includes(state.appliedPromoCode)) {
+      try {
+        const checkRes = await fetch('http://localhost:5000/api/spin-rewards/validate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: phone, code: state.appliedPromoCode })
+        });
+        const checkObj = await checkRes.json();
+        if (!checkRes.ok || !checkObj.valid) {
+          showToast(checkObj.message || "Promo validation failed. Phone number mismatch!");
+          payBtn.disabled = false;
+          payBtn.textContent = originalText;
+          return;
+        }
+      } catch (err) {
+        console.error('Validation error:', err);
+        const wonPhoneDigits = localStorage.getItem('ankri_won_phone_digits') || '';
+        const inputDigits = phone.replace(/\D/g, '');
+        if (wonPhoneDigits && !inputDigits.endsWith(wonPhoneDigits) && !wonPhoneDigits.endsWith(inputDigits)) {
+          showToast("Local validation: Phone number mismatch for spin reward code.");
+          payBtn.disabled = false;
+          payBtn.textContent = originalText;
+          return;
+        }
+      }
+    }
+
     // Calculate totals
     let subtotal = 0;
     state.cart.forEach(item => {
@@ -2785,7 +2834,10 @@ function initAppFlow() {
     });
     const discountValue = subtotal * state.discount;
     const discountedSubtotal = subtotal - discountValue;
-    const shipping = discountedSubtotal >= 999 ? 0 : 100;
+    let shipping = discountedSubtotal >= 999 ? 0 : 100;
+    if (state.promoApplied && state.appliedPromoCode === "ANKRISHIP") {
+      shipping = 0;
+    }
     const total = discountedSubtotal + shipping;
 
     const randomSuffix = Math.floor(10000 + Math.random() * 90000);
@@ -3793,6 +3845,8 @@ function initAppFlow() {
         customerCountry = countryCodeSelect.value;
 
         if (!customerPhone) return;
+
+        localStorage.setItem('ankri_won_phone_digits', customerPhone.replace(/\D/g, ''));
 
         formStep.classList.add('hidden');
         wheelStep.classList.remove('hidden');

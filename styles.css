@@ -4110,6 +4110,7 @@ section {
 
 .simulator-slider {
   -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   height: 4px;
   background: rgba(19, 34, 28, 0.08);
@@ -6195,4 +6196,147 @@ body.dark-theme .logo-light {
 
 body.dark-theme .logo-dark {
   display: block !important;
+}
+
+/* ====== PREMIUM SPELLS FOR OFFERS SPIN WHEEL ====== */
+.spin-modal {
+  border: 1px solid rgba(212, 175, 55, 0.4) !important;
+  background: radial-gradient(circle at top right, #13221C, #090F0C) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 175, 55, 0.15) !important;
+}
+
+.spin-modal h2 {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.spin-modal p {
+  color: #B2C0BB !important;
+}
+
+.spin-modal label {
+  color: #B2C0BB !important;
+}
+
+.wheel-outer-ring {
+  position: relative;
+  width: 290px;
+  height: 290px;
+  margin: 1.5rem 0 2rem 0;
+  border: 5px double var(--gold-primary);
+  border-radius: 50%;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7),
+    0 0 25px rgba(212, 175, 55, 0.2),
+    inset 0 0 20px rgba(212, 175, 55, 0.1);
+  background: #0D1612;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulseGlow 4s infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.15), inset 0 0 15px rgba(212, 175, 55, 0.05);
+    border-color: var(--gold-primary);
+  }
+
+  100% {
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7), 0 0 40px rgba(212, 175, 55, 0.35), inset 0 0 25px rgba(212, 175, 55, 0.2);
+    border-color: #F8D878;
+  }
+}
+
+.wheel-ticker-pointer {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 25px solid #F5C545;
+  z-index: 15;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+}
+
+/* Decorative flash bulbs around rim */
+.wheel-rim-bulbs {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.wheel-bulb {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: var(--gold-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--gold-primary);
+}
+
+.wheel-bulb:nth-child(odd) {
+  animation: flashingBulb 1.6s infinite;
+}
+
+.wheel-bulb:nth-child(even) {
+  animation: flashingBulb 1.6s infinite 0.8s;
+}
+
+@keyframes flashingBulb {
+
+  0%,
+  100% {
+    background-color: var(--gold-primary);
+    box-shadow: 0 0 4px var(--gold-primary);
+  }
+
+  50% {
+    background-color: #ffffff;
+    box-shadow: 0 0 12px #ffffff, 0 0 20px var(--gold-primary);
+  }
+}
+
+/* Glowing action button overrides */
+#btn-spin-wheel {
+  padding: 1.1rem 3.5rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  letter-spacing: 0.15em;
+  background: linear-gradient(135deg, var(--gold-primary), #B28E2E);
+  color: #0A0E0C !important;
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: pulseButton 2.2s infinite;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+#btn-spin-wheel:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(212, 175, 55, 0.5);
+  background: linear-gradient(135deg, #F5C545, #D4AF37);
+}
+
+@keyframes pulseButton {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+  }
+
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 12px 35px rgba(212, 175, 55, 0.5);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+  }
 }

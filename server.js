@@ -539,6 +539,54 @@ app.delete('/api/spin-rewards', async (req, res) => {
   }
 });
 
+app.post('/api/spin-rewards/validate', async (req, res) => {
+  try {
+    const { phone, code } = req.body;
+    if (!phone || !code) {
+      return res.status(400).json({ valid: false, message: 'Missing phone or code' });
+    }
+
+    const rewardMap = {
+      'ANKRI10': '10% OFF',
+      'ANKRISHIP': 'Free Shipping',
+      'ANKRIB2G1': 'Buy 2 Get 1'
+    };
+    const rewardName = rewardMap[code.toUpperCase()];
+    if (!rewardName) {
+      return res.status(200).json({ valid: true });
+    }
+
+    const cleanInputPhone = phone.replace(/\D/g, '');
+    if (!cleanInputPhone) {
+      return res.status(400).json({ valid: false, message: 'Invalid phone number format' });
+    }
+
+    let rewards = [];
+    if (mongoose.connection.readyState !== 1) {
+      rewards = readFromBackupFile('spin_rewards.json');
+    } else {
+      rewards = await SpinReward.find({ reward: rewardName });
+    }
+
+    const matched = rewards.some(r => {
+      const cleanDBPhone = r.phone.replace(/\D/g, '');
+      return cleanDBPhone.endsWith(cleanInputPhone) || cleanInputPhone.endsWith(cleanDBPhone);
+    });
+
+    if (matched) {
+      res.status(200).json({ valid: true });
+    } else {
+      res.status(400).json({
+        valid: false,
+        message: `Promotion code ${code} is locked to the phone number that won it. Please enter the same phone number used for the spin reward.`
+      });
+    }
+  } catch (error) {
+    console.error('Error validating spin reward:', error);
+    res.status(500).json({ valid: false, message: 'Internal server validation error' });
+  }
+});
+
 // AI Support Chat Integration Route
 app.post('/api/support-chat', async (req, res) => {
   try {
