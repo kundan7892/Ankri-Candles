@@ -6183,3 +6183,16 @@ body.dark-theme .unboxing-glow-ring {
 body.dark-theme .custom-candle-preview-container {
   background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%) !important;
 }
+
+/* Brand Logo Dark Mode Toggling */
+.logo-dark {
+  display: none !important;
+}
+
+body.dark-theme .logo-light {
+  display: none !important;
+}
+
+body.dark-theme .logo-dark {
+  display: block !important;
+}
