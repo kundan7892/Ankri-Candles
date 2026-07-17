@@ -5045,3 +5045,248 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
   border-color: rgba(255, 255, 255, 0.2) !important;
   transform: translateX(-3px);
 }
+
+/* Hero ASMR Sound Player Widget */
+.hero-asmr-player {
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.hero-asmr-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero-asmr-play-btn {
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: var(--accent, #D4AF37);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.05);
+}
+
+.hero-asmr-play-btn:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--accent, #D4AF37);
+  transform: translateY(-1px);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+.hero-asmr-play-btn.active {
+  background: var(--accent, #D4AF37);
+  color: #121212;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
+}
+
+.hero-asmr-play-btn i,
+.hero-asmr-play-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.hero-asmr-status-text {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.02em;
+}
+
+.hero-asmr-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  animation: fadeInControls 0.4s ease-out forwards;
+}
+
+@keyframes fadeInControls {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-asmr-controls.hidden {
+  display: none !important;
+}
+
+.hero-soundscape-chips {
+  display: flex;
+  gap: 6px;
+}
+
+.hero-chip {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.35rem 0.65rem;
+  border-radius: 14px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.hero-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.hero-chip.active {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.4);
+  color: var(--accent, #D4AF37);
+  font-weight: 600;
+}
+
+.hero-volume-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  flex: 1;
+  max-width: 130px;
+}
+
+.hero-volume-bar i,
+.hero-volume-bar svg {
+  width: 14px;
+  height: 14px;
+}
+
+.hero-volume-bar input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  outline: none;
+}
+
+.hero-volume-bar input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent, #D4AF37);
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.5);
+  transition: transform 0.1s ease;
+}
+
+.hero-volume-bar input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+}
+
+#hero-asmr-waveform {
+  width: 125px;
+  height: 24px;
+  border-radius: 4px;
+  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.4));
+  pointer-events: none;
+}
+
+@media (max-width: 576px) {
+  .hero-asmr-player {
+    width: 100%;
+  }
+
+  .hero-asmr-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .hero-soundscape-chips {
+    justify-content: space-between;
+  }
+
+  .hero-chip {
+    flex: 1;
+    text-align: center;
+  }
+
+  .hero-volume-bar {
+    max-width: none;
+    width: 100%;
+  }
+
+  #hero-asmr-waveform {
+    width: 100%;
+    height: 30px;
+  }
+}
+
+/* --- UNBOXING DELIVERY CARTOON KEYFRAMES --- */
+@keyframes spin-wheel {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes package-float {
+  0% {
+    transform: scale(0.1) translateY(-50px) rotate(-15deg);
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  75% {
+    transform: scale(1.15) translateY(-10px) rotate(10deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes drift-clouds {
+  0% {
+    transform: translateX(-50px);
+  }
+
+  100% {
+    transform: translateX(450px);
+  }
+}

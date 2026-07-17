@@ -255,6 +255,12 @@ function initAppFlow() {
   const zenTimerResetBtn = document.getElementById('zen-timer-reset-btn');
   const zenAsmrWaveformCanvas = document.getElementById('zen-asmr-waveform-canvas');
 
+  // Hero ASMR Player selectors
+  const heroAsmrPlayBtn = document.getElementById('hero-asmr-play-btn');
+  const heroAsmrControlsPanel = document.getElementById('hero-asmr-controls-panel');
+  const heroAsmrVolume = document.getElementById('hero-asmr-volume');
+  const heroAsmrWaveform = document.getElementById('hero-asmr-waveform');
+
   // WhatsApp Support & AI Chat selectors
   const whatsappSupportCard = document.getElementById('whatsapp-support-card');
   const closeSupportCardBtn = document.getElementById('close-support-card');
@@ -563,12 +569,102 @@ function initAppFlow() {
 
     if (startUnboxingBtn) {
       startUnboxingBtn.addEventListener('click', () => {
+        // Hide intro, show delivery cartoon stage
         unboxingIntro.classList.add('hidden');
+        const deliveryStage = document.getElementById('delivery-stage');
+        const deliveryVan = document.getElementById('delivery-van');
+        const deliveryMsg = document.getElementById('delivery-msg');
+        const deliveryPackage = document.getElementById('delivery-package');
+        const continueToOpenBtn = document.getElementById('continue-to-open-btn');
+
+        if (deliveryStage) {
+          deliveryStage.classList.remove('hidden');
+        }
+
+        // Reset scene state
+        if (deliveryVan) {
+          deliveryVan.style.transform = 'translateX(0)';
+          const headlight = deliveryVan.querySelector('.van-headlight');
+          if (headlight) headlight.style.opacity = '1';
+        }
+        if (deliveryPackage) {
+          deliveryPackage.classList.add('hidden');
+          deliveryPackage.style.transform = 'scale(0) translate(0, 0)';
+          deliveryPackage.style.opacity = '0';
+          deliveryPackage.style.animation = '';
+        }
+        if (continueToOpenBtn) {
+          continueToOpenBtn.classList.add('hidden');
+        }
+        const houseDoor = document.querySelector('.house-door');
+        if (houseDoor) {
+          houseDoor.style.background = '#78281F';
+          houseDoor.style.boxShadow = 'none';
+        }
+
+        if (deliveryMsg) {
+          deliveryMsg.textContent = 'Preparing dispatch from Ankri Studio...';
+        }
+
+        // 1. Start Van Driving (Bangalore Studio -> House)
+        setTimeout(() => {
+          if (deliveryVan) {
+            deliveryVan.style.transform = 'translateX(265px)';
+          }
+          if (deliveryMsg) {
+            deliveryMsg.textContent = 'En route: Delivering custom candle from Bangalore studio...';
+          }
+        }, 200);
+
+        // 2. Arrived at House, drop package
+        setTimeout(() => {
+          if (deliveryMsg) {
+            deliveryMsg.textContent = 'Arrived at your doorstep! Dropping off package...';
+          }
+          if (deliveryVan) {
+            const headlight = deliveryVan.querySelector('.van-headlight');
+            if (headlight) headlight.style.opacity = '0';
+          }
+
+          if (deliveryPackage) {
+            deliveryPackage.classList.remove('hidden');
+            deliveryPackage.offsetHeight; // trigger reflow
+            deliveryPackage.style.animation = 'package-float 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+          }
+
+          // 3. Package received, customer comes to door
+          setTimeout(() => {
+            if (houseDoor) {
+              houseDoor.style.background = '#F9E79F';
+              houseDoor.style.boxShadow = '0 0 10px #F9E79F';
+            }
+            if (deliveryMsg) {
+              deliveryMsg.textContent = 'Package delivered! Customer took the package.';
+            }
+
+            // Show "Open Package" button
+            if (continueToOpenBtn) {
+              continueToOpenBtn.classList.remove('hidden');
+            }
+          }, 1200);
+
+        }, 2700);
+      });
+    }
+
+    const continueToOpenBtn = document.getElementById('continue-to-open-btn');
+    if (continueToOpenBtn) {
+      continueToOpenBtn.addEventListener('click', () => {
+        const deliveryStage = document.getElementById('delivery-stage');
+        if (deliveryStage) {
+          deliveryStage.classList.add('hidden');
+        }
         unboxingStage.classList.remove('hidden');
         setTimeout(() => {
           unboxingStage.style.opacity = '1';
         }, 50);
 
+        // Proceed to existing unboxing logic:
         const giftState = state.customizer.gifting || { enabled: false };
 
         if (giftState.enabled) {
@@ -582,7 +678,6 @@ function initAppFlow() {
               setTimeout(() => {
                 if (giftCardPreview) {
                   giftCardPreview.classList.remove('hidden');
-                  // Trigger reflow
                   giftCardPreview.offsetHeight;
                   giftCardPreview.classList.add('show-card');
                 }
@@ -597,8 +692,10 @@ function initAppFlow() {
               virtualGiftBox.classList.add('open-tissue');
               setTimeout(() => {
                 virtualGiftBox.classList.add('reveal-candle');
-                unboxingRevealDetails.style.opacity = '1';
-                unboxingRevealDetails.style.transform = 'translateY(0)';
+                if (unboxingRevealDetails) {
+                  unboxingRevealDetails.style.opacity = '1';
+                  unboxingRevealDetails.style.transform = 'translateY(0)';
+                }
               }, 800);
             }, 800);
           }, 1000);
@@ -959,6 +1056,115 @@ function initAppFlow() {
     if (burnTimeSlider) {
       burnTimeSlider.addEventListener('input', () => {
         updateRoomSimulator();
+      });
+    }
+
+    // --- HERO ASMR PLAYER EVENT LISTENERS ---
+    if (heroAsmrPlayBtn) {
+      heroAsmrPlayBtn.addEventListener('click', () => {
+        // Initialize AudioContext if it's the first user interaction
+        if (!audioCtx) initAudioContext();
+
+        const isActive = heroAsmrPlayBtn.classList.contains('active');
+        if (isActive) {
+          // Pause ASMR soundscape (mute it)
+          audioState.isMuted = true;
+          heroAsmrPlayBtn.classList.remove('active');
+          heroAsmrPlayBtn.querySelector('span').textContent = 'Listen to Studio ASMR';
+
+          const icon = heroAsmrPlayBtn.querySelector('i') || heroAsmrPlayBtn.querySelector('svg');
+          if (icon) {
+            icon.setAttribute('data-lucide', 'play');
+          }
+
+          if (heroAsmrControlsPanel) {
+            heroAsmrControlsPanel.classList.add('hidden');
+          }
+
+          // Extinguish Customizer candle to stay in sync
+          if (state.customizer.isLit) {
+            toggleFlame();
+          }
+        } else {
+          // Play ASMR soundscape
+          audioState.isMuted = false;
+          heroAsmrPlayBtn.classList.add('active');
+          heroAsmrPlayBtn.querySelector('span').textContent = 'Pause Studio ASMR';
+
+          const icon = heroAsmrPlayBtn.querySelector('i') || heroAsmrPlayBtn.querySelector('svg');
+          if (icon) {
+            icon.setAttribute('data-lucide', 'pause');
+          }
+
+          if (heroAsmrControlsPanel) {
+            heroAsmrControlsPanel.classList.remove('hidden');
+          }
+
+          // Light Customizer candle to stay in sync
+          if (!state.customizer.isLit) {
+            toggleFlame();
+          }
+
+          // Start the hero waveform visualization
+          startHeroWaveVisualizer();
+        }
+
+        // Sync customizer audio toggle icon
+        if (audioToggleBtn) {
+          audioToggleBtn.classList.toggle('active', !audioState.isMuted);
+          const customizerIcon = audioToggleBtn.querySelector('i') || audioToggleBtn.querySelector('svg');
+          if (customizerIcon) {
+            customizerIcon.setAttribute('data-lucide', audioState.isMuted ? 'volume-x' : 'volume-2');
+          }
+        }
+
+        if (window.lucide) {
+          window.lucide.createIcons();
+        }
+        updateAudioState();
+      });
+    }
+
+    // Hero soundscape chips
+    document.querySelectorAll('.hero-chip').forEach(chip => {
+      chip.addEventListener('click', (e) => {
+        const soundType = e.target.getAttribute('data-sound');
+        audioState.activeSoundscape = soundType;
+
+        // Update active class on hero chips
+        document.querySelectorAll('.hero-chip').forEach(c => c.classList.remove('active'));
+        e.target.closest('.hero-chip').classList.add('active');
+
+        // Sync customizer radio selector
+        const customizerRadio = document.querySelector(`input[name="soundscape-selection"][value="${soundType}"]`);
+        if (customizerRadio) {
+          customizerRadio.checked = true;
+          // Update customizer chips classes
+          document.querySelectorAll('.soundscape-chip').forEach(c => {
+            const radioInput = c.querySelector('input');
+            c.classList.toggle('active', radioInput && radioInput.value === soundType);
+          });
+        }
+
+        // Restart wave animation with new soundscape styling
+        startHeroWaveVisualizer();
+
+        updateAudioState();
+      });
+    });
+
+    // Hero volume bar slider
+    if (heroAsmrVolume) {
+      heroAsmrVolume.addEventListener('input', (e) => {
+        const volVal = parseFloat(e.target.value);
+        audioState.volume = volVal;
+
+        // Apply volume real-time to master gain if context initialized
+        if (audioCtx && mainGainNode) {
+          // If unlit, keep master gain at 0.0, else set to volume level
+          const valToSet = (state.customizer.isLit && !audioState.isMuted) ? volVal : 0.0;
+          mainGainNode.gain.setTargetAtTime(valToSet, audioCtx.currentTime, 0.1);
+        }
       });
     }
 
@@ -2598,6 +2804,95 @@ function initAppFlow() {
     }
     waveCtx.stroke();
     waveCtx.shadowBlur = 0; // reset
+  }
+
+  // --- HERO ASMR WAVEFORM VISUALIZATION ---
+  let heroWaveAnimationId = null;
+  let heroWaveCtx = null;
+
+  function startHeroWaveVisualizer() {
+    if (!heroAsmrWaveform) return;
+    if (!heroWaveCtx) {
+      heroWaveCtx = heroAsmrWaveform.getContext('2d');
+    }
+    if (!heroWaveCtx) return;
+
+    heroAsmrWaveform.style.opacity = '1';
+
+    // Scale canvas dynamically for high-DPI displays
+    const dpr = window.devicePixelRatio || 1;
+    heroAsmrWaveform.width = 125 * dpr;
+    heroAsmrWaveform.height = 24 * dpr;
+    heroWaveCtx.scale(dpr, dpr);
+
+    let phase = 0;
+
+    function animate() {
+      // If audio is muted or not playing in hero, cancel animation
+      const isHeroActive = heroAsmrPlayBtn && heroAsmrPlayBtn.classList.contains('active') && !audioState.isMuted;
+      if (!isHeroActive) {
+        cancelAnimationFrame(heroWaveAnimationId);
+        return;
+      }
+
+      heroWaveCtx.clearRect(0, 0, 125, 24);
+
+      phase += 0.05;
+
+      const activeTone = audioState.activeSoundscape;
+      let amp = 5;
+      let freq = 0.08;
+      let color1 = 'rgba(212, 175, 55, 0.65)';
+      let color2 = 'rgba(212, 175, 55, 0.3)';
+
+      if (activeTone === 'rain') {
+        amp = 4 + Math.sin(phase * 1.5) * 1.8;
+        freq = 0.12;
+        color1 = 'rgba(52, 152, 219, 0.65)';
+        color2 = 'rgba(52, 152, 219, 0.3)';
+      } else if (activeTone === 'zen') {
+        amp = 2.5 + Math.sin(phase * 0.8) * 0.8;
+        freq = 0.05;
+        color1 = 'rgba(46, 204, 113, 0.65)';
+        color2 = 'rgba(46, 204, 113, 0.3)';
+      } else { // crackle
+        if (Math.random() > 0.96) {
+          amp = 8.5;
+        } else {
+          amp = 3.5 + Math.random() * 1.5;
+        }
+        freq = 0.08;
+      }
+
+      // Draw 2 layered waves
+      drawSingleHeroWave(125, 24, phase, amp, freq, color1, 0);
+      drawSingleHeroWave(125, 24, phase + 2.5, amp * 0.6, freq * 1.3, color2, 1);
+
+      heroWaveAnimationId = requestAnimationFrame(animate);
+    }
+    animate();
+  }
+
+  function drawSingleHeroWave(width, height, phase, amplitude, frequency, color, offsetY) {
+    if (!heroWaveCtx) return;
+    heroWaveCtx.beginPath();
+    heroWaveCtx.strokeStyle = color;
+    heroWaveCtx.lineWidth = 1.8;
+    heroWaveCtx.lineCap = 'round';
+
+    heroWaveCtx.shadowBlur = 5;
+    heroWaveCtx.shadowColor = color;
+
+    for (let x = 0; x < width; x++) {
+      const y = (height / 2) + Math.sin(x * frequency + phase) * amplitude + offsetY;
+      if (x === 0) {
+        heroWaveCtx.moveTo(x, y);
+      } else {
+        heroWaveCtx.lineTo(x, y);
+      }
+    }
+    heroWaveCtx.stroke();
+    heroWaveCtx.shadowBlur = 0; // reset
   }
 
   // --- HOMEPAGE ADMIN PORTAL MODAL ACTIONS ---
