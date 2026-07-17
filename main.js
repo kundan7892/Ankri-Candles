@@ -1778,7 +1778,7 @@ function initAppFlow() {
 
           try {
             // Dispatch live chat request to backend Express Support Route
-            const response = await fetch('/api/support-chat', {
+            const response = await fetch('http://localhost:5000/api/support-chat', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
