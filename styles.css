@@ -5946,9 +5946,9 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
 .gift-preview-side {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .gift-candle-stage {
