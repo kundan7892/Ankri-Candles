@@ -3980,6 +3980,32 @@ function initAppFlow() {
 
   // Initialize Offer Wheel logic execution
   initOffersWheel();
+
+  // Welcome back Modal initialization
+  const welcomeModal = document.getElementById('welcome-modal');
+  const closeWelcomeBtn = document.getElementById('close-welcome-btn');
+  const welcomeExploreBtn = document.getElementById('welcome-explore-btn');
+
+  if (welcomeModal) {
+    if (!sessionStorage.getItem('welcomeShown')) {
+      setTimeout(() => {
+        welcomeModal.classList.add('active');
+        sessionStorage.setItem('welcomeShown', 'true');
+      }, 1500);
+    }
+
+    const closeWelcome = () => {
+      welcomeModal.classList.remove('active');
+    };
+
+    closeWelcomeBtn?.addEventListener('click', closeWelcome);
+    welcomeExploreBtn?.addEventListener('click', closeWelcome);
+    welcomeModal.addEventListener('click', (e) => {
+      if (e.target === welcomeModal) {
+        closeWelcome();
+      }
+    });
+  }
 }
 
 if (document.readyState === 'loading') {
