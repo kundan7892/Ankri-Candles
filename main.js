@@ -344,6 +344,14 @@ function initAppFlow() {
   const chatInputForm = document.getElementById('chat-input-form');
   const chatUserInput = document.getElementById('chat-user-input');
 
+  // Mobile Navigation Drawer selectors
+  const mobileMenuToggleBtn = document.getElementById('mobile-menu-toggle-btn');
+  const mobileMenuCloseBtn = document.getElementById('mobile-menu-close-btn');
+  const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+  const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
+  const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+  const mobileBulkOrderLink = document.getElementById('mobile-bulk-order-link');
+
   // --- INITIALIZATION ---
   initApp();
 
@@ -362,6 +370,66 @@ function initAppFlow() {
 
   // --- LISTENERS ---
   function setupEventListeners() {
+    // Mobile Navigation Toggle Drawer clicks
+    if (mobileMenuToggleBtn && mobileMenuDrawer && mobileMenuOverlay) {
+      mobileMenuToggleBtn.addEventListener('click', () => {
+        mobileMenuDrawer.classList.add('active');
+        mobileMenuOverlay.classList.add('active');
+      });
+    }
+
+    if (mobileMenuCloseBtn && mobileMenuDrawer && mobileMenuOverlay) {
+      mobileMenuCloseBtn.addEventListener('click', () => {
+        mobileMenuDrawer.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+      });
+    }
+
+    if (mobileMenuOverlay && mobileMenuDrawer) {
+      mobileMenuOverlay.addEventListener('click', () => {
+        mobileMenuDrawer.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+      });
+    }
+
+    // Mobile Navigation Links smooth scrolling & drawer closing
+    mobileMenuLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Close menu
+        mobileMenuDrawer.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+
+        // Remove active class from all links and add to clicked one
+        mobileMenuLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        // If it is regular section link, allow default anchoring or smooth scroll
+        const targetId = link.getAttribute('href');
+        if (targetId && targetId.startsWith('#')) {
+          const targetSection = document.querySelector(targetId);
+          if (targetSection) {
+            e.preventDefault();
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    // Mobile drawer Bulk Order click
+    if (mobileBulkOrderLink) {
+      mobileBulkOrderLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        mobileMenuDrawer.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+
+        // Trigger bulk order modal opening
+        const bulkBtn = document.getElementById('bulk-order-btn');
+        if (bulkBtn) {
+          bulkBtn.click();
+        }
+      });
+    }
+
     // Interactive Wick Flame Toggle
     flameSystem.addEventListener('click', toggleFlame);
 

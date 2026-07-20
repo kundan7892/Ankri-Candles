@@ -44,6 +44,10 @@
         <a href="#" class="nav-link" id="bulk-order-nav-link">Bulk Order</a>
       </nav>
       <div class="header-actions">
+        <!-- New hamburger menu button on mobile -->
+        <button class="icon-action-btn mobile-menu-btn" id="mobile-menu-toggle-btn" aria-label="Toggle Navigation Menu">
+          <i data-lucide="menu"></i>
+        </button>
         <button class="icon-action-btn" id="bulk-order-btn" aria-label="Bulk Order Enquiry"
           title="Bulk Order Enquiry"><i data-lucide="package"></i></button>
         <button class="icon-action-btn" id="theme-toggle-btn" aria-label="Toggle Dark Mode"
@@ -2669,6 +2673,23 @@
         </button>
       </div>
     </div>
+  </div>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+  <div class="mobile-menu-drawer" id="mobile-menu-drawer">
+    <div class="mobile-menu-header">
+      <h3 class="mobile-menu-title">Menu</h3>
+      <button class="mobile-menu-close" id="mobile-menu-close-btn" aria-label="Close menu">&times;</button>
+    </div>
+    <nav class="mobile-menu-links">
+      <a href="#collection" class="mobile-menu-link">Shop</a>
+      <a href="#customizer" class="mobile-menu-link active">Custom Candle</a>
+      <a href="#gifting" class="mobile-menu-link">Gifting</a>
+      <a href="#about" class="mobile-menu-link">Refill & Subscription</a>
+      <a href="#about" class="mobile-menu-link">About</a>
+      <a href="#" class="mobile-menu-link" id="mobile-bulk-order-link">Bulk Order</a>
+    </nav>
   </div>
 
   <!-- ====== FLOATING TEST WHEEL FLOATER ====== -->
