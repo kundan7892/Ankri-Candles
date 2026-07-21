@@ -346,6 +346,7 @@ function initAppFlow() {
   const chatMessagesList = document.getElementById('chat-messages-list');
   const chatInputForm = document.getElementById('chat-input-form');
   const chatUserInput = document.getElementById('chat-user-input');
+  const navAiBtn = document.getElementById('nav-ai-btn');
 
   // Mobile Navigation Drawer selectors
   const mobileMenuToggleBtn = document.getElementById('mobile-menu-toggle-btn');
@@ -1754,6 +1755,19 @@ function initAppFlow() {
           }
         });
       }
+
+      // Nav AI Button click
+      if (navAiBtn) {
+        navAiBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (supportChatPanel.classList.contains('show')) {
+            closeChatPanel();
+          } else {
+            openChatPanel();
+          }
+        });
+      }
+
 
       // Top Back / Close button actions
       if (chatBackBtn) chatBackBtn.addEventListener('click', closeChatPanel);
