@@ -6893,3 +6893,334 @@ body.dark-theme .logo-dark {
   box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
   background: linear-gradient(135deg, #F5D268, var(--gold-primary));
 }
+
+/* ============================================================
+   INTERACTIVE PRODUCT STAR RATINGS
+   ============================================================ */
+
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0.4rem 0 0.75rem 0;
+  flex-wrap: nowrap;
+}
+
+.rating-star {
+  font-size: 1.15rem;
+  cursor: pointer;
+  color: #b0b0b0;
+  transition: color 0.12s ease, transform 0.12s ease;
+  user-select: none;
+  line-height: 1;
+  display: inline-block;
+}
+
+.rating-star.filled {
+  color: #D4AF37;
+}
+
+.rating-star.hover-preview {
+  color: #F5C542;
+  transform: scale(1.25);
+}
+
+.rating-star:hover {
+  color: #F5C542;
+  transform: scale(1.25);
+}
+
+.rating-text {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: 5px;
+  white-space: nowrap;
+}
+
+/* Pulse animation when user submits a rating */
+@keyframes star-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.4);
+  }
+
+  70% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.product-rating.rated-confirm .rating-star.filled {
+  animation: star-pulse 0.45s ease forwards;
+}
+
+/* Tooltip hint on the rating wrapper */
+.product-rating[data-product-id] {
+  position: relative;
+}
+
+.product-rating[data-product-id]::after {
+  content: 'Tap a star to rate';
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  background: rgba(30, 30, 30, 0.88);
+  color: #fff;
+  font-size: 0.65rem;
+  font-family: var(--font-sans);
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.product-rating[data-product-id]:hover::after {
+  opacity: 1;
+}
+
+/* Dark Mode Adjustments */
+body.dark-theme .rating-star {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-theme .rating-star.filled {
+  color: #E5C158;
+}
+
+body.dark-theme .rating-text {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ============================================================
+   HALF-STAR SUPPORT
+   ============================================================ */
+
+.rating-star.half-filled {
+  position: relative;
+  display: inline-block;
+  color: #b0b0b0;
+  /* empty base */
+}
+
+.rating-star.half-filled::before {
+  content: '★';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  overflow: hidden;
+  color: #D4AF37;
+}
+
+body.dark-theme .rating-star.half-filled::before {
+  color: #E5C158;
+}
+
+/* ============================================================
+   POST-BOOKING RATING MODAL
+   ============================================================ */
+
+.rating-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.rating-modal-overlay.hidden {
+  display: none;
+}
+
+.rating-modal-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(212, 175, 55, 0.08);
+  animation: slideUpFade 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rating-modal-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.rating-modal-icon {
+  display: inline-block;
+  font-size: 2.5rem;
+  color: #D4AF37;
+  margin-bottom: 0.75rem;
+  filter: drop-shadow(0 2px 6px rgba(212, 175, 55, 0.35));
+}
+
+.rating-modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  color: var(--text-primary);
+  margin: 0 0 0.4rem 0;
+}
+
+.rating-modal-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.rating-modal-products {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.rating-product-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(212, 175, 55, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.12);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  flex-wrap: wrap;
+}
+
+.rating-product-name {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  min-width: 120px;
+}
+
+.rating-product-stars {
+  display: flex;
+  gap: 4px;
+}
+
+.modal-star {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.12s ease, transform 0.12s ease;
+  user-select: none;
+  line-height: 1;
+}
+
+.modal-star.filled {
+  color: #D4AF37;
+}
+
+.modal-star.hover-preview {
+  color: #F5C542;
+  transform: scale(1.25);
+}
+
+.modal-star:hover {
+  transform: scale(1.2);
+  color: #F5C542;
+}
+
+.rating-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.rating-submit-btn {
+  width: 100%;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+}
+
+.rating-skip-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.3rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.rating-skip-btn:hover {
+  color: var(--text-secondary);
+}
+
+/* Dark Mode */
+body.dark-theme .rating-modal-card {
+  background: rgba(18, 24, 21, 0.95) !important;
+  border-color: rgba(212, 175, 55, 0.2) !important;
+}
+
+body.dark-theme .rating-modal-title {
+  color: var(--text-primary) !important;
+}
+
+body.dark-theme .rating-product-row {
+  background: rgba(212, 175, 55, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-theme .rating-product-name {
+  color: var(--text-primary);
+}
+
+body.dark-theme .modal-star {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-theme .modal-star.filled {
+  color: #E5C158;
+}
+
+@media (max-width: 480px) {
+  .rating-modal-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .rating-product-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}

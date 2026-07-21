@@ -46,6 +46,9 @@ function initAppFlow() {
     promoApplied: false
   };
 
+  // Stores items from the last completed purchase for post-booking rating
+  let lastPurchasedItems = [];
+
   // --- DATA DICTIONARIES ---
   const SCENT_POOL = {
     lavender: { name: 'Lavender', color: '#D1C4E9', desc: 'Soft, floral, relaxing' },
@@ -366,6 +369,10 @@ function initAppFlow() {
     if (window.lucide) {
       window.lucide.createIcons();
     }
+
+    // Initialise interactive product ratings
+    fetchAndRenderRatings();
+    setupRatingInteractivity();
   }
 
   // --- LISTENERS ---
@@ -880,6 +887,10 @@ function initAppFlow() {
     checkoutBtn.addEventListener('click', performCheckout);
     closeSuccessBtn.addEventListener('click', () => {
       successModalOverlay.classList.add('hidden');
+      // Show rating modal for purchased products
+      if (lastPurchasedItems.length > 0) {
+        setTimeout(() => showRatingModal(lastPurchasedItems), 400);
+      }
     });
 
     if (closeCheckoutModalBtn) {
@@ -2954,6 +2965,9 @@ function initAppFlow() {
       });
 
       if (bookingResponse.ok && paymentResponse.ok) {
+        // Save items for post-booking rating prompt before clearing cart
+        lastPurchasedItems = state.cart.map(i => ({ ...i }));
+
         checkoutDetailsForm.reset();
         if (checkoutModalOverlay) checkoutModalOverlay.classList.add('hidden');
         toggleCartDrawer();
@@ -4006,6 +4020,266 @@ function initAppFlow() {
       }
     });
   }
+
+  // --- PRODUCT RATING SYSTEM ---
+
+  // Fetch all ratings from backend and update star displays
+  async function fetchAndRenderRatings() {
+    try {
+      const res = await fetch('/api/ratings');
+      if (!res.ok) return;
+      const data = await res.json();
+      Object.keys(data).forEach(productId => {
+        const { totalStars, voteCount } = data[productId];
+        if (voteCount > 0) {
+          renderStars(productId, totalStars / voteCount, voteCount);
+        }
+      });
+    } catch (err) {
+      console.warn('[Ratings] Could not fetch ratings:', err);
+    }
+  }
+
+  // Render stars with half-star support (e.g. avg=4.5 shows 4 full + 1 half)
+  function renderStars(productId, avg, voteCount, container) {
+    if (!container) {
+      container = document.querySelector(`.product-rating[data-product-id="${productId}"]`);
+    }
+    if (!container) return;
+
+    const stars = container.querySelectorAll('.rating-star');
+    const countEl = container.querySelector('.rating-text');
+    const floorVal = Math.floor(avg);
+    const hasHalf = (avg - floorVal) >= 0.4;
+
+    stars.forEach(star => {
+      const val = parseInt(star.getAttribute('data-value'), 10);
+      star.classList.remove('filled', 'empty', 'half-filled');
+      star.textContent = '\u2606'; // reset to empty
+
+      if (val <= floorVal) {
+        star.classList.add('filled');
+        star.textContent = '\u2605';
+      } else if (val === floorVal + 1 && hasHalf) {
+        star.classList.add('half-filled');
+        star.textContent = '\u2606'; // the CSS ::before will show half
+      } else {
+        star.classList.add('empty');
+      }
+    });
+
+    if (countEl) {
+      countEl.textContent = `(${voteCount} review${voteCount !== 1 ? 's' : ''})`;
+    }
+    container.dataset.currentAvg = avg;
+  }
+
+  // Revert stars to the current saved average (for mouseout)
+  function revertStars(container) {
+    const avg = parseFloat(container.dataset.currentAvg || '4');
+    const stars = container.querySelectorAll('.rating-star');
+    const floorVal = Math.floor(avg);
+    const hasHalf = (avg - floorVal) >= 0.4;
+
+    stars.forEach(s => {
+      const sv = parseInt(s.getAttribute('data-value'), 10);
+      s.classList.remove('filled', 'empty', 'half-filled', 'hover-preview');
+      s.textContent = '\u2606';
+      if (sv <= floorVal) {
+        s.classList.add('filled');
+        s.textContent = '\u2605';
+      } else if (sv === floorVal + 1 && hasHalf) {
+        s.classList.add('half-filled');
+      } else {
+        s.classList.add('empty');
+      }
+    });
+  }
+
+  // Set up hover + click interactivity on product card stars
+  function setupRatingInteractivity() {
+    document.querySelectorAll('.product-rating[data-product-id]').forEach(container => {
+      const productId = container.dataset.productId;
+      const stars = container.querySelectorAll('.rating-star');
+
+      stars.forEach(star => {
+        const val = parseInt(star.getAttribute('data-value'), 10);
+
+        // Stop clicks on stars from bubbling to parent card
+        star.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          try {
+            const res = await fetch(`/api/ratings/${productId}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ stars: val })
+            });
+            if (!res.ok) { showToast('Could not save rating.'); return; }
+            const { avg, voteCount } = await res.json();
+            renderStars(productId, avg, voteCount, container);
+            container.classList.add('rated-confirm');
+            setTimeout(() => container.classList.remove('rated-confirm'), 500);
+            showToast('\u2605 Thanks for rating!');
+          } catch (err) {
+            console.warn('[Ratings] vote error:', err);
+            showToast('Rating saved locally.');
+          }
+        });
+
+        star.addEventListener('mouseenter', (e) => {
+          e.stopPropagation();
+          stars.forEach(s => {
+            const sv = parseInt(s.getAttribute('data-value'), 10);
+            s.classList.remove('filled', 'empty', 'half-filled', 'hover-preview');
+            if (sv <= val) {
+              s.textContent = '\u2605';
+              s.classList.add('filled', 'hover-preview');
+            } else {
+              s.textContent = '\u2606';
+              s.classList.add('empty');
+            }
+          });
+        });
+
+        star.addEventListener('mouseleave', (e) => {
+          e.stopPropagation();
+          revertStars(container);
+        });
+      });
+    });
+  }
+
+  // --- POST-BOOKING RATING MODAL ---
+
+  const ratingModalOverlay = document.getElementById('rating-modal-overlay');
+  const ratingModalProducts = document.getElementById('rating-modal-products');
+  const ratingModalSubmit = document.getElementById('rating-modal-submit');
+  const ratingModalSkip = document.getElementById('rating-modal-skip');
+
+  // Map of productId -> user's chosen stars in the modal
+  const modalRatingChoices = {};
+
+  function showRatingModal(purchasedItems) {
+    if (!ratingModalOverlay || !ratingModalProducts) return;
+
+    // Filter to only signature/kit products with a productId
+    const rateableItems = purchasedItems.filter(item => item.id && !item.isCustom);
+    if (rateableItems.length === 0) return;
+
+    // Deduplicate by id
+    const seen = new Set();
+    const uniqueItems = rateableItems.filter(item => {
+      if (seen.has(item.id)) return false;
+      seen.add(item.id);
+      return true;
+    });
+
+    // Build star picker rows
+    ratingModalProducts.innerHTML = '';
+    uniqueItems.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'rating-product-row';
+      row.innerHTML = `
+        <span class="rating-product-name">${item.name}</span>
+        <div class="rating-product-stars" data-product-id="${item.id}">
+          <span class="modal-star empty" data-value="1" title="1 star">&#9734;</span>
+          <span class="modal-star empty" data-value="2" title="2 stars">&#9734;</span>
+          <span class="modal-star empty" data-value="3" title="3 stars">&#9734;</span>
+          <span class="modal-star empty" data-value="4" title="4 stars">&#9734;</span>
+          <span class="modal-star empty" data-value="5" title="5 stars">&#9734;</span>
+        </div>
+      `;
+
+      // Wire up modal star interactivity
+      const starsRow = row.querySelector('.rating-product-stars');
+      const modalStars = starsRow.querySelectorAll('.modal-star');
+      modalRatingChoices[item.id] = 0;
+
+      modalStars.forEach(ms => {
+        const v = parseInt(ms.getAttribute('data-value'), 10);
+
+        ms.addEventListener('mouseenter', () => {
+          modalStars.forEach(s => {
+            const sv = parseInt(s.getAttribute('data-value'), 10);
+            s.classList.toggle('filled', sv <= v);
+            s.classList.toggle('empty', sv > v);
+            s.classList.toggle('hover-preview', sv <= v);
+            s.textContent = sv <= v ? '\u2605' : '\u2606';
+          });
+        });
+
+        ms.addEventListener('mouseleave', () => {
+          const chosen = modalRatingChoices[item.id] || 0;
+          modalStars.forEach(s => {
+            const sv = parseInt(s.getAttribute('data-value'), 10);
+            s.classList.remove('hover-preview');
+            s.classList.toggle('filled', sv <= chosen);
+            s.classList.toggle('empty', sv > chosen);
+            s.textContent = sv <= chosen ? '\u2605' : '\u2606';
+          });
+        });
+
+        ms.addEventListener('click', () => {
+          modalRatingChoices[item.id] = v;
+          modalStars.forEach(s => {
+            const sv = parseInt(s.getAttribute('data-value'), 10);
+            s.classList.remove('hover-preview');
+            s.classList.toggle('filled', sv <= v);
+            s.classList.toggle('empty', sv > v);
+            s.textContent = sv <= v ? '\u2605' : '\u2606';
+          });
+        });
+      });
+
+      ratingModalProducts.appendChild(row);
+    });
+
+    ratingModalOverlay.classList.remove('hidden');
+  }
+
+  if (ratingModalSkip) {
+    ratingModalSkip.addEventListener('click', () => {
+      ratingModalOverlay.classList.add('hidden');
+    });
+  }
+
+  if (ratingModalSubmit) {
+    ratingModalSubmit.addEventListener('click', async () => {
+      ratingModalSubmit.disabled = true;
+      ratingModalSubmit.textContent = 'Submitting...';
+
+      const entries = Object.entries(modalRatingChoices).filter(([, v]) => v > 0);
+      if (entries.length === 0) {
+        showToast('Please tap a star to rate at least one product.');
+        ratingModalSubmit.disabled = false;
+        ratingModalSubmit.textContent = 'Submit Ratings';
+        return;
+      }
+
+      try {
+        await Promise.all(entries.map(([productId, stars]) =>
+          fetch(`/api/ratings/${productId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ stars })
+          })
+        ));
+        // Re-fetch and re-render product cards
+        await fetchAndRenderRatings();
+        ratingModalOverlay.classList.add('hidden');
+        showToast('\u2605 Thank you! Your ratings are saved.');
+      } catch (err) {
+        console.warn('[RatingModal] Submit error:', err);
+        ratingModalOverlay.classList.add('hidden');
+        showToast('Ratings saved locally.');
+      }
+
+      ratingModalSubmit.disabled = false;
+      ratingModalSubmit.textContent = 'Submit Ratings';
+    });
+  }
+
 }
 
 if (document.readyState === 'loading') {

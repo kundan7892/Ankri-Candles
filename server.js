@@ -161,6 +161,15 @@ const spinRewardSchema = new mongoose.Schema({
 
 const SpinReward = mongoose.model('SpinReward', spinRewardSchema);
 
+// Product Rating Schema
+const productRatingSchema = new mongoose.Schema({
+  productId: { type: String, required: true, unique: true },
+  totalStars: { type: Number, default: 40 }, // Default: 4 stars × 10 votes
+  voteCount: { type: Number, default: 10 }
+});
+
+const ProductRating = mongoose.model('ProductRating', productRatingSchema);
+
 // Helper to save/update active carts in local backup when database is offline
 function saveOrUpdateAbandonedCartInBackup(data) {
   try {
@@ -648,6 +657,93 @@ app.post('/api/support-chat', async (req, res) => {
   }
 });
 
+
+// --- PRODUCT RATINGS ROUTES ---
+
+// Helper: read ratings from local JSON
+function readRatingsFromFile() {
+  try {
+    const filePath = path.join(process.cwd(), 'data', 'ratings.json');
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf8');
+      return JSON.parse(content || '{}');
+    }
+  } catch (err) {
+    console.error('Error reading ratings file:', err);
+  }
+  return {};
+}
+
+// Helper: write ratings to local JSON
+function writeRatingsToFile(data) {
+  try {
+    const dir = path.join(process.cwd(), 'data');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    const filePath = path.join(dir, 'ratings.json');
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error writing ratings file:', err);
+  }
+}
+
+// GET /api/ratings — fetch all product ratings
+app.get('/api/ratings', async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      const data = readRatingsFromFile();
+      return res.status(200).json(data);
+    }
+    const ratings = await ProductRating.find({});
+    const result = {};
+    ratings.forEach(r => {
+      result[r.productId] = { totalStars: r.totalStars, voteCount: r.voteCount };
+    });
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error('Error fetching ratings:', error);
+    res.status(500).json({ message: 'Error fetching ratings' });
+  }
+});
+
+// POST /api/ratings/:productId — submit a star vote
+app.post('/api/ratings/:productId', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const { stars } = req.body;
+
+    if (!stars || stars < 1 || stars > 5) {
+      return res.status(400).json({ message: 'Invalid star value. Must be 1-5.' });
+    }
+
+    if (mongoose.connection.readyState !== 1) {
+      // Local JSON fallback
+      const data = readRatingsFromFile();
+      if (!data[productId]) {
+        data[productId] = { totalStars: 40, voteCount: 10 }; // seed default
+      }
+      data[productId].totalStars += stars;
+      data[productId].voteCount += 1;
+      writeRatingsToFile(data);
+      const avg = parseFloat((data[productId].totalStars / data[productId].voteCount).toFixed(1));
+      return res.status(200).json({ avg, voteCount: data[productId].voteCount });
+    }
+
+    // MongoDB path
+    let rating = await ProductRating.findOne({ productId });
+    if (!rating) {
+      rating = new ProductRating({ productId, totalStars: 40, voteCount: 10 }); // seed default
+    }
+    rating.totalStars += stars;
+    rating.voteCount += 1;
+    await rating.save();
+
+    const avg = parseFloat((rating.totalStars / rating.voteCount).toFixed(1));
+    return res.status(200).json({ avg, voteCount: rating.voteCount });
+  } catch (error) {
+    console.error('Error submitting rating:', error);
+    res.status(500).json({ message: 'Error submitting rating' });
+  }
+});
 
 // Start Server
 app.listen(PORT, () => {
