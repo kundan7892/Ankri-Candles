@@ -6019,28 +6019,38 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
 
 /* Dynamic Themed Images for each Occasion */
 #gift-showcase[data-active-occasion="birthday"] .gift-box-wrap-preview {
-  background: url('https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  background-image: url('https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&q=80&w=800') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  border: 1px solid rgba(212, 175, 55, 0.4) !important;
 }
 
 #gift-showcase[data-active-occasion="anniversary"] .gift-box-wrap-preview {
-  background: url('https://images.unsplash.com/photo-1510076939987-bf7f620bd126?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  background-image: url('https://images.unsplash.com/photo-1510076939987-bf7f620bd126?auto=format&fit=crop&q=80&w=800') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  border: 1px solid rgba(212, 175, 55, 0.4) !important;
 }
 
 #gift-showcase[data-active-occasion="valentine"] .gift-box-wrap-preview {
-  background: url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
-  border: 1px solid rgba(255, 50, 80, 0.4);
+  background-image: url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  border: 1px solid rgba(255, 50, 80, 0.4) !important;
 }
 
 #gift-showcase[data-active-occasion="christmas"] .gift-box-wrap-preview {
-  background: url('https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
-  border: 1px solid rgba(19, 34, 28, 0.8);
+  background-image: url('https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=800') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  border: 1px solid rgba(19, 34, 28, 0.8) !important;
 }
 
 #gift-showcase[data-active-occasion="housewarming"] .gift-box-wrap-preview {
-  background: url('https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
-  border: 1px solid rgba(138, 158, 146, 0.6);
+  background-image: url('https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&q=80&w=800') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  border: 1px solid rgba(138, 158, 146, 0.6) !important;
 }
 
 /* Ribbon Bow Accent on Box Preview */
