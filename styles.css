@@ -5993,29 +5993,54 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
   bottom: -15px;
   border-radius: 12px;
   z-index: 3;
-  opacity: 0.65;
+  opacity: 0.85;
+  /* Increased opacity for better image visibility */
   transition: all 0.5s ease;
   pointer-events: none;
-  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.1), 0 8px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.4), 0 8px 25px rgba(0, 0, 0, 0.08);
+  /* Darkened inner shadow to contrast label */
 }
 
+/* Base generic patterns if images fail */
 .gift-box-wrap-preview[data-wrap="forest-silk"] {
   background: radial-gradient(circle at 30% 30%, #fefdf9 0%, #f6f3e6 100%);
   border: 1px solid #e2ddc4;
-  background-image: radial-gradient(rgba(212, 175, 55, 0.2) 1px, transparent 0), radial-gradient(rgba(212, 175, 55, 0.1) 2px, transparent 0);
-  background-size: 16px 16px, 8px 8px;
-  background-position: 0 0, 8px 8px;
 }
 
 .gift-box-wrap-preview[data-wrap="gold-deco"] {
   background: linear-gradient(135deg, #1c1d22 0%, #0e0f12 100%);
   border: 1px solid rgba(212, 175, 55, 0.3);
-  background-image: repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.04) 0px, rgba(212, 175, 55, 0.04) 2px, transparent 2px, transparent 8px);
 }
 
 .gift-box-wrap-preview[data-wrap="obsidian-velvet"] {
   background: radial-gradient(circle at 50% 50%, #151515 0%, #050505 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Dynamic Themed Images for each Occasion */
+#gift-showcase[data-active-occasion="birthday"] .gift-box-wrap-preview {
+  background: url('https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+#gift-showcase[data-active-occasion="anniversary"] .gift-box-wrap-preview {
+  background: url('https://images.unsplash.com/photo-1510076939987-bf7f620bd126?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+#gift-showcase[data-active-occasion="valentine"] .gift-box-wrap-preview {
+  background: url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
+  border: 1px solid rgba(255, 50, 80, 0.4);
+}
+
+#gift-showcase[data-active-occasion="christmas"] .gift-box-wrap-preview {
+  background: url('https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
+  border: 1px solid rgba(19, 34, 28, 0.8);
+}
+
+#gift-showcase[data-active-occasion="housewarming"] .gift-box-wrap-preview {
+  background: url('https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
+  border: 1px solid rgba(138, 158, 146, 0.6);
 }
 
 /* Ribbon Bow Accent on Box Preview */
