@@ -2116,7 +2116,7 @@ function initAppFlow() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
           document.body.classList.add('dark-theme');
-          const icon = themeToggleBtn.querySelector('i');
+          const icon = themeToggleBtn.querySelector('i, svg');
           if (icon) icon.setAttribute('data-lucide', 'sun');
           if (window.lucide) window.lucide.createIcons();
         }
@@ -2125,7 +2125,7 @@ function initAppFlow() {
           const isDark = document.body.classList.toggle('dark-theme');
           localStorage.setItem('theme', isDark ? 'dark' : 'light');
 
-          const icon = themeToggleBtn.querySelector('i');
+          const icon = themeToggleBtn.querySelector('i, svg');
           if (icon) {
             icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
           }

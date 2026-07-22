@@ -408,24 +408,28 @@ section {
 }
 
 /* Nav icon click interaction colors */
-.icon-action-btn:active i {
+.icon-action-btn:active i,
+.icon-action-btn:active svg {
   stroke: var(--gold-primary);
   transform: scale(0.9);
 }
 
-#wishlist-btn.active i {
+#wishlist-btn.active i,
+#wishlist-btn.active svg {
   stroke: #FF3B30 !important;
   fill: #FF3B30 !important;
   transition: all 0.3s ease;
 }
 
-#theme-toggle-btn:active i {
+#theme-toggle-btn:active i,
+#theme-toggle-btn:active svg {
   stroke: #F5C545 !important;
   fill: rgba(245, 197, 69, 0.2) !important;
 }
 
 /* Light mode icon specific color */
-#theme-toggle-btn i[data-lucide="sun"] {
+#theme-toggle-btn i[data-lucide="sun"],
+#theme-toggle-btn svg.lucide-sun {
   stroke: #F5C545 !important;
 }
 
