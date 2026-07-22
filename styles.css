@@ -407,6 +407,28 @@ section {
   background: rgba(19, 34, 28, 0.05);
 }
 
+/* Nav icon click interaction colors */
+.icon-action-btn:active i {
+  stroke: var(--gold-primary);
+  transform: scale(0.9);
+}
+
+#wishlist-btn.active i {
+  stroke: #FF3B30 !important;
+  fill: #FF3B30 !important;
+  transition: all 0.3s ease;
+}
+
+#theme-toggle-btn:active i {
+  stroke: #F5C545 !important;
+  fill: rgba(245, 197, 69, 0.2) !important;
+}
+
+/* Light mode icon specific color */
+#theme-toggle-btn i[data-lucide="sun"] {
+  stroke: #F5C545 !important;
+}
+
 .icon-action-btn i {
   width: 18px;
   height: 18px;

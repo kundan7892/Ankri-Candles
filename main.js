@@ -3800,7 +3800,12 @@ function initAppFlow() {
   }
 
   if (searchBtn) searchBtn.addEventListener('click', () => openStorefrontModal(searchModalOverlay));
-  if (wishlistBtn) wishlistBtn.addEventListener('click', () => openStorefrontModal(wishlistModalOverlay));
+  if (wishlistBtn) {
+    wishlistBtn.addEventListener('click', () => {
+      wishlistBtn.classList.toggle('active');
+      openStorefrontModal(wishlistModalOverlay);
+    });
+  }
   if (profileBtn) profileBtn.addEventListener('click', () => openStorefrontModal(profileModalOverlay));
 
   if (closeSearchBtn) closeSearchBtn.addEventListener('click', () => closeStorefrontModal(searchModalOverlay));
