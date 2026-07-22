@@ -3891,7 +3891,8 @@ function initAppFlow() {
     const rewards = [
       { name: "10% OFF", code: "ANKRI10", sliceIndex: 0 },
       { name: "Free Shipping", code: "ANKRISHIP", sliceIndex: 1 },
-      { name: "Buy 2 Get 1", code: "ANKRIB2G1", sliceIndex: 2 }
+      { name: "Buy 2 Get 1", code: "ANKRIB2G1", sliceIndex: 2 },
+      { name: "Better Luck", code: null, sliceIndex: 3 }
     ];
 
     function showWheelPopup() {
@@ -3954,13 +3955,14 @@ function initAppFlow() {
         if (isSpinning) return;
         isSpinning = true;
 
-        const wonIndex = Math.floor(Math.random() * 3);
+        const wonIndex = Math.floor(Math.random() * 4); // changed from 3
         const reward = rewards[wonIndex];
 
         let sliceAngle = 0;
-        if (wonIndex === 0) sliceAngle = 30; // 10% OFF
-        else if (wonIndex === 1) sliceAngle = 90; // Free Shipping
-        else sliceAngle = 150; // Buy 2 Get 1
+        if (wonIndex === 0) sliceAngle = 22.5; // 10% OFF
+        else if (wonIndex === 1) sliceAngle = 67.5; // Free Shipping
+        else if (wonIndex === 2) sliceAngle = 112.5; // Buy 2 Get 1
+        else sliceAngle = 157.5; // Better Luck
 
         // The top point of the wheel is 0 degrees. To place sliceAngle at the top, we rotate backward by sliceAngle.
         // Also adding a random offset to make it land organically inside the slice without always being perfectly centered.
@@ -3988,12 +3990,19 @@ function initAppFlow() {
           }
 
           if (prizeTxt) prizeTxt.textContent = reward.name;
-          if (couponCodeTxt) couponCodeTxt.textContent = reward.code;
+
+          if (reward.code) {
+            if (couponCodeTxt) couponCodeTxt.textContent = reward.code;
+            if (copyBtn) copyBtn.style.display = 'inline-flex';
+            showToast(`Won ${reward.name}! Coupon Code: ${reward.code}`);
+          } else {
+            if (couponCodeTxt) couponCodeTxt.textContent = "Oops!";
+            if (copyBtn) copyBtn.style.display = 'none';
+            showToast(`Oh no! Better luck next time.`);
+          }
 
           wheelStep.classList.add('hidden');
           revealStep.classList.remove('hidden');
-
-          showToast(`Won ${reward.name}! Coupon Code: ${reward.code}`);
         }, 6200);
       });
     }

@@ -2589,46 +2589,59 @@
           <!-- Inner SVG Wheel -->
           <svg id="wheel-svg" viewBox="0 0 200 200"
             style="width: 100%; height: 100%; border-radius: 50%; transform: rotate(0deg); transition: transform 6s cubic-bezier(0.1, 0.8, 0.1, 1);">
-            <!-- Slices: total 6 slices (60 deg each) -->
+            <!-- Slices: total 8 slices (45 deg each) -->
             <!-- Slice 1: 10% OFF -->
-            <path d="M 100 100 L 100 0 A 100 100 0 0 1 186.6 50 Z" fill="#13221C" stroke="var(--gold-primary)"
+            <path d="M 100 100 L 100 0 A 100 100 0 0 1 170.7 29.3 Z" fill="#13221C" stroke="var(--gold-primary)"
               stroke-width="0.75" />
             <!-- Slice 2: Free Shipping -->
-            <path d="M 100 100 L 186.6 50 A 100 100 0 0 1 186.6 150 Z" fill="#0D1612" stroke="var(--gold-primary)"
+            <path d="M 100 100 L 170.7 29.3 A 100 100 0 0 1 200 100 Z" fill="#0D1612" stroke="var(--gold-primary)"
               stroke-width="0.75" />
             <!-- Slice 3: Buy 2 Get 1 -->
-            <path d="M 100 100 L 186.6 150 A 100 100 0 0 1 100 200 Z" fill="#1b2e25" stroke="var(--gold-primary)"
+            <path d="M 100 100 L 200 100 A 100 100 0 0 1 170.7 170.7 Z" fill="#1b2e25" stroke="var(--gold-primary)"
               stroke-width="0.75" />
-            <!-- Slice 4: 10% OFF -->
-            <path d="M 100 100 L 100 200 A 100 100 0 0 1 13.4 150 Z" fill="#13221C" stroke="var(--gold-primary)"
+            <!-- Slice 4: Better Luck -->
+            <path d="M 100 100 L 170.7 170.7 A 100 100 0 0 1 100 200 Z" fill="#0A100E" stroke="var(--gold-primary)"
               stroke-width="0.75" />
-            <!-- Slice 5: Free Shipping -->
-            <path d="M 100 100 L 13.4 150 A 100 100 0 0 1 13.4 50 Z" fill="#0D1612" stroke="var(--gold-primary)"
+            <!-- Slice 5: 10% OFF -->
+            <path d="M 100 100 L 100 200 A 100 100 0 0 1 29.3 170.7 Z" fill="#13221C" stroke="var(--gold-primary)"
               stroke-width="0.75" />
-            <!-- Slice 6: Buy 2 Get 1 -->
-            <path d="M 100 100 L 13.4 50 A 100 100 0 0 1 100 0 Z" fill="#1b2e25" stroke="var(--gold-primary)"
+            <!-- Slice 6: Free Shipping -->
+            <path d="M 100 100 L 29.3 170.7 A 100 100 0 0 1 0 100 Z" fill="#0D1612" stroke="var(--gold-primary)"
+              stroke-width="0.75" />
+            <!-- Slice 7: Buy 2 Get 1 -->
+            <path d="M 100 100 L 0 100 A 100 100 0 0 1 29.3 29.3 Z" fill="#1b2e25" stroke="var(--gold-primary)"
+              stroke-width="0.75" />
+            <!-- Slice 8: Better Luck -->
+            <path d="M 100 100 L 29.3 29.3 A 100 100 0 0 1 100 0 Z" fill="#0A100E" stroke="var(--gold-primary)"
               stroke-width="0.75" />
 
             <!-- Slice Texts -->
             <g transform="translate(100, 100)">
               <!-- Slice 1: 10% OFF -->
-              <text x="0" y="-60" transform="rotate(30)" font-family="var(--font-sans)" font-size="7.5"
+              <text x="0" y="-60" transform="rotate(22.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="var(--gold-text)" text-anchor="middle">10% OFF</text>
               <!-- Slice 2: Free Shipping -->
-              <text x="0" y="-60" transform="rotate(90)" font-family="var(--font-sans)" font-size="7.5"
+              <text x="0" y="-60" transform="rotate(67.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="#fff" text-anchor="middle">FREE SHIP</text>
               <!-- Slice 3: Buy 2 Get 1 -->
-              <text x="0" y="-60" transform="rotate(150)" font-family="var(--font-sans)" font-size="7.5"
+              <text x="0" y="-60" transform="rotate(112.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="var(--gold-text)" text-anchor="middle">BUY 2 GET 1</text>
-              <!-- Slice 4: 10% OFF -->
-              <text x="0" y="-60" transform="rotate(210)" font-family="var(--font-sans)" font-size="7.5"
+              <!-- Slice 4: Better Luck -->
+              <text x="0" y="-60" transform="rotate(157.5)" font-family="var(--font-sans)" font-size="6"
+                font-weight="700" fill="#B2C0BB" text-anchor="middle">NEXT TIME</text>
+
+              <!-- Slice 5: 10% OFF -->
+              <text x="0" y="-60" transform="rotate(202.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="var(--gold-text)" text-anchor="middle">10% OFF</text>
-              <!-- Slice 5: Free Shipping -->
-              <text x="0" y="-60" transform="rotate(270)" font-family="var(--font-sans)" font-size="7.5"
+              <!-- Slice 6: Free Shipping -->
+              <text x="0" y="-60" transform="rotate(247.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="#fff" text-anchor="middle">FREE SHIP</text>
-              <!-- Slice 6: Buy 2 Get 1 -->
-              <text x="0" y="-60" transform="rotate(330)" font-family="var(--font-sans)" font-size="7.5"
+              <!-- Slice 7: Buy 2 Get 1 -->
+              <text x="0" y="-60" transform="rotate(292.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="var(--gold-text)" text-anchor="middle">BUY 2 GET 1</text>
+              <!-- Slice 8: Better Luck -->
+              <text x="0" y="-60" transform="rotate(337.5)" font-family="var(--font-sans)" font-size="6"
+                font-weight="700" fill="#B2C0BB" text-anchor="middle">NEXT TIME</text>
             </g>
 
             <!-- Center Gold Pin -->
