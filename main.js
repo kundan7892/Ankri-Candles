@@ -3958,11 +3958,14 @@ function initAppFlow() {
         const reward = rewards[wonIndex];
 
         let sliceAngle = 0;
-        if (wonIndex === 0) sliceAngle = 30;
-        else if (wonIndex === 1) sliceAngle = 90;
-        else sliceAngle = 150;
+        if (wonIndex === 0) sliceAngle = 30; // 10% OFF
+        else if (wonIndex === 1) sliceAngle = 90; // Free Shipping
+        else sliceAngle = 150; // Buy 2 Get 1
 
-        const targetRotation = (360 * 6) + (270 - sliceAngle);
+        // The top point of the wheel is 0 degrees. To place sliceAngle at the top, we rotate backward by sliceAngle.
+        // Also adding a random offset to make it land organically inside the slice without always being perfectly centered.
+        const randomOffset = Math.floor(Math.random() * 40) - 20; // -20 to +20 degrees offset
+        const targetRotation = (360 * 6) + (360 - sliceAngle) + randomOffset;
 
         if (wheelSvg) {
           wheelSvg.style.transition = 'transform 6s cubic-bezier(0.15, 0.9, 0.25, 1)';
