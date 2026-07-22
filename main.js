@@ -3955,7 +3955,11 @@ function initAppFlow() {
         if (isSpinning) return;
         isSpinning = true;
 
-        const wonIndex = Math.floor(Math.random() * 4); // changed from 3
+        // Rigged odds: 90% chance of Better Luck, 10% chance of 10% OFF
+        const rand = Math.random();
+        let wonIndex = 3; // Default Better Luck
+        if (rand > 0.90) wonIndex = 0; // 10% OFF
+
         const reward = rewards[wonIndex];
 
         let sliceAngle = 0;
