@@ -1906,8 +1906,24 @@ function initAppFlow() {
       const giftShowcase = document.getElementById('gift-showcase');
       const giftAddCartBtn = document.getElementById('gift-add-cart-btn');
       const giftLoadCustomizerBtn = document.getElementById('gift-load-customizer-btn');
+      const cardMsgTextarea = document.getElementById('gift-card-message-text');
 
       let selectedGiftingOccasion = 'birthday';
+
+      const giftingCustomMessages = {
+        birthday: GIFT_OCCASIONS.birthday.msg,
+        anniversary: GIFT_OCCASIONS.anniversary.msg,
+        valentine: GIFT_OCCASIONS.valentine.msg,
+        christmas: GIFT_OCCASIONS.christmas.msg,
+        housewarming: GIFT_OCCASIONS.housewarming.msg
+      };
+
+      if (cardMsgTextarea) {
+        cardMsgTextarea.value = giftingCustomMessages[selectedGiftingOccasion];
+        cardMsgTextarea.addEventListener('input', (e) => {
+          giftingCustomMessages[selectedGiftingOccasion] = e.target.value;
+        });
+      }
 
       if (giftSelectors && giftSelectors.length > 0) {
         giftSelectors.forEach(btn => {
@@ -1941,7 +1957,6 @@ function initAppFlow() {
             const colorDepth = document.getElementById('gift-color-depth');
             const colorTwist = document.getElementById('gift-color-twist');
 
-            const cardMsg = document.getElementById('gift-card-message-text');
             const priceNum = document.getElementById('gift-price-numeric');
 
             const glowEffect = document.getElementById('gift-candle-glow-effect');
@@ -1966,7 +1981,7 @@ function initAppFlow() {
             if (colorDepth) colorDepth.style.background = SCENT_POOL[data.scents.depth].color;
             if (colorTwist) colorTwist.style.background = SCENT_POOL[data.scents.twist].color;
 
-            if (cardMsg) cardMsg.textContent = `"${data.msg}"`;
+            if (cardMsgTextarea) cardMsgTextarea.value = giftingCustomMessages[occasion];
             if (priceNum) priceNum.textContent = `₹${data.price}`;
 
             // Gifting ambient preview glow
@@ -2007,11 +2022,13 @@ function initAppFlow() {
             const twistColor = SCENT_POOL[data.scents.twist].color;
             const colorMix = `${twistColor}, ${heartColor}, ${depthColor}`;
 
+            const customMsg = giftingCustomMessages[selectedGiftingOccasion] || data.msg;
+
             state.cart.push({
               id: giftId,
               name: `Curated Gift Set: ${data.title}`,
               price: data.price,
-              description: `Curated Occasion: ${selectedGiftingOccasion.toUpperCase()} | Recipe: ${heartName}, ${depthName} & ${twistName} | Wrap: ${data.wrap.replace('-', ' ')} | Greeting Note: "${data.msg}"`,
+              description: `Curated Occasion: ${selectedGiftingOccasion.toUpperCase()} | Recipe: ${heartName}, ${depthName} & ${twistName} | Wrap: ${data.wrap.replace('-', ' ')} | Greeting Note: "${customMsg}"`,
               colors: colorMix,
               isCustom: true,
               quantity: 1
@@ -2044,7 +2061,7 @@ function initAppFlow() {
           // Gifting add-ons configuration pre-filled
           state.customizer.gifting.enabled = true;
           state.customizer.gifting.wrap = data.wrap;
-          state.customizer.gifting.message = data.msg;
+          state.customizer.gifting.message = giftingCustomMessages[selectedGiftingOccasion] || data.msg;
 
           // Sync Customizer Input Form UI
           const productTypeRefill = document.querySelector('input[name="product-type"][value="glass-jar"]');
@@ -2094,7 +2111,13 @@ function initAppFlow() {
           });
 
           const customizerGiftMsgInput = document.getElementById('gift-card-message');
-          if (customizerGiftMsgInput) customizerGiftMsgInput.value = data.msg;
+          if (customizerGiftMsgInput) {
+            customizerGiftMsgInput.value = giftingCustomMessages[selectedGiftingOccasion] || data.msg;
+            const giftCharCount = document.getElementById('card-msg-char-count');
+            if (giftCharCount) {
+              giftCharCount.textContent = `${customizerGiftMsgInput.value.length} / 120 characters`;
+            }
+          }
 
           // Run internal UI engine updates
           updateVisualWaxLayers();

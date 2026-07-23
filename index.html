@@ -846,11 +846,12 @@
 
             <!-- Note Card Message Preview -->
             <div class="gift-card-preview-container">
-              <span class="card-preview-tag">Included Greeting Note Card</span>
-              <div class="gift-card-bubble">
-                <i data-lucide="quote"></i>
-                <p id="gift-card-message-text">"Wishing you a beautiful year ahead filled with warm light, cozy moments,
-                  and sweet memories. Happy Birthday!"</p>
+              <span class="card-preview-tag">Included Greeting Note Card (Click to edit)</span>
+              <div class="gift-card-bubble" style="cursor: text;">
+                <i data-lucide="quote" style="pointer-events: none;"></i>
+                <textarea id="gift-card-message-text" maxLength="120"
+                  style="width: 100%; border: none; background: transparent; color: #3b3a36; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.05rem; outline: none; resize: none; min-height: 70px; line-height: 1.4; padding: 0 10px; margin-top: 4px; text-align: center; box-sizing: border-box;"
+                  placeholder="Type your custom card message here..."></textarea>
               </div>
             </div>
 
