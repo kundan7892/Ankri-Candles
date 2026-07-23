@@ -12,8 +12,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-B9qd-3oy.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-Wzo7bgWa.css">
+  <script type="module" crossorigin src="/assets/index-ChYTHacb.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BOU1c5CL.css">
 </head>
 
 <body>
@@ -43,8 +43,16 @@
         <a href="#about" class="nav-link">Refill & Subscription</a>
         <a href="#about" class="nav-link">About</a>
         <a href="#" class="nav-link" id="bulk-order-nav-link">Bulk Order</a>
+        <a href="#" class="nav-link" id="nav-ai-btn"
+          style="display:inline-flex; align-items:center; gap:6px; border:1px solid #D4AF37; padding:4px 12px; border-radius:30px; background:rgba(212,175,55,0.08); color:inherit;"><i
+            data-lucide="sparkles" style="width:14px;height:14px;color:#D4AF37;"></i> <span
+            style="color:#D4AF37; font-weight:500;">AI Assistant</span></a>
       </nav>
       <div class="header-actions">
+        <!-- New hamburger menu button on mobile -->
+        <button class="icon-action-btn mobile-menu-btn" id="mobile-menu-toggle-btn" aria-label="Toggle Navigation Menu">
+          <i data-lucide="menu"></i>
+        </button>
         <button class="icon-action-btn" id="bulk-order-btn" aria-label="Bulk Order Enquiry"
           title="Bulk Order Enquiry"><i data-lucide="package"></i></button>
         <button class="icon-action-btn" id="theme-toggle-btn" aria-label="Toggle Dark Mode"
@@ -839,11 +847,12 @@
 
             <!-- Note Card Message Preview -->
             <div class="gift-card-preview-container">
-              <span class="card-preview-tag">Included Greeting Note Card</span>
-              <div class="gift-card-bubble">
-                <i data-lucide="quote"></i>
-                <p id="gift-card-message-text">"Wishing you a beautiful year ahead filled with warm light, cozy moments,
-                  and sweet memories. Happy Birthday!"</p>
+              <span class="card-preview-tag">Included Greeting Note Card (Click to edit)</span>
+              <div class="gift-card-bubble" style="cursor: text;">
+                <i data-lucide="quote" style="pointer-events: none;"></i>
+                <textarea id="gift-card-message-text" maxLength="120"
+                  style="width: 100% !important; border: none !important; background: transparent !important; color: #3b3a36 !important; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.05rem; outline: none !important; resize: none !important; min-height: 70px; line-height: 1.4; padding: 0 10px; margin-top: 4px; text-align: center; box-sizing: border-box; box-shadow: none !important;"
+                  placeholder="Type your custom card message here..."></textarea>
               </div>
             </div>
 
@@ -914,13 +923,13 @@
             </div>
             <p class="product-scent-notes"><strong>Notes:</strong> Rose, Jasmine & Sandalwood</p>
             <p class="product-card-details">100% Soy Wax | 40-45 Hours Burn Time</p>
-            <div class="product-rating">
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <span class="rating-text">(48 reviews)</span>
+            <div class="product-rating" data-product-id="sig-1">
+              <span class="rating-star filled" data-value="1" title="Rate 1 star">★</span>
+              <span class="rating-star filled" data-value="2" title="Rate 2 stars">★</span>
+              <span class="rating-star filled" data-value="3" title="Rate 3 stars">★</span>
+              <span class="rating-star filled" data-value="4" title="Rate 4 stars">★</span>
+              <span class="rating-star empty" data-value="5" title="Rate 5 stars">☆</span>
+              <span class="rating-text">(120 reviews)</span>
             </div>
             <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
           </div>
@@ -948,13 +957,13 @@
             </div>
             <p class="product-scent-notes"><strong>Notes:</strong> Petrichor (First Rain), Clove & Lavender</p>
             <p class="product-card-details">100% Soy Wax | 40-45 Hours Burn Time</p>
-            <div class="product-rating">
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <span class="rating-text">(36 reviews)</span>
+            <div class="product-rating" data-product-id="sig-2">
+              <span class="rating-star filled" data-value="1" title="Rate 1 star">★</span>
+              <span class="rating-star filled" data-value="2" title="Rate 2 stars">★</span>
+              <span class="rating-star filled" data-value="3" title="Rate 3 stars">★</span>
+              <span class="rating-star filled" data-value="4" title="Rate 4 stars">★</span>
+              <span class="rating-star empty" data-value="5" title="Rate 5 stars">☆</span>
+              <span class="rating-text">(100 reviews)</span>
             </div>
             <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
           </div>
@@ -982,13 +991,13 @@
             </div>
             <p class="product-scent-notes"><strong>Notes:</strong> Chocolate, Coffee & Vanilla</p>
             <p class="product-card-details">100% Soy Wax | 40-45 Hours Burn Time</p>
-            <div class="product-rating">
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star"></i>
-              <span class="rating-text">(61 reviews)</span>
+            <div class="product-rating" data-product-id="sig-3">
+              <span class="rating-star filled" data-value="1" title="Rate 1 star">★</span>
+              <span class="rating-star filled" data-value="2" title="Rate 2 stars">★</span>
+              <span class="rating-star filled" data-value="3" title="Rate 3 stars">★</span>
+              <span class="rating-star filled" data-value="4" title="Rate 4 stars">★</span>
+              <span class="rating-star empty" data-value="5" title="Rate 5 stars">☆</span>
+              <span class="rating-text">(110 reviews)</span>
             </div>
             <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
           </div>
@@ -1016,13 +1025,13 @@
             </div>
             <p class="product-scent-notes"><strong>Notes:</strong> Orange, Lavender & Vanilla</p>
             <p class="product-card-details">100% Soy Wax | 40-45 Hours Burn Time</p>
-            <div class="product-rating">
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <span class="rating-text">(82 reviews)</span>
+            <div class="product-rating" data-product-id="sig-4">
+              <span class="rating-star filled" data-value="1" title="Rate 1 star">★</span>
+              <span class="rating-star filled" data-value="2" title="Rate 2 stars">★</span>
+              <span class="rating-star filled" data-value="3" title="Rate 3 stars">★</span>
+              <span class="rating-star filled" data-value="4" title="Rate 4 stars">★</span>
+              <span class="rating-star empty" data-value="5" title="Rate 5 stars">☆</span>
+              <span class="rating-text">(124 reviews)</span>
             </div>
             <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
           </div>
@@ -1050,13 +1059,13 @@
             </div>
             <p class="product-scent-notes"><strong>Notes:</strong> Saffron, Pistachio & Creamy Vanilla</p>
             <p class="product-card-details">100% Soy Wax | 45 Hours Burn Time</p>
-            <div class="product-rating">
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <span class="rating-text">(28 reviews)</span>
+            <div class="product-rating" data-product-id="sig-5">
+              <span class="rating-star filled" data-value="1" title="Rate 1 star">★</span>
+              <span class="rating-star filled" data-value="2" title="Rate 2 stars">★</span>
+              <span class="rating-star filled" data-value="3" title="Rate 3 stars">★</span>
+              <span class="rating-star filled" data-value="4" title="Rate 4 stars">★</span>
+              <span class="rating-star empty" data-value="5" title="Rate 5 stars">☆</span>
+              <span class="rating-text">(92 reviews)</span>
             </div>
             <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
           </div>
@@ -1084,13 +1093,13 @@
             </div>
             <p class="product-scent-notes"><strong>Notes:</strong> Black Tea, Cardamom, Ginger & Clove</p>
             <p class="product-card-details">100% Soy Wax | 45 Hours Burn Time</p>
-            <div class="product-rating">
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <span class="rating-text">(41 reviews)</span>
+            <div class="product-rating" data-product-id="sig-6">
+              <span class="rating-star filled" data-value="1" title="Rate 1 star">★</span>
+              <span class="rating-star filled" data-value="2" title="Rate 2 stars">★</span>
+              <span class="rating-star filled" data-value="3" title="Rate 3 stars">★</span>
+              <span class="rating-star filled" data-value="4" title="Rate 4 stars">★</span>
+              <span class="rating-star empty" data-value="5" title="Rate 5 stars">☆</span>
+              <span class="rating-text">(103 reviews)</span>
             </div>
             <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
           </div>
@@ -1118,13 +1127,13 @@
             </div>
             <p class="product-scent-notes"><strong>Notes:</strong> Wet Clay (Petrichor), Sandalwood & Rainwater</p>
             <p class="product-card-details">100% Soy Wax | 45 Hours Burn Time</p>
-            <div class="product-rating">
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <span class="rating-text">(52 reviews)</span>
+            <div class="product-rating" data-product-id="sig-7">
+              <span class="rating-star filled" data-value="1" title="Rate 1 star">★</span>
+              <span class="rating-star filled" data-value="2" title="Rate 2 stars">★</span>
+              <span class="rating-star filled" data-value="3" title="Rate 3 stars">★</span>
+              <span class="rating-star filled" data-value="4" title="Rate 4 stars">★</span>
+              <span class="rating-star empty" data-value="5" title="Rate 5 stars">☆</span>
+              <span class="rating-text">(114 reviews)</span>
             </div>
             <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
           </div>
@@ -1152,13 +1161,13 @@
             </div>
             <p class="product-scent-notes"><strong>Notes:</strong> Sweet Jasmine, Mogra Blooms & Soft Amber</p>
             <p class="product-card-details">100% Soy Wax | 45 Hours Burn Time</p>
-            <div class="product-rating">
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <span class="rating-text">(19 reviews)</span>
+            <div class="product-rating" data-product-id="sig-8">
+              <span class="rating-star filled" data-value="1" title="Rate 1 star">★</span>
+              <span class="rating-star filled" data-value="2" title="Rate 2 stars">★</span>
+              <span class="rating-star filled" data-value="3" title="Rate 3 stars">★</span>
+              <span class="rating-star filled" data-value="4" title="Rate 4 stars">★</span>
+              <span class="rating-star empty" data-value="5" title="Rate 5 stars">☆</span>
+              <span class="rating-text">(76 reviews)</span>
             </div>
             <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
           </div>
@@ -1187,13 +1196,13 @@
             <p class="product-scent-notes"><strong>Notes:</strong> Mogra Jasmine, First Rain & Sandalwood (3 Votives)
             </p>
             <p class="product-card-details">Pack of 3 Votives | 100% Soy Wax</p>
-            <div class="product-rating">
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <span class="rating-text">(21 reviews)</span>
+            <div class="product-rating" data-product-id="kit-1">
+              <span class="rating-star filled" data-value="1" title="Rate 1 star">★</span>
+              <span class="rating-star filled" data-value="2" title="Rate 2 stars">★</span>
+              <span class="rating-star filled" data-value="3" title="Rate 3 stars">★</span>
+              <span class="rating-star filled" data-value="4" title="Rate 4 stars">★</span>
+              <span class="rating-star empty" data-value="5" title="Rate 5 stars">☆</span>
+              <span class="rating-text">(84 reviews)</span>
             </div>
             <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
           </div>
@@ -1221,13 +1230,13 @@
             </div>
             <p class="product-scent-notes"><strong>Notes:</strong> Masala Chai & First Rain (2 Large Jars)</p>
             <p class="product-card-details">Pack of 2 Large Jars | 100% Soy Wax</p>
-            <div class="product-rating">
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <i data-lucide="star" class="star-fill"></i>
-              <span class="rating-text">(34 reviews)</span>
+            <div class="product-rating" data-product-id="kit-2">
+              <span class="rating-star filled" data-value="1" title="Rate 1 star">★</span>
+              <span class="rating-star filled" data-value="2" title="Rate 2 stars">★</span>
+              <span class="rating-star filled" data-value="3" title="Rate 3 stars">★</span>
+              <span class="rating-star filled" data-value="4" title="Rate 4 stars">★</span>
+              <span class="rating-star empty" data-value="5" title="Rate 5 stars">☆</span>
+              <span class="rating-text">(90 reviews)</span>
             </div>
             <button class="btn btn-primary btn-small add-sig-btn">Add to Cart</button>
           </div>
@@ -2582,46 +2591,59 @@
           <!-- Inner SVG Wheel -->
           <svg id="wheel-svg" viewBox="0 0 200 200"
             style="width: 100%; height: 100%; border-radius: 50%; transform: rotate(0deg); transition: transform 6s cubic-bezier(0.1, 0.8, 0.1, 1);">
-            <!-- Slices: total 6 slices (60 deg each) -->
+            <!-- Slices: total 8 slices (45 deg each) -->
             <!-- Slice 1: 10% OFF -->
-            <path d="M 100 100 L 100 0 A 100 100 0 0 1 186.6 50 Z" fill="#13221C" stroke="var(--gold-primary)"
+            <path d="M 100 100 L 100 0 A 100 100 0 0 1 170.7 29.3 Z" fill="#13221C" stroke="var(--gold-primary)"
               stroke-width="0.75" />
             <!-- Slice 2: Free Shipping -->
-            <path d="M 100 100 L 186.6 50 A 100 100 0 0 1 186.6 150 Z" fill="#0D1612" stroke="var(--gold-primary)"
+            <path d="M 100 100 L 170.7 29.3 A 100 100 0 0 1 200 100 Z" fill="#0D1612" stroke="var(--gold-primary)"
               stroke-width="0.75" />
             <!-- Slice 3: Buy 2 Get 1 -->
-            <path d="M 100 100 L 186.6 150 A 100 100 0 0 1 100 200 Z" fill="#1b2e25" stroke="var(--gold-primary)"
+            <path d="M 100 100 L 200 100 A 100 100 0 0 1 170.7 170.7 Z" fill="#1b2e25" stroke="var(--gold-primary)"
               stroke-width="0.75" />
-            <!-- Slice 4: 10% OFF -->
-            <path d="M 100 100 L 100 200 A 100 100 0 0 1 13.4 150 Z" fill="#13221C" stroke="var(--gold-primary)"
+            <!-- Slice 4: Better Luck -->
+            <path d="M 100 100 L 170.7 170.7 A 100 100 0 0 1 100 200 Z" fill="#0A100E" stroke="var(--gold-primary)"
               stroke-width="0.75" />
-            <!-- Slice 5: Free Shipping -->
-            <path d="M 100 100 L 13.4 150 A 100 100 0 0 1 13.4 50 Z" fill="#0D1612" stroke="var(--gold-primary)"
+            <!-- Slice 5: 10% OFF -->
+            <path d="M 100 100 L 100 200 A 100 100 0 0 1 29.3 170.7 Z" fill="#13221C" stroke="var(--gold-primary)"
               stroke-width="0.75" />
-            <!-- Slice 6: Buy 2 Get 1 -->
-            <path d="M 100 100 L 13.4 50 A 100 100 0 0 1 100 0 Z" fill="#1b2e25" stroke="var(--gold-primary)"
+            <!-- Slice 6: Free Shipping -->
+            <path d="M 100 100 L 29.3 170.7 A 100 100 0 0 1 0 100 Z" fill="#0D1612" stroke="var(--gold-primary)"
+              stroke-width="0.75" />
+            <!-- Slice 7: Buy 2 Get 1 -->
+            <path d="M 100 100 L 0 100 A 100 100 0 0 1 29.3 29.3 Z" fill="#1b2e25" stroke="var(--gold-primary)"
+              stroke-width="0.75" />
+            <!-- Slice 8: Better Luck -->
+            <path d="M 100 100 L 29.3 29.3 A 100 100 0 0 1 100 0 Z" fill="#0A100E" stroke="var(--gold-primary)"
               stroke-width="0.75" />
 
             <!-- Slice Texts -->
             <g transform="translate(100, 100)">
               <!-- Slice 1: 10% OFF -->
-              <text x="0" y="-60" transform="rotate(30)" font-family="var(--font-sans)" font-size="7.5"
+              <text x="0" y="-60" transform="rotate(22.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="var(--gold-text)" text-anchor="middle">10% OFF</text>
               <!-- Slice 2: Free Shipping -->
-              <text x="0" y="-60" transform="rotate(90)" font-family="var(--font-sans)" font-size="7.5"
+              <text x="0" y="-60" transform="rotate(67.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="#fff" text-anchor="middle">FREE SHIP</text>
               <!-- Slice 3: Buy 2 Get 1 -->
-              <text x="0" y="-60" transform="rotate(150)" font-family="var(--font-sans)" font-size="7.5"
+              <text x="0" y="-60" transform="rotate(112.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="var(--gold-text)" text-anchor="middle">BUY 2 GET 1</text>
-              <!-- Slice 4: 10% OFF -->
-              <text x="0" y="-60" transform="rotate(210)" font-family="var(--font-sans)" font-size="7.5"
+              <!-- Slice 4: Better Luck -->
+              <text x="0" y="-60" transform="rotate(157.5)" font-family="var(--font-sans)" font-size="6"
+                font-weight="700" fill="#B2C0BB" text-anchor="middle">NEXT TIME</text>
+
+              <!-- Slice 5: 10% OFF -->
+              <text x="0" y="-60" transform="rotate(202.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="var(--gold-text)" text-anchor="middle">10% OFF</text>
-              <!-- Slice 5: Free Shipping -->
-              <text x="0" y="-60" transform="rotate(270)" font-family="var(--font-sans)" font-size="7.5"
+              <!-- Slice 6: Free Shipping -->
+              <text x="0" y="-60" transform="rotate(247.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="#fff" text-anchor="middle">FREE SHIP</text>
-              <!-- Slice 6: Buy 2 Get 1 -->
-              <text x="0" y="-60" transform="rotate(330)" font-family="var(--font-sans)" font-size="7.5"
+              <!-- Slice 7: Buy 2 Get 1 -->
+              <text x="0" y="-60" transform="rotate(292.5)" font-family="var(--font-sans)" font-size="7.5"
                 font-weight="700" fill="var(--gold-text)" text-anchor="middle">BUY 2 GET 1</text>
+              <!-- Slice 8: Better Luck -->
+              <text x="0" y="-60" transform="rotate(337.5)" font-family="var(--font-sans)" font-size="6"
+                font-weight="700" fill="#B2C0BB" text-anchor="middle">NEXT TIME</text>
             </g>
 
             <!-- Center Gold Pin -->
@@ -2672,12 +2694,62 @@
     </div>
   </div>
 
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+  <div class="mobile-menu-drawer" id="mobile-menu-drawer">
+    <div class="mobile-menu-header">
+      <h3 class="mobile-menu-title">Menu</h3>
+      <button class="mobile-menu-close" id="mobile-menu-close-btn" aria-label="Close menu">&times;</button>
+    </div>
+    <nav class="mobile-menu-links">
+      <a href="#collection" class="mobile-menu-link">Shop</a>
+      <a href="#customizer" class="mobile-menu-link active">Custom Candle</a>
+      <a href="#gifting" class="mobile-menu-link">Gifting</a>
+      <a href="#about" class="mobile-menu-link">Refill & Subscription</a>
+      <a href="#about" class="mobile-menu-link">About</a>
+      <a href="#" class="mobile-menu-link" id="mobile-bulk-order-link">Bulk Order</a>
+    </nav>
+  </div>
+
   <!-- ====== FLOATING TEST WHEEL FLOATER ====== -->
   <button id="floating-test-wheel-btn" class="chat-toggle-btn"
     style="position: fixed; bottom: 20px; left: 20px; right: auto; background: var(--bg-tertiary); border: 1px solid var(--border-glass); box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 9998;"
     title="Reset and Test Spin Wheel (Developer Mode)">
     <i data-lucide="gift" style="color: var(--gold-primary); width: 22px; height: 22px;"></i>
   </button>
+
+  <!-- Welcome back Modal -->
+  <div id="welcome-modal" class="welcome-modal-overlay">
+    <div class="welcome-modal-card">
+      <button class="welcome-modal-close" id="close-welcome-btn" aria-label="Close welcome message">&times;</button>
+      <div class="welcome-modal-icon">
+        <i data-lucide="sparkles"></i>
+      </div>
+      <h2>Welcome Back to</h2>
+      <h1 class="brand-title-modal">ANKRI CANDLE</h1>
+      <p>Immerse yourself in our premium line of hand-poured artisan soy wax candles and customized gifting collections.
+      </p>
+      <button class="welcome-modal-cta" id="welcome-explore-btn">Explore Collection</button>
+    </div>
+  </div>
+
+  <!-- Post-Booking Rating Modal -->
+  <div id="rating-modal-overlay" class="rating-modal-overlay hidden">
+    <div class="rating-modal-card">
+      <div class="rating-modal-header">
+        <span class="rating-modal-icon">★</span>
+        <h2 class="rating-modal-title">Rate Your Purchase</h2>
+        <p class="rating-modal-subtitle">How would you rate the candles you ordered?</p>
+      </div>
+      <div id="rating-modal-products" class="rating-modal-products">
+        <!-- Dynamically inserted product rating rows -->
+      </div>
+      <div class="rating-modal-actions">
+        <button id="rating-modal-submit" class="btn btn-primary rating-submit-btn">Submit Ratings</button>
+        <button id="rating-modal-skip" class="rating-skip-btn">Maybe Later</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Lucide Icons initialization -->
   <script src="https://unpkg.com/lucide@latest"></script>
