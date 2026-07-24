@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>ANKRI CANDLE - Build Your Candle</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@500;600&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Icons -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #d5c3b8;
+            /* outline-variant */
+            border-radius: 9999px;
+        }
+    </style>
+    <!-- Tailwind Config -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#265763",
+                        "on-surface-variant": "#51443c",
+                        "on-primary-fixed-variant": "#653d1e",
+                        "on-secondary-fixed": "#072017",
+                        "background": "#fff8f5",
+                        "primary-fixed-dim": "#f4bb92",
+                        "on-secondary-fixed-variant": "#334c41",
+                        "surface-container-highest": "#ebe0db",
+                        "surface-dim": "#e2d8d3",
+                        "inverse-surface": "#352f2c",
+                        "outline-variant": "#d5c3b8",
+                        "on-tertiary-fixed-variant": "#1a4d59",
+                        "primary-container": "#8b5e3c",
+                        "primary": "#6f4627",
+                        "on-secondary-container": "#4f685c",
+                        "inverse-primary": "#f4bb92",
+                        "secondary": "#4a6458",
+                        "surface-bright": "#fff8f5",
+                        "surface-variant": "#ebe0db",
+                        "surface-container": "#f6ece7",
+                        "surface-container-high": "#f1e6e1",
+                        "surface-container-low": "#fcf1ec",
+                        "secondary-fixed": "#cde9da",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#c1f0ff",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#1f1b18",
+                        "surface": "#fff8f5",
+                        "on-primary-container": "#ffe3d1",
+                        "outline": "#83746b",
+                        "tertiary-fixed": "#baeaf9",
+                        "primary-fixed": "#ffdcc5",
+                        "surface-tint": "#805533",
+                        "on-primary-fixed": "#301400",
+                        "secondary-container": "#cae6d8",
+                        "tertiary-container": "#406f7c",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#9ecedd",
+                        "on-tertiary-fixed": "#001f26",
+                        "inverse-on-surface": "#f9efe9",
+                        "on-primary": "#ffffff",
+                        "on-background": "#1f1b18",
+                        "secondary-fixed-dim": "#b1cdbf",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "xs": "4px",
+                        "xl": "64px",
+                        "lg": "40px",
+                        "gutter": "24px",
+                        "md": "24px",
+                        "sm": "12px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-sm": ["Playfair Display"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-surface text-on-surface h-[100dvh] flex flex-col font-body-md overflow-hidden">
+    <!-- TopNavBar (Shared Component) -->
+    <header
+        class="bg-surface/80 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.04)] z-50 shrink-0 border-b border-outline-variant/30">
+        <div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+            <!-- Brand -->
+            <a class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary tracking-tighter"
+                href="/">
+                ANKRI CANDLE
+            </a>
+            <!-- Navigation Links (Desktop) -->
+            <nav class="hidden md:flex space-x-lg items-center">
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 transition-all duration-300"
+                    href="/">Home</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 transition-all duration-300"
+                    href="/#collection">Shop</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 transition-all duration-300"
+                    href="/#collection">Collections</a>
+                <!-- Active Link -->
+                <a class="font-label-caps text-label-caps text-primary border-b-2 border-primary pb-1"
+                    href="build-your-candle.html">Build Your Candle</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 transition-all duration-300"
+                    href="/#gift-finder">Gifts</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:opacity-80 transition-all duration-300"
+                    href="/#about">About</a>
+            </nav>
+            <!-- Trailing Icons -->
+            <div class="flex space-x-md items-center text-primary">
+                <button
+                    class="hover:opacity-80 transition-all duration-300 scale-98 active:scale-95 transition-transform"
+                    data-icon="favorite">
+                    <span class="material-symbols-outlined text-[24px]">favorite</span>
+                </button>
+                <button
+                    class="hover:opacity-80 transition-all duration-300 scale-98 active:scale-95 transition-transform"
+                    data-icon="person">
+                    <span class="material-symbols-outlined text-[24px]">person</span>
+                </button>
+                <button
+                    class="hover:opacity-80 transition-all duration-300 scale-98 active:scale-95 transition-transform"
+                    data-icon="shopping_bag">
+                    <span class="material-symbols-outlined text-[24px]">shopping_bag</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Main Builder Interface -->
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+        <!-- Left: Step-by-Step Navigation & Content -->
+        <section class="flex-1 flex flex-col overflow-hidden bg-surface relative z-10">
+            <!-- Horizontal Progress Bar -->
+            <div
+                class="px-gutter pt-lg pb-sm border-b border-outline-variant/30 bg-surface/90 backdrop-blur-md shrink-0">
+                <div class="max-w-3xl mx-auto w-full">
+                    <div class="flex justify-between items-center mb-sm">
+                        <span class="font-label-caps text-label-caps text-primary">Step 3 of 10</span>
+                        <span class="font-label-caps text-label-caps text-on-surface-variant">Fragrance Selection</span>
+                    </div>
+                    <!-- Progress track -->
+                    <div class="w-full h-1 bg-surface-variant rounded-full overflow-hidden flex">
+                        <!-- Filled portion -->
+                        <div class="h-full bg-primary transition-all duration-500 ease-out" style="width: 30%;"></div>
+                    </div>
+                    <!-- Step Dots (Visual Indicator) -->
+                    <div class="flex justify-between items-center mt-sm px-1">
+                        <!-- Completed Steps -->
+                        <button class="w-2 h-2 rounded-full bg-primary hover:scale-150 transition-transform"
+                            title="Step 1: Type"></button>
+                        <button class="w-2 h-2 rounded-full bg-primary hover:scale-150 transition-transform"
+                            title="Step 2: Wax"></button>
+                        <!-- Active Step -->
+                        <button
+                            class="w-3 h-3 rounded-full border-2 border-primary bg-surface relative hover:scale-125 transition-transform"
+                            title="Step 3: Fragrance">
+                            <span class="absolute inset-0 m-auto w-1 h-1 bg-primary rounded-full"></span>
+                        </button>
+                        <!-- Upcoming Steps -->
+                        <button class="w-2 h-2 rounded-full bg-outline-variant hover:scale-150 transition-transform"
+                            title="Step 4: Color"></button>
+                        <button class="w-2 h-2 rounded-full bg-outline-variant hover:scale-150 transition-transform"
+                            title="Step 5: Jar"></button>
+                        <button class="w-2 h-2 rounded-full bg-outline-variant hover:scale-150 transition-transform"
+                            title="Step 6: Size"></button>
+                        <button class="w-2 h-2 rounded-full bg-outline-variant hover:scale-150 transition-transform"
+                            title="Step 7: Wick"></button>
+                        <button class="w-2 h-2 rounded-full bg-outline-variant hover:scale-150 transition-transform"
+                            title="Step 8: Label"></button>
+                        <button class="w-2 h-2 rounded-full bg-outline-variant hover:scale-150 transition-transform"
+                            title="Step 9: Gift"></button>
+                        <button class="w-2 h-2 rounded-full bg-outline-variant hover:scale-150 transition-transform"
+                            title="Step 10: Delivery"></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Scrollable Content Area for Active Step -->
+            <div class="flex-1 overflow-y-auto p-gutter custom-scrollbar">
+                <div class="max-w-3xl mx-auto w-full pb-xl">
+                    <h1 class="font-headline-md text-headline-md text-primary mb-2">Curate Your Scent Profile</h1>
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-lg">Select up to three fragrance
+                        notes to construct a complex, personalized aroma. Our oils are paraben-free and ethically
+                        sourced.</p>
+                    <!-- Search Bar -->
+                    <div class="relative mb-lg">
+                        <span
+                            class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+                        <input
+                            class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-sm pl-[40px] pr-sm font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-[0_4px_20px_rgba(0,0,0,0.02)]"
+                            placeholder="Search notes (e.g., Sandalwood, Bergamot)" type="text" />
+                    </div>
+                    <!-- Filter Chips -->
+                    <div class="flex flex-wrap gap-xs mb-lg">
+                        <button
+                            class="px-sm py-xs rounded-full border border-primary bg-primary text-on-primary font-label-caps text-label-caps transition-colors">All
+                            Notes</button>
+                        <button
+                            class="px-sm py-xs rounded-full border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary font-label-caps text-label-caps transition-colors">Woody</button>
+                        <button
+                            class="px-sm py-xs rounded-full border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary font-label-caps text-label-caps transition-colors">Floral</button>
+                        <button
+                            class="px-sm py-xs rounded-full border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary font-label-caps text-label-caps transition-colors">Citrus</button>
+                        <button
+                            class="px-sm py-xs rounded-full border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary font-label-caps text-label-caps transition-colors">Earthy</button>
+                    </div>
+                    <!-- Bento Grid of Fragrances -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
+                        <!-- Fragrance Card 1 (Selected) -->
+                        <div
+                            class="relative group cursor-pointer bg-surface-container-lowest rounded-xl p-md border-2 border-primary shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all overflow-hidden flex flex-col h-full">
+                            <!-- Selected Checkmark -->
+                            <div
+                                class="absolute top-sm right-sm w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-sm">
+                                <span class="material-symbols-outlined text-on-primary text-[14px]">check</span>
+                            </div>
+                            <div class="mb-sm text-secondary">
+                                <span class="material-symbols-outlined text-[32px] font-light">spa</span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">Sandalwood &amp; Vetiver
+                            </h3>
+                            <span
+                                class="inline-block px-2 py-1 bg-secondary/10 text-secondary font-label-caps text-[10px] rounded mb-md w-max">Woody
+                                / Earthy</span>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-auto">A grounding, rich
+                                foundation with deep, resinous undertones and a hint of smoke.</p>
+                        </div>
+                        <!-- Fragrance Card 2 -->
+                        <div
+                            class="relative group cursor-pointer bg-surface-container-low rounded-xl p-md border border-outline-variant hover:border-outline hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all overflow-hidden flex flex-col h-full">
+                            <div class="mb-sm text-primary-container">
+                                <span class="material-symbols-outlined text-[32px] font-light">local_florist</span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">Night-Blooming Jasmine
+                            </h3>
+                            <span
+                                class="inline-block px-2 py-1 bg-primary-container/10 text-primary-container font-label-caps text-[10px] rounded mb-md w-max">Floral</span>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-auto">Intoxicatingly sweet
+                                and delicate, evoking warm summer evenings.</p>
+                        </div>
+                        <!-- Fragrance Card 3 -->
+                        <div
+                            class="relative group cursor-pointer bg-surface-container-low rounded-xl p-md border border-outline-variant hover:border-outline hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all overflow-hidden flex flex-col h-full">
+                            <div class="mb-sm text-tertiary">
+                                <span class="material-symbols-outlined text-[32px] font-light">water_drop</span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">Sicilian Bergamot</h3>
+                            <span
+                                class="inline-block px-2 py-1 bg-tertiary/10 text-tertiary font-label-caps text-[10px] rounded mb-md w-max">Citrus
+                                / Fresh</span>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-auto">Bright, crisp, and
+                                elegantly tart. Lifts the overall composition.</p>
+                        </div>
+                        <!-- Fragrance Card 4 -->
+                        <div
+                            class="relative group cursor-pointer bg-surface-container-low rounded-xl p-md border border-outline-variant hover:border-outline hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all overflow-hidden flex flex-col h-full">
+                            <div class="mb-sm text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[32px] font-light">coffee</span>
+                            </div>
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface mb-xs">Roasted Vanilla Bean
+                            </h3>
+                            <span
+                                class="inline-block px-2 py-1 bg-on-surface-variant/10 text-on-surface-variant font-label-caps text-[10px] rounded mb-md w-max">Gourmand
+                                / Warm</span>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-auto">A sophisticated take on
+                                vanilla, focusing on the dark, slightly bitter roasted pod.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Right: Fixed Live Preview Sidebar -->
+        <aside
+            class="w-full md:w-[450px] lg:w-[500px] bg-surface-container border-t md:border-t-0 md:border-l border-outline-variant flex flex-col relative z-0 shrink-0 overflow-y-auto">
+            <div class="p-gutter flex-1 flex flex-col">
+                <div class="flex justify-between items-center mb-md">
+                    <h2 class="font-label-caps text-label-caps text-on-surface-variant tracking-widest">Live Preview
+                    </h2>
+                    <button class="text-outline hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">360</span>
+                    </button>
+                </div>
+                <!-- Preview Image Area -->
+                <div
+                    class="flex-1 relative rounded-xl overflow-hidden bg-surface-container-lowest shadow-inner border border-surface-dim flex items-center justify-center p-lg group">
+                    <!-- Subtle background lighting effect -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-surface-variant/50 to-transparent pointer-events-none">
+                    </div>
+                    <!-- The Candle Preview Image -->
+                    <img class="object-contain w-full h-full max-h-[400px] drop-shadow-[0_20px_40px_rgba(111,70,39,0.15)] transition-transform duration-700 ease-in-out group-hover:scale-105"
+                        data-alt="A highly realistic, studio-quality 3D render of a custom artisan candle in a minimalist glass jar. The candle wax is a creamy off-white soy blend. The setting is a bright, airy studio with soft, diffused light-mode lighting creating subtle, elegant shadows. The background is a clean, neutral beige surface, reflecting a premium, warm minimalist brand aesthetic."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpxZ1u-2gkarAO6PyjdRvIH_bm_rLOLyWQZWTT561n6XKisFWJH2bo1UrspTF8z8cxECGfBpq_w8vyi_6lFFHoA4oxthYkH6taS-aJXUbc_t6WdfvnZQaSi7luRmX50_zArplL6Xq-glhYXD4F2yh3yZVWmHSqTn3wNO32wKcEWbdG2yovT9FwRgaiXzK-ct4Ko-w-Y0i0AUmZmhlfSDHUgU0I0TLr4DaYQremk6jyMyGSmvlplMfLTvrB8KTe-VJVSEtN5OWTkR5G" />
+                    <!-- Overlaid Recipe Details (Glassmorphism) -->
+                    <div
+                        class="absolute bottom-md left-md right-md bg-surface/80 backdrop-blur-md border border-surface-container-highest rounded-lg p-sm shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+                        <p class="font-label-caps text-[10px] text-on-surface-variant mb-1">Current Composition</p>
+                        <p class="font-body-sm text-body-sm text-primary font-medium">Classic Glass Jar • Soy Wax</p>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant" id="preview-fragrance-text">+
+                            Sandalwood &amp; Vetiver</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Order Summary Section (Bottom of Sidebar) -->
+            <div class="p-gutter bg-surface-container-lowest border-t border-outline-variant/50">
+                <div class="space-y-2 mb-md">
+                    <div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant">
+                        <span>Base Candle (200g)</span>
+                        <span>$35.00</span>
+                    </div>
+                    <div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant">
+                        <span>Premium Fragrance Oil</span>
+                        <span>+$5.00</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-end border-t border-outline-variant pt-sm">
+                    <div>
+                        <p class="font-label-caps text-[10px] text-on-surface-variant mb-1">Estimated Delivery</p>
+                        <p class="font-body-sm text-body-sm text-primary">Oct 24 - Oct 28</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-label-caps text-[10px] text-on-surface-variant mb-1">Total</p>
+                        <p class="font-headline-sm text-headline-sm text-on-surface">$40.00</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+    <!-- Bottom Sticky Action Bar -->
+    <footer
+        class="h-20 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between px-gutter shrink-0 z-30 relative shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
+        <!-- Back Button -->
+        <button
+            class="flex items-center space-x-2 text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps group">
+            <span
+                class="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+            <span>Back to Wax</span>
+        </button>
+        <!-- Primary Actions -->
+        <div class="flex items-center space-x-sm md:space-x-md">
+            <button
+                class="hidden sm:flex items-center justify-center px-lg py-sm rounded border border-outline text-on-surface font-label-caps text-label-caps hover:bg-surface-variant transition-colors">
+                <span class="material-symbols-outlined text-[16px] mr-2">bookmark_border</span>
+                Save Design
+            </button>
+            <button
+                class="flex items-center justify-center px-lg py-sm rounded bg-primary text-on-primary font-label-caps text-label-caps hover:opacity-90 transition-opacity shadow-[0_4px_14px_rgba(111,70,39,0.3)]">
+                Next: Color Selection
+                <span class="material-symbols-outlined text-[18px] ml-2">arrow_forward</span>
+            </button>
+        </div>
+    </footer>
+
+    <!-- Interactive Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.grid > div.relative.group');
+            const summaryFragrance = document.getElementById('preview-fragrance-text');
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Reset all cards
+                    cards.forEach(c => {
+                        c.classList.remove('border-2', 'border-primary', 'shadow-[0_8px_30px_rgba(0,0,0,0.06)]');
+                        c.classList.add('border', 'border-outline-variant');
+
+                        // Remove checkmark if exists
+                        const checkmark = c.querySelector('.absolute.top-sm.right-sm');
+                        if (checkmark) {
+                            checkmark.remove();
+                        }
+                    });
+
+                    // Set selected card
+                    card.classList.remove('border', 'border-outline-variant');
+                    card.classList.add('border-2', 'border-primary', 'shadow-[0_8px_30px_rgba(0,0,0,0.06)]');
+
+                    // Add checkmark
+                    const checkmarkHTML = `
+                    <div class="absolute top-sm right-sm w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-sm checkmark-badge">
+                        <span class="material-symbols-outlined text-on-primary text-[14px]">check</span>
+                    </div>
+                    `;
+                    card.insertAdjacentHTML('afterbegin', checkmarkHTML);
+
+                    // Update summary
+                    const fragranceTitle = card.querySelector('h3').textContent;
+                    if (summaryFragrance) {
+                        summaryFragrance.textContent = '+ ' + fragranceTitle;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
