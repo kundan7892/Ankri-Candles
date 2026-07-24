@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
@@ -38,7 +38,7 @@
       <nav class="main-nav">
         <a href="#collection" class="nav-link">Shop</a>
         <a href="#customizer" class="nav-link active">Custom Candle</a>
-        <a href="#gifting" class="nav-link">Gifting</a>
+        <a href="#gift-finder" class="nav-link">Gifts</a>
         <a href="#about" class="nav-link">Refill & Subscription</a>
         <a href="#about" class="nav-link">About</a>
         <a href="#" class="nav-link" id="bulk-order-nav-link">Bulk Order</a>
@@ -73,28 +73,543 @@
   <main>
     <!-- Hero Section -->
     <section class="hero-section" id="hero">
-      <div class="hero-content">
-        <span class="section-tag animate-up">Artisan Soy Wax Studio</span>
-        <h1 class="hero-title animate-up">
-          Every Flame <br>
-          <span class="italic-serif">Carries a Memory.</span>
-        </h1>
-        <p class="hero-subtitle animate-up delay-1">
-          A sensory ritual that transforms your space. Hand-poured with 100% vegan soy wax, custom-layered to curate
-          your personal sanctuary.
-        </p>
-        <div class="hero-ctas animate-up delay-2">
-          <a href="#customizer" class="btn btn-hero-glow">Craft Bespoke Candle (₹799)</a>
-          <a href="#collection" class="btn btn-hero-outline">Explore Collection</a>
-        </div>
-
-        <!-- (Hero ASMR Player Deleted) -->
-      </div>
-
+      <!-- Background Image fills hero -->
       <div class="hero-image-side animate-fade">
         <img class="hero-side-img" src="luxury_candles_banner.png" alt="Luxury hand-poured soy candles">
       </div>
+
+      <!-- Glassmorphic centered card -->
+      <div class="hero-content">
+        <!-- Review Badge -->
+        <div class="hero-badge animate-up"
+          style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,248,245,0.95);border:1px solid #d5c3b8;border-radius:9999px;padding:0.4rem 1rem;margin-bottom:1.5rem;font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#1f1b18;">
+          <span style="color:#6f4627;">★</span>
+          4.9/5 from 2,000+ Reviews
+        </div>
+        <h1 class="hero-title animate-up">
+          Handcrafted Candles <br><span class="italic-serif">Made Just for You.</span>
+        </h1>
+        <p class="hero-subtitle animate-up delay-1">
+          Experience the art of slow living with our meticulously poured,
+          custom-blended fragrances designed to elevate your personal sanctuary.
+        </p>
+        <div class="hero-ctas animate-up delay-2">
+          <a href="#collection" class="btn btn-hero-glow">Shop Now</a>
+          <a href="#customizer" class="btn btn-hero-outline">Customize Candle</a>
+        </div>
+        <!-- Trust Icons -->
+        <div class="hero-trust animate-up delay-2"
+          style="display:flex;justify-content:center;gap:2rem;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(213,195,184,0.4);">
+          <div
+            style="display:flex;align-items:center;gap:0.5rem;color:#51443c;font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6f4627" stroke-width="2">
+              <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3" />
+              <rect x="9" y="11" width="14" height="10" rx="1" />
+              <path d="M16 17h2" />
+            </svg>
+            Free Shipping
+          </div>
+          <div
+            style="display:flex;align-items:center;gap:0.5rem;color:#51443c;font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6f4627" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            100% Natural Wax
+          </div>
+        </div>
+      </div>
     </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SHOP — Stitch Design: Sidebar Filters + Product Grid
+         ═══════════════════════════════════════════════════════════ -->
+    <section id="collection" class="shop-section">
+      <div class="shop-inner">
+
+        <!-- ──── LEFT: Sticky Sidebar ──────────────────────────── -->
+        <aside class="shop-sidebar">
+          <div class="shop-sidebar-inner">
+
+            <!-- Search -->
+            <div class="shop-filter-group">
+              <label class="shop-filter-label">Search</label>
+              <div class="shop-search-wrap">
+                <input id="shop-search" type="text" placeholder="Find a scent…" class="shop-search-input"
+                  autocomplete="off">
+                <svg class="shop-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="shop-filter-group shop-filter-divider">
+              <h3 class="shop-filter-heading">Categories</h3>
+              <ul class="shop-check-list">
+                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox shop-cat-check"
+                      value="all" checked> All Candles</label></li>
+                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox shop-cat-check"
+                      value="pillar"> Pillar Candles</label></li>
+                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox shop-cat-check"
+                      value="jar"> Jar Candles</label></li>
+                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox shop-cat-check"
+                      value="votive"> Votives</label></li>
+              </ul>
+            </div>
+
+            <!-- Price Range -->
+            <div class="shop-filter-group shop-filter-divider">
+              <h3 class="shop-filter-heading" style="display:flex;justify-content:space-between;align-items:center;">
+                Price Range
+                <span id="shop-price-label" class="shop-filter-value">₹500 – ₹2,500</span>
+              </h3>
+              <div style="padding-top:0.75rem;">
+                <input id="shop-price-range" type="range" min="0" max="3000" value="2500" step="100"
+                  class="shop-range-input">
+              </div>
+            </div>
+
+            <!-- Fragrance Notes -->
+            <div class="shop-filter-group shop-filter-divider">
+              <h3 class="shop-filter-heading">Fragrance Notes</h3>
+              <div class="shop-tag-cloud">
+                <span class="shop-frag-tag active" data-note="woody">Woody</span>
+                <span class="shop-frag-tag active" data-note="spicy">Spicy</span>
+                <span class="shop-frag-tag active" data-note="citrus">Citrus</span>
+                <span class="shop-frag-tag active" data-note="fruity">Fruity</span>
+                <span class="shop-frag-tag" data-note="floral">Floral</span>
+                <span class="shop-frag-tag" data-note="fresh">Fresh</span>
+                <span class="shop-frag-tag" data-note="vanilla">Vanilla</span>
+                <span class="shop-frag-tag" data-note="lavender">Lavender</span>
+              </div>
+            </div>
+
+            <!-- Wax Type -->
+            <div class="shop-filter-group">
+              <h3 class="shop-filter-heading">Wax Type</h3>
+              <ul class="shop-check-list">
+                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox"> Soy Wax</label></li>
+                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox"> Beeswax</label></li>
+                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox"> Coconut Blend</label>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </aside>
+
+        <!-- ──── RIGHT: Product Grid Area ─────────────────────── -->
+        <div class="shop-grid-area">
+
+          <!-- Section heading -->
+          <div class="shop-hero-text">
+            <span class="section-tag">Our Collection</span>
+            <h2 class="shop-title">Signature Scents</h2>
+            <p class="shop-subtitle">Each fragrance is meticulously crafted for moments that matter.</p>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="shop-toolbar">
+            <p class="shop-results-count">Showing <strong id="shop-results-count">4</strong> results</p>
+            <div class="shop-sort-wrap">
+              <span class="shop-sort-label">Sort by:</span>
+              <select id="shop-sort" class="shop-sort-select">
+                <option>Featured</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Newest Arrivals</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Product Grid -->
+          <div class="shop-product-grid" id="shop-product-grid">
+
+            <!-- Card: Santal Noir -->
+            <article class="shop-card" data-product="santal-noir" data-notes="woody,spicy" data-price="1299"
+              data-category="jar">
+              <div class="shop-card-image-wrap">
+                <img src="luxury_candles_banner.png" alt="Santal Noir" class="shop-card-img">
+                <button class="shop-card-wishlist" aria-label="Wishlist">
+                  <i data-lucide="heart"></i>
+                </button>
+              </div>
+              <div class="shop-card-body">
+                <h4 class="shop-card-name">Santal &amp; Cedar</h4>
+                <p class="shop-card-mood">Earthy, grounding, warm</p>
+                <p class="shop-card-price">₹1,299</p>
+                <button class="shop-card-btn" onclick="window.openPDP('santal-noir')">View Details</button>
+              </div>
+            </article>
+
+            <!-- Card: Midnight Fig -->
+            <article class="shop-card" data-product="midnight-fig" data-notes="fruity,deep" data-price="1099"
+              data-category="jar">
+              <div class="shop-card-image-wrap">
+                <img src="luxury_candles_banner.png" alt="Midnight Fig" class="shop-card-img">
+                <span class="shop-card-badge">NEW</span>
+                <button class="shop-card-wishlist" aria-label="Wishlist">
+                  <i data-lucide="heart"></i>
+                </button>
+              </div>
+              <div class="shop-card-body">
+                <h4 class="shop-card-name">Midnight Fig</h4>
+                <p class="shop-card-mood">Rich, fruity, deep</p>
+                <p class="shop-card-price">₹1,099</p>
+                <button class="shop-card-btn" onclick="window.openPDP('midnight-fig')">View Details</button>
+              </div>
+            </article>
+
+            <!-- Card: White Linen -->
+            <article class="shop-card" data-product="white-linen" data-notes="fresh,airy" data-price="999"
+              data-category="pillar">
+              <div class="shop-card-image-wrap">
+                <img src="luxury_candles_banner.png" alt="White Linen" class="shop-card-img">
+                <button class="shop-card-wishlist" aria-label="Wishlist">
+                  <i data-lucide="heart"></i>
+                </button>
+              </div>
+              <div class="shop-card-body">
+                <h4 class="shop-card-name">White Linen</h4>
+                <p class="shop-card-mood">Crisp, airy, fresh</p>
+                <p class="shop-card-price">₹999</p>
+                <button class="shop-card-btn" onclick="window.openPDP('white-linen')">View Details</button>
+              </div>
+            </article>
+
+            <!-- Card: Bergamot Vetiver -->
+            <article class="shop-card" data-product="bergamot-vetiver" data-notes="citrus,smoky" data-price="1199"
+              data-category="jar">
+              <div class="shop-card-image-wrap">
+                <img src="luxury_candles_banner.png" alt="Bergamot Vetiver" class="shop-card-img">
+                <button class="shop-card-wishlist" aria-label="Wishlist">
+                  <i data-lucide="heart"></i>
+                </button>
+              </div>
+              <div class="shop-card-body">
+                <h4 class="shop-card-name">Bergamot Vetiver</h4>
+                <p class="shop-card-mood">Citrus, smoky, complex</p>
+                <p class="shop-card-price">₹1,199</p>
+                <button class="shop-card-btn" onclick="window.openPDP('bergamot-vetiver')">View Details</button>
+              </div>
+            </article>
+
+            <!-- Card: Rose Oud -->
+            <article class="shop-card" data-product="santal-noir" data-notes="floral,woody" data-price="1499"
+              data-category="jar">
+              <div class="shop-card-image-wrap">
+                <img src="luxury_candles_banner.png" alt="Rose Oud" class="shop-card-img">
+                <button class="shop-card-wishlist" aria-label="Wishlist">
+                  <i data-lucide="heart"></i>
+                </button>
+              </div>
+              <div class="shop-card-body">
+                <h4 class="shop-card-name">Rose Oud</h4>
+                <p class="shop-card-mood">Floral, resinous, warm</p>
+                <p class="shop-card-price">₹1,499</p>
+                <button class="shop-card-btn" onclick="window.openPDP('santal-noir')">View Details</button>
+              </div>
+            </article>
+
+            <!-- Card: Cedarwood Mist -->
+            <article class="shop-card" data-product="bergamot-vetiver" data-notes="woody,fresh" data-price="899"
+              data-category="votive">
+              <div class="shop-card-image-wrap">
+                <img src="luxury_candles_banner.png" alt="Cedarwood Mist" class="shop-card-img">
+                <span class="shop-card-badge">SALE</span>
+                <button class="shop-card-wishlist" aria-label="Wishlist">
+                  <i data-lucide="heart"></i>
+                </button>
+              </div>
+              <div class="shop-card-body">
+                <h4 class="shop-card-name">Cedarwood Mist</h4>
+                <p class="shop-card-mood">Woody, clean, ethereal</p>
+                <p class="shop-card-price">₹899</p>
+                <button class="shop-card-btn" onclick="window.openPDP('bergamot-vetiver')">View Details</button>
+              </div>
+            </article>
+
+          </div><!-- /shop-product-grid -->
+
+          <!-- No results message -->
+          <div id="shop-no-results" style="display:none;text-align:center;padding:4rem 0;">
+            <p style="font-family:'Inter',sans-serif;font-size:1rem;color:var(--text-secondary);">No candles match your
+              filters. Try adjusting your selection.</p>
+            <button
+              onclick="document.querySelectorAll('.shop-frag-tag').forEach(t=>t.classList.add('active'));document.getElementById('shop-product-grid').querySelectorAll('.shop-card').forEach(c=>c.style.display='');document.getElementById('shop-no-results').style.display='none';document.getElementById('shop-results-count').textContent='6';"
+              class="shop-card-btn" style="display:inline-block;margin-top:1rem;width:auto;padding:0.65rem 2rem;">Clear
+              Filters</button>
+          </div>
+
+          <!-- Pagination -->
+          <div class="shop-pagination">
+            <button class="shop-page-btn" aria-label="Previous page">
+              <i data-lucide="chevron-left"></i>
+            </button>
+            <span class="shop-page-info"><span class="shop-page-current">1</span> of 4</span>
+            <button class="shop-page-btn" aria-label="Next page">
+              <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+
+        </div><!-- /shop-grid-area -->
+      </div><!-- /shop-inner -->
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         GIFT FINDER MODULE (Multi-Step Quiz)
+         ═══════════════════════════════════════════════════════════ -->
+    <section id="gift-finder" class="gf-section">
+      <!-- Abstract Ambient Background -->
+      <div class="gf-bg-shapes">
+        <div class="gf-shape gf-shape-1"></div>
+        <div class="gf-shape gf-shape-2"></div>
+      </div>
+
+      <div class="gf-container">
+        <!-- Progress Bar -->
+        <div id="gf-progress-container" class="gf-progress-wrap">
+          <div class="gf-progress-header">
+            <span>Step <span id="gf-current-step">1</span> of <span id="gf-total-steps">2</span></span>
+            <button type="button" id="gf-btn-back" class="gf-btn-back hidden">Back</button>
+          </div>
+          <div class="gf-progress-track">
+            <div id="gf-progress-bar" class="gf-progress-fill" style="width:50%;"></div>
+          </div>
+        </div>
+
+        <!-- Quiz Steps Container -->
+        <div id="gf-steps-container" class="gf-steps-wrap">
+
+          <!-- Step 1: Occasion -->
+          <div class="gf-step active" data-step="1">
+            <div class="gf-step-header">
+              <h2 class="gf-title">What is the occasion?</h2>
+              <p class="gf-subtitle">Let's find the perfect fragrance to match the moment.</p>
+            </div>
+            <div class="gf-grid-2">
+              <label class="gf-option">
+                <input type="radio" name="occasion" value="birthday" class="hidden">
+                <div class="gf-option-card">
+                  <i data-lucide="gift" class="gf-icon"></i>
+                  <span class="gf-opt-title">Birthday</span>
+                  <span class="gf-opt-desc">A joyous celebration</span>
+                </div>
+              </label>
+              <label class="gf-option">
+                <input type="radio" name="occasion" value="anniversary" class="hidden">
+                <div class="gf-option-card">
+                  <i data-lucide="heart" class="gf-icon"></i>
+                  <span class="gf-opt-title">Anniversary</span>
+                  <span class="gf-opt-desc">Romance and remembrance</span>
+                </div>
+              </label>
+              <label class="gf-option">
+                <input type="radio" name="occasion" value="housewarming" class="hidden">
+                <div class="gf-option-card">
+                  <i data-lucide="home" class="gf-icon"></i>
+                  <span class="gf-opt-title">Housewarming</span>
+                  <span class="gf-opt-desc">Welcoming new spaces</span>
+                </div>
+              </label>
+              <label class="gf-option">
+                <input type="radio" name="occasion" value="just-because" class="hidden">
+                <div class="gf-option-card">
+                  <i data-lucide="heart-handshake" class="gf-icon"></i>
+                  <span class="gf-opt-title">Just Because</span>
+                  <span class="gf-opt-desc">Everyday appreciation</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Step 2: Recipient -->
+          <div class="gf-step hidden" data-step="2">
+            <div class="gf-step-header">
+              <h2 class="gf-title">Who are you gifting?</h2>
+              <p class="gf-subtitle">Help us tailor the selection to their style.</p>
+            </div>
+            <div class="gf-grid-3">
+              <label class="gf-option">
+                <input type="radio" name="recipient" value="partner" class="hidden">
+                <div class="gf-option-card">
+                  <span class="gf-opt-title">Partner</span>
+                  <span class="gf-opt-desc">Significant other</span>
+                </div>
+              </label>
+              <label class="gf-option">
+                <input type="radio" name="recipient" value="friend" class="hidden">
+                <div class="gf-option-card">
+                  <span class="gf-opt-title">Friend</span>
+                  <span class="gf-opt-desc">Close companion</span>
+                </div>
+              </label>
+              <label class="gf-option">
+                <input type="radio" name="recipient" value="colleague" class="hidden">
+                <div class="gf-option-card">
+                  <span class="gf-opt-title">Colleague</span>
+                  <span class="gf-opt-desc">Professional acquaintance</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Result Page (Step 3) -->
+          <div class="gf-step hidden" data-step="3" id="gf-result-page">
+            <div class="gf-step-header" style="margin-bottom: 3rem;">
+              <i data-lucide="sparkles" class="gf-result-icon"></i>
+              <h2 class="gf-title" style="margin-top: 1rem;">We found your perfect match</h2>
+              <p class="gf-subtitle">Curated selections based on your answers.</p>
+            </div>
+
+            <!-- Result Grid (Reusing Shop Card Classes for consistency) -->
+            <div class="gf-grid-3" style="gap: 2rem;">
+              <!-- Product Card 1 -->
+              <article class="shop-card" onclick="window.openPDP('santal-noir')">
+                <div class="shop-card-image-wrap">
+                  <img src="luxury_candles_banner.png" alt="Midnight Oud" class="shop-card-img">
+                  <span class="shop-card-badge">TOP MATCH</span>
+                </div>
+                <div class="shop-card-body">
+                  <h4 class="shop-card-name">Midnight Oud</h4>
+                  <p class="shop-card-mood">Woody &amp; Warm</p>
+                  <p class="shop-card-price">₹1,299</p>
+                </div>
+              </article>
+
+              <!-- Product Card 2 -->
+              <article class="shop-card" onclick="window.openPDP('midnight-fig')">
+                <div class="shop-card-image-wrap">
+                  <img src="luxury_candles_banner.png" alt="Velvet Rose" class="shop-card-img">
+                </div>
+                <div class="shop-card-body">
+                  <h4 class="shop-card-name">Velvet Rose</h4>
+                  <p class="shop-card-mood">Floral &amp; Rich</p>
+                  <p class="shop-card-price">₹1,499</p>
+                </div>
+              </article>
+
+              <!-- Product Card 3 -->
+              <article class="shop-card" onclick="window.openPDP('white-linen')">
+                <div class="shop-card-image-wrap">
+                  <img src="luxury_candles_banner.png" alt="Ocean Drift" class="shop-card-img">
+                </div>
+                <div class="shop-card-body">
+                  <h4 class="shop-card-name">Ocean Drift</h4>
+                  <p class="shop-card-mood">Fresh &amp; Crisp</p>
+                  <p class="shop-card-price">₹999</p>
+                </div>
+              </article>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem;">
+              <button type="button" class="btn-primary" onclick="window.location.hash='#collection'"
+                style="width: auto; padding: 1rem 2.5rem;">Shop All Gifts</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Controls -->
+        <div id="gf-controls" class="gf-controls">
+          <button type="button" id="gf-btn-next" class="btn-primary" style="width: auto; padding: 1rem 2.5rem;">Next
+            Step</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gift Finder Script Logic -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        let gfCurrentStep = 1;
+        const gfTotalSteps = 2; // Step 3 is results
+        const gfSteps = document.querySelectorAll('.gf-step');
+        const gfBtnNext = document.getElementById('gf-btn-next');
+        const gfBtnBack = document.getElementById('gf-btn-back');
+        const gfProgressBar = document.getElementById('gf-progress-bar');
+        const gfCurrentStepDisplay = document.getElementById('gf-current-step');
+        const gfControls = document.getElementById('gf-controls');
+        const gfProgressContainer = document.getElementById('gf-progress-container');
+
+        function updateGFUI() {
+          // Update Steps visibility
+          gfSteps.forEach(step => {
+            const stepNum = parseInt(step.getAttribute('data-step'));
+            if (stepNum === gfCurrentStep) {
+              step.classList.remove('hidden');
+              // short delay for opacity transition
+              setTimeout(() => step.classList.add('active'), 50);
+            } else {
+              step.classList.remove('active');
+              setTimeout(() => step.classList.add('hidden'), 300);
+            }
+          });
+
+          // Update Progress Bar
+          if (gfCurrentStep <= gfTotalSteps) {
+            const progress = (gfCurrentStep / gfTotalSteps) * 100;
+            gfProgressBar.style.width = `${progress}%`;
+            gfCurrentStepDisplay.textContent = gfCurrentStep;
+          }
+
+          // Update Buttons
+          if (gfCurrentStep === 1) {
+            gfBtnBack.classList.add('hidden');
+          } else {
+            gfBtnBack.classList.remove('hidden');
+          }
+
+          if (gfCurrentStep === gfTotalSteps) {
+            gfBtnNext.textContent = 'See Results';
+          } else {
+            gfBtnNext.textContent = 'Next Step';
+          }
+
+          // Show Results state
+          if (gfCurrentStep > gfTotalSteps) {
+            gfProgressContainer.style.display = 'none';
+            gfControls.style.display = 'none';
+          }
+        }
+
+        if (gfBtnNext) {
+          gfBtnNext.addEventListener('click', () => {
+            if (gfCurrentStep <= gfTotalSteps) {
+              gfCurrentStep++;
+              updateGFUI();
+            }
+          });
+        }
+
+        if (gfBtnBack) {
+          gfBtnBack.addEventListener('click', () => {
+            if (gfCurrentStep > 1) {
+              gfCurrentStep--;
+              updateGFUI();
+            }
+          });
+        }
+
+        // Auto-advance on radio select for better UX
+        const gfRadios = document.querySelectorAll('.gf-option input[type="radio"]');
+        gfRadios.forEach(radio => {
+          radio.addEventListener('change', () => {
+            setTimeout(() => {
+              if (gfCurrentStep <= gfTotalSteps && gfBtnNext) {
+                gfBtnNext.click();
+              }
+            }, 400);
+          });
+        });
+
+        // Init
+        if (gfSteps.length > 0) {
+          updateGFUI();
+        }
+      });
+    </script>
 
     <!-- Customizer Section (Candle Builder) -->
     <section class="customizer-section" id="customizer">
@@ -744,136 +1259,7 @@
       </div>
     </section>
 
-    <!-- Interactive Gift Studio Section -->
-    <section class="gifting-section" id="gifting">
-      <div class="gifting-ambient-glow" id="gifting-glow"></div>
 
-      <div class="section-header text-center">
-        <span class="section-tag">Aromatic Occasions</span>
-        <h2>Ankri Gifting Studio</h2>
-        <p>Pre-designed premium candle sets and handwritten cards carefully matched for life's most meaningful moments.
-        </p>
-      </div>
-
-      <div class="gifting-container">
-        <!-- Occasion Selector Tabs/Cards -->
-        <div class="gift-category-selector">
-          <button class="gift-cat-card active" data-occasion="birthday">
-            <div class="gift-cat-icon"><i data-lucide="cake"></i></div>
-            <span class="gift-cat-name">Birthday</span>
-          </button>
-          <button class="gift-cat-card" data-occasion="anniversary">
-            <div class="gift-cat-icon"><i data-lucide="award"></i></div>
-            <span class="gift-cat-name">Anniversary</span>
-          </button>
-          <button class="gift-cat-card" data-occasion="valentine">
-            <div class="gift-cat-icon"><i data-lucide="heart"></i></div>
-            <span class="gift-cat-name">Valentine's Day</span>
-          </button>
-          <button class="gift-cat-card" data-occasion="christmas">
-            <div class="gift-cat-icon"><i data-lucide="trees"></i></div>
-            <span class="gift-cat-name">Christmas</span>
-          </button>
-          <button class="gift-cat-card" data-occasion="housewarming">
-            <div class="gift-cat-icon"><i data-lucide="home"></i></div>
-            <span class="gift-cat-name">Housewarming</span>
-          </button>
-        </div>
-
-        <!-- Dynamic Gifting Showcase Panel -->
-        <div class="gift-showcase-panel" id="gift-showcase" data-active-occasion="birthday">
-          <!-- Left Side: Interactive CSS Candle Preview for this Occasion -->
-          <div class="gift-preview-side">
-            <div class="gift-candle-stage">
-              <div class="gift-candle-wrapper">
-                <!-- Glowing Aura behind candle -->
-                <div class="gift-candle-glow" id="gift-candle-glow-effect"></div>
-                <!-- Box outline / wrap design preview -->
-                <div class="gift-box-wrap-preview" id="gift-wrap-preview-element" data-wrap="obsidian-velvet">
-                  <div class="gift-box-ribbon"></div>
-                </div>
-                <!-- Interactive Preview Candle -->
-                <div class="gift-candle-preview-render" id="gift-candle-render-element" data-jar="black">
-                  <div class="gift-candle-label" id="gift-candle-label-element" data-theme="midnight-black">
-                    <div class="label-mini-content">
-                      <div class="label-mini-title" id="gift-label-title-preview">BIRTHDAY CAKE</div>
-                      <div class="label-mini-scents" id="gift-label-scents-preview">Vanilla, Coconut & Chocolate</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Floating features lists -->
-            <div class="gift-perks-chips">
-              <span class="perk-chip"><i data-lucide="sparkles"></i> Hand-Poured</span>
-              <span class="perk-chip"><i data-lucide="gift"></i> Luxury Box Included</span>
-              <span class="perk-chip"><i data-lucide="pencil"></i> Note Card</span>
-            </div>
-          </div>
-
-          <!-- Right Side: Details & Actions -->
-          <div class="gift-details-side">
-            <div class="gift-badge" id="gift-badge-element">Birthday Curated Selection</div>
-            <h3 class="gift-title" id="gift-title-element">Enchanted Birthday</h3>
-            <p class="gift-description" id="gift-description-element">A sweet, celebratory blend crafted to make
-              birthdays feel magical and cozy. Premium packaging features a sleek charcoal gold-embossed design.</p>
-
-            <!-- Curated recipe breakdown -->
-            <div class="curated-recipe-card">
-              <h4><i data-lucide="pipette"></i> Curated Scent Layering</h4>
-              <div class="recipe-swatches">
-                <div class="recipe-swatch-item">
-                  <span class="recipe-swatch-color" id="gift-color-heart" style="background:#FFF9C4;"></span>
-                  <div class="recipe-swatch-info">
-                    <strong>Heart (60%):</strong> <span id="gift-recipe-heart">Vanilla</span>
-                  </div>
-                </div>
-                <div class="recipe-swatch-item">
-                  <span class="recipe-swatch-color" id="gift-color-depth" style="background:#FFF8DC;"></span>
-                  <div class="recipe-swatch-info">
-                    <strong>Depth (30%):</strong> <span id="gift-recipe-depth">Coconut</span>
-                  </div>
-                </div>
-                <div class="recipe-swatch-item">
-                  <span class="recipe-swatch-color" id="gift-color-twist" style="background:#3E2723;"></span>
-                  <div class="recipe-swatch-info">
-                    <strong>Twist (10%):</strong> <span id="gift-recipe-twist">Chocolate</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Note Card Message Preview -->
-            <div class="gift-card-preview-container">
-              <span class="card-preview-tag">Included Greeting Note Card (Click to edit)</span>
-              <div class="gift-card-bubble" style="cursor: text;">
-                <i data-lucide="quote" style="pointer-events: none;"></i>
-                <textarea id="gift-card-message-text" maxLength="120"
-                  style="width: 100% !important; border: none !important; background: transparent !important; color: #3b3a36 !important; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.05rem; outline: none !important; resize: none !important; min-height: 70px; line-height: 1.4; padding: 0 10px; margin-top: 4px; text-align: center; box-sizing: border-box; box-shadow: none !important;"
-                  placeholder="Type your custom card message here..."></textarea>
-              </div>
-            </div>
-
-            <!-- Gifting CTA Actions -->
-            <div class="offer-buy-box">
-              <div class="gift-price-tag">
-                <span class="gift-price-num" id="gift-price-numeric">₹849</span>
-                <span class="gift-price-details">All-inclusive gift pack (Candle + Box + Card)</span>
-              </div>
-              <div class="gift-actions-row">
-                <button class="btn btn-primary" id="gift-add-cart-btn">
-                  <i data-lucide="shopping-bag"></i> Instant Gift Add
-                </button>
-                <button class="btn btn-outline" id="gift-load-customizer-btn">
-                  <i data-lucide="sliders"></i> Customize this Gift
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Signature Collection Section -->
     <section class="collection-section" id="collection">
@@ -1545,38 +1931,61 @@
 
 
 
-  <!-- Footer -->
+  <!-- Footer — Stitch 4-column warm minimalist design -->
   <footer class="app-footer-main">
     <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="#" class="logo-main"
-          style="height: 64px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-          <img class="logo-light" src="/ankri_candles_logo.svg" alt="Ankri Candles Logo"
-            style="height: 100%; width: auto; object-fit: contain;">
-          <img class="logo-dark" src="/ankri_candles_logo_dark.svg" alt="Ankri Candles Logo"
-            style="height: 100%; width: auto; object-fit: contain;">
-        </a>
-        <p>Sensory crafting. Premium customized soy wax candles hand-poured in Bangalore, India.</p>
+      <!-- Brand column -->
+      <div class="footer-brand" style="grid-column: span 2;">
+        <div
+          style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:600;color:var(--primary);letter-spacing:-0.02em;margin-bottom:0.75rem;">
+          ANKRI CANDLE</div>
+        <p
+          style="font-family:'Inter',sans-serif;font-size:0.875rem;color:var(--text-secondary);max-width:360px;line-height:1.6;">
+          Illuminating spaces with mindful craftsmanship and curated fragrances. Join our community of slow-living
+          enthusiasts.</p>
       </div>
+      <!-- Shop links -->
       <div class="footer-links">
-        <h4>Explore</h4>
+        <h4
+          style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;">
+          Shop</h4>
+        <a href="#collection">All Candles</a>
         <a href="#customizer">Custom Candle Builder</a>
-        <a href="#collection">Signature Series</a>
+        <a href="#gifting-studio">Gift Sets</a>
         <a href="#quiz-section">Scent Finder Quiz</a>
-        <a id="homepage-admin-trigger" href="#" style="display: flex; align-items: center; gap: 4px;"><i
-            data-lucide="shield-alert" style="width: 14px; height: 14px;"></i> Super Admin Portal</a>
+        <a id="homepage-admin-trigger" href="#" style="display:flex;align-items:center;gap:4px;"><i
+            data-lucide="shield-alert" style="width:14px;height:14px;"></i> Super Admin Portal</a>
       </div>
-      <div class="footer-newsletter">
-        <h4>Stay Inspired</h4>
-        <p>Subscribe for seasonal notes, early customizer alerts, and exclusive discounts.</p>
-        <form class="newsletter-form" id="newsletter-form">
-          <input type="email" placeholder="Your email address" required>
-          <button type="submit"><i data-lucide="arrow-right"></i></button>
-        </form>
+      <!-- Information links -->
+      <div class="footer-links">
+        <h4
+          style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;">
+          Information</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">FAQs</a>
+        <a href="#">Shipping &amp; Delivery</a>
+        <a href="#">Returns</a>
+        <a href="#">Contact Us</a>
       </div>
     </div>
+    <!-- Newsletter row -->
+    <div
+      style="padding:1.5rem 2rem;display:flex;align-items:center;gap:1rem;border-top:1px solid var(--border-glass);flex-wrap:wrap;">
+      <div>
+        <p
+          style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:0.25rem;">
+          Stay Inspired</p>
+        <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:var(--text-secondary);line-height:1.5;">
+          Subscribe for seasonal notes, early drops &amp; exclusive discounts.</p>
+      </div>
+      <form class="newsletter-form" id="newsletter-form" style="margin-left:auto;">
+        <input type="email" placeholder="Your email address" required>
+        <button type="submit"><i data-lucide="arrow-right"></i></button>
+      </form>
+    </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 Ankri Candles. Handcrafted in India.</p>
+      <p>&copy; 2026 Ankri Candle. All rights reserved. Handcrafted in India.</p>
     </div>
   </footer>
 
@@ -2750,10 +3159,279 @@
     </div>
   </div>
 
+  <!-- ============================================================ -->
+  <!-- Product Detail Modal — Stitch Design                         -->
+  <!-- ============================================================ -->
+  <div id="product-detail-modal" class="pdp-overlay" role="dialog" aria-modal="true" aria-label="Product Detail">
+    <div class="pdp-container">
+      <!-- Close button -->
+      <button class="pdp-close-btn" id="pdp-close-btn" aria-label="Close product detail">
+        <i data-lucide="x"></i>
+      </button>
+
+      <!-- Breadcrumb -->
+      <nav class="pdp-breadcrumb">
+        <span>Home</span>
+        <span class="pdp-breadcrumb-sep">›</span>
+        <span>Shop</span>
+        <span class="pdp-breadcrumb-sep">›</span>
+        <span id="pdp-breadcrumb-name">Santal Noir</span>
+      </nav>
+
+      <!-- Main grid: 7/12 gallery + 5/12 info -->
+      <div class="pdp-grid">
+
+        <!-- LEFT: Gallery -->
+        <div class="pdp-gallery">
+          <!-- Main image -->
+          <div class="pdp-main-img-wrap">
+            <img id="pdp-main-img" class="pdp-main-img" src="" alt="Product Image">
+          </div>
+          <!-- Thumbnails -->
+          <div class="pdp-thumbs" id="pdp-thumbs">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- RIGHT: Info panel -->
+        <div class="pdp-info">
+          <div class="pdp-info-sticky">
+
+            <!-- Tags -->
+            <div class="pdp-tags" id="pdp-tags">
+              <!-- Injected by JS -->
+            </div>
+
+            <!-- Title & Price -->
+            <h1 class="pdp-title" id="pdp-title">Santal Noir</h1>
+            <p class="pdp-price" id="pdp-price">₹799</p>
+
+            <!-- Description -->
+            <p class="pdp-desc" id="pdp-desc">
+              A deeply resonant fragrance that captures the essence of a quiet study at midnight.
+              Rich sandalwood and dry cedar are softened by subtle whispers of vanilla and cracked black pepper.
+            </p>
+
+            <!-- Quantity + Add to Cart -->
+            <div class="pdp-actions">
+              <div class="pdp-qty-row">
+                <!-- Quantity stepper -->
+                <div class="pdp-qty-stepper">
+                  <button class="pdp-qty-btn" id="pdp-qty-minus" aria-label="Decrease quantity">
+                    <i data-lucide="minus"></i>
+                  </button>
+                  <span class="pdp-qty-val" id="pdp-qty-val">1</span>
+                  <button class="pdp-qty-btn" id="pdp-qty-plus" aria-label="Increase quantity">
+                    <i data-lucide="plus"></i>
+                  </button>
+                </div>
+                <!-- Add to Cart -->
+                <button class="pdp-cart-btn" id="pdp-add-to-cart">
+                  Add to Cart
+                </button>
+              </div>
+
+              <!-- Secondary actions -->
+              <div class="pdp-secondary-actions">
+                <button class="pdp-action-btn" id="pdp-wishlist-btn">
+                  <i data-lucide="heart"></i>
+                  Wishlist
+                </button>
+                <button class="pdp-action-btn" id="pdp-share-btn">
+                  <i data-lucide="share-2"></i>
+                  Share
+                </button>
+              </div>
+            </div>
+
+            <hr class="pdp-divider">
+
+            <!-- Accordion sections -->
+            <div class="pdp-accordions">
+
+              <!-- Fragrance Notes -->
+              <div class="pdp-accordion-item">
+                <button class="pdp-accordion-btn" aria-expanded="false">
+                  <span>Fragrance Notes</span>
+                  <i data-lucide="chevron-down" class="pdp-accordion-icon"></i>
+                </button>
+                <div class="pdp-accordion-body" id="pdp-notes-body">
+                  <ul class="pdp-notes-list" id="pdp-notes-list">
+                    <!-- Injected by JS -->
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Details & Care -->
+              <div class="pdp-accordion-item">
+                <button class="pdp-accordion-btn" aria-expanded="false">
+                  <span>Details &amp; Care</span>
+                  <i data-lucide="chevron-down" class="pdp-accordion-icon"></i>
+                </button>
+                <div class="pdp-accordion-body" id="pdp-details-body">
+                  <ul class="pdp-notes-list" id="pdp-details-list">
+                    <!-- Injected by JS -->
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Craftsmanship -->
+              <div class="pdp-accordion-item">
+                <button class="pdp-accordion-btn" aria-expanded="false">
+                  <span>Craftsmanship &amp; Ingredients</span>
+                  <i data-lucide="chevron-down" class="pdp-accordion-icon"></i>
+                </button>
+                <div class="pdp-accordion-body">
+                  <ul class="pdp-notes-list">
+                    <li>100% natural soy wax — clean, vegan &amp; long-burning</li>
+                    <li>Cotton wick — lead-free, no soot</li>
+                    <li>Phthalate-free premium fragrance oils</li>
+                    <li>Hand-poured in small batches in Bangalore, India</li>
+                    <li>Trim wick to 5mm before each burn for best performance</li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Trust badges -->
+            <div class="pdp-trust-row">
+              <div class="pdp-trust-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3" />
+                  <rect x="9" y="11" width="14" height="10" rx="1" />
+                  <path d="M16 17h2" />
+                </svg>
+                Free Shipping above ₹999
+              </div>
+              <div class="pdp-trust-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                100% Natural
+              </div>
+              <div class="pdp-trust-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                  <polyline points="17 6 23 6 23 12" />
+                </svg>
+                Easy Returns
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Lucide Icons initialization -->
   <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Shop Filter Interactions -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('shop-search');
+      const priceRange = document.getElementById('shop-price-range');
+      const priceLabel = document.getElementById('shop-price-label');
+      const fragTags = document.querySelectorAll('.shop-frag-tag');
+      const catChecks = document.querySelectorAll('.shop-cat-check');
+      const cards = document.querySelectorAll('.shop-card');
+      const resultsCount = document.getElementById('shop-results-count');
+      const noResults = document.getElementById('shop-no-results');
+      const productGrid = document.getElementById('shop-product-grid');
+
+      function filterCards() {
+        const query = searchInput.value.toLowerCase();
+        const maxPrice = parseInt(priceRange.value, 10);
+
+        // Get active fragrance tags
+        const activeTags = Array.from(fragTags)
+          .filter(t => t.classList.contains('active'))
+          .map(t => t.getAttribute('data-note'));
+
+        // Get active categories
+        const activeCats = Array.from(catChecks)
+          .filter(c => c.checked)
+          .map(c => c.value);
+        const allCatsChecked = activeCats.includes('all');
+
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+          const name = card.querySelector('.shop-card-name').textContent.toLowerCase();
+          const cardPrice = parseInt(card.getAttribute('data-price'), 10);
+          const cardNotes = card.getAttribute('data-notes').split(',');
+          const cardCat = card.getAttribute('data-category');
+
+          // Match Search
+          const matchesSearch = name.includes(query);
+
+          // Match Price
+          const matchesPrice = cardPrice <= maxPrice;
+
+          // Match Fragrance (Card must have AT LEAST ONE active note to show, or show all if none selected)
+          const matchesFrag = activeTags.length === 0 || cardNotes.some(note => activeTags.includes(note));
+
+          // Match Category
+          const matchesCat = allCatsChecked || activeCats.includes(cardCat);
+
+          if (matchesSearch && matchesPrice && matchesFrag && matchesCat) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        // Update count text
+        resultsCount.textContent = visibleCount;
+
+        // Show/hide no results message
+        if (visibleCount === 0) {
+          productGrid.style.display = 'none';
+          noResults.style.display = 'block';
+        } else {
+          productGrid.style.display = 'grid';
+          noResults.style.display = 'none';
+        }
+      }
+
+      // Scent tag toggling
+      fragTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+          tag.classList.toggle('active');
+          filterCards();
+        });
+      });
+
+      // Price slider
+      priceRange.addEventListener('input', (e) => {
+        priceLabel.textContent = `₹0 – ₹${e.target.value}`;
+        filterCards();
+      });
+
+      // Search input
+      searchInput.addEventListener('input', filterCards);
+
+      // Category checkboxes
+      catChecks.forEach(chk => {
+        chk.addEventListener('change', (e) => {
+          if (e.target.value === 'all') {
+            if (e.target.checked) catChecks.forEach(c => c.value !== 'all' && (c.checked = false));
+          } else {
+            if (e.target.checked) document.querySelector('.shop-cat-check[value="all"]').checked = false;
+          }
+          filterCards();
+        });
+      });
+    });
+  </script>
+
   <!-- Main Script -->
   <script type="module" src="/main.js"></script>
+  <!-- Product Detail Page Modal -->
+  <script type="module" src="/pdp.js"></script>
 </body>
 
 </html>
