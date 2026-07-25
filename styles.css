@@ -7440,7 +7440,11 @@ body.dark-theme .modal-star.filled {
 }
 
 .shop-frag-tag {
-  padding: 0.35rem 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0.4rem 0.8rem;
   border-radius: 9999px;
   font-family: var(--font-sans);
   font-size: 0.72rem;
