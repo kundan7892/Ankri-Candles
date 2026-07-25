@@ -1929,36 +1929,35 @@
 
 
 
-  <!-- Footer — Stitch 4-column warm minimalist design -->
+  <!-- Footer — Premium 4-Column Warm Minimalist Design -->
   <footer class="app-footer-main">
     <div class="footer-grid">
-      <!-- Brand column -->
-      <div class="footer-brand" style="grid-column: span 2;">
-        <div
-          style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:600;color:var(--primary);letter-spacing:-0.02em;margin-bottom:0.75rem;">
-          ANKRI CANDLE</div>
-        <p
-          style="font-family:'Inter',sans-serif;font-size:0.875rem;color:var(--text-secondary);max-width:360px;line-height:1.6;">
+
+      <!-- Column 1: Brand -->
+      <div class="footer-brand">
+        <h3 class="footer-brand-title">ANKRI CANDLE</h3>
+        <p class="footer-desc">
           Illuminating spaces with mindful craftsmanship and curated fragrances. Join our community of slow-living
-          enthusiasts.</p>
+          enthusiasts.
+        </p>
       </div>
-      <!-- Shop links -->
+
+      <!-- Column 2: Shop -->
       <div class="footer-links">
-        <h4
-          style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;">
-          Shop</h4>
+        <h4>Shop</h4>
         <a href="#collection">All Candles</a>
         <a href="#customizer">Custom Candle Builder</a>
         <a href="#gifting-studio">Gift Sets</a>
         <a href="#quiz-section">Scent Finder Quiz</a>
-        <a id="homepage-admin-trigger" href="#" style="display:flex;align-items:center;gap:4px;"><i
-            data-lucide="shield-alert" style="width:14px;height:14px;"></i> Super Admin Portal</a>
+        <a id="homepage-admin-trigger" href="#"
+          style="display:flex;align-items:center;gap:4px;margin-top:0.5rem;color:var(--primary);">
+          <i data-lucide="shield-alert" style="width:14px;height:14px;"></i> Super Admin
+        </a>
       </div>
-      <!-- Information links -->
+
+      <!-- Column 3: Information -->
       <div class="footer-links">
-        <h4
-          style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;">
-          Information</h4>
+        <h4>Information</h4>
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
         <a href="#">FAQs</a>
@@ -1966,21 +1965,17 @@
         <a href="#">Returns</a>
         <a href="#">Contact Us</a>
       </div>
-    </div>
-    <!-- Newsletter row -->
-    <div
-      style="padding:1.5rem 2rem;display:flex;align-items:center;gap:1rem;border-top:1px solid var(--border-glass);flex-wrap:wrap;">
-      <div>
-        <p
-          style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:0.25rem;">
-          Stay Inspired</p>
-        <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:var(--text-secondary);line-height:1.5;">
-          Subscribe for seasonal notes, early drops &amp; exclusive discounts.</p>
+
+      <!-- Column 4: Newsletter -->
+      <div class="footer-newsletter">
+        <h4>Stay Inspired</h4>
+        <p>Subscribe for seasonal notes, early drops &amp; exclusive discounts.</p>
+        <form class="newsletter-form" id="newsletter-form">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit" aria-label="Subscribe"><i data-lucide="arrow-right"></i></button>
+        </form>
       </div>
-      <form class="newsletter-form" id="newsletter-form" style="margin-left:auto;">
-        <input type="email" placeholder="Your email address" required>
-        <button type="submit"><i data-lucide="arrow-right"></i></button>
-      </form>
+
     </div>
     <div class="footer-bottom">
       <p>&copy; 2026 Ankri Candle. All rights reserved. Handcrafted in India.</p>
