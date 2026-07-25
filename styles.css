@@ -7092,7 +7092,7 @@ body.dark-theme .modal-star.filled {
 .app-footer-main {
   background-color: var(--bg-tertiary);
   border-top: 1px solid var(--border-glass);
-  margin-top: 6rem;
+  margin-top: 2rem;
   padding-top: 0;
 }
 
