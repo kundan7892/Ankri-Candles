@@ -2132,33 +2132,7 @@ function initAppFlow() {
         });
       }
 
-      // --- PREMIUM DARK MODE TOGGLE ---
-      const themeToggleBtn = document.getElementById('theme-toggle-btn');
-      if (themeToggleBtn) {
-        // Check for saved preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.body.classList.add('dark-theme');
-          const icon = themeToggleBtn.querySelector('i, svg');
-          if (icon) icon.setAttribute('data-lucide', 'sun');
-          if (window.lucide) window.lucide.createIcons();
-        }
 
-        themeToggleBtn.addEventListener('click', () => {
-          const isDark = document.body.classList.toggle('dark-theme');
-          localStorage.setItem('theme', isDark ? 'dark' : 'light');
-
-          const icon = themeToggleBtn.querySelector('i, svg');
-          if (icon) {
-            icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
-          }
-          if (window.lucide) {
-            window.lucide.createIcons();
-          }
-
-          showToast(isDark ? 'Dark theme enabled' : 'Light theme enabled');
-        });
-      }
     }
   }
 
