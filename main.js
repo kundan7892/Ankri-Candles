@@ -1748,11 +1748,7 @@ function initAppFlow() {
       if (whatsappTriggerBtn) {
         whatsappTriggerBtn.addEventListener('click', (e) => {
           e.preventDefault();
-          if (supportChatPanel.classList.contains('show')) {
-            closeChatPanel();
-          } else {
-            openChatPanel();
-          }
+          window.open('https://wa.me/917760612765', '_blank');
         });
       }
 

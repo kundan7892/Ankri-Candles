@@ -6696,12 +6696,10 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(11, 20, 16, 0.65);
-  /* matching obsidian overlay */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(31, 27, 24, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 100000;
-  /* over everything */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6716,18 +6714,18 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
 }
 
 .welcome-modal-card {
-  background: linear-gradient(135deg, rgba(19, 34, 28, 0.95), rgba(11, 20, 16, 0.98));
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  border-radius: 20px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
   width: 90%;
-  max-width: 460px;
+  max-width: 440px;
   padding: 3rem 2.5rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(212, 175, 55, 0.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   position: relative;
   text-align: center;
   transform: translateY(30px) scale(0.95);
   transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 .welcome-modal-overlay.active .welcome-modal-card {
@@ -6740,7 +6738,7 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
   right: 20px;
   background: none;
   border: none;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-size: 2rem;
   cursor: pointer;
   line-height: 1;
@@ -6749,21 +6747,20 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
 }
 
 .welcome-modal-close:hover {
-  color: var(--gold-primary);
+  color: var(--primary);
 }
 
 .welcome-modal-icon {
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.08);
-  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-glass);
   color: var(--gold-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem auto;
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
 }
 
 .welcome-modal-icon i,
@@ -6781,58 +6778,56 @@ button:not(.close-btn):not(.close-unboxing-btn):not(.icon-action-btn):not(.slick
 
   100% {
     transform: scale(1.05) rotate(15deg);
-    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.7));
+    filter: drop-shadow(0 0 8px rgba(200, 163, 56, 0.6));
   }
 }
 
 .welcome-modal-card h2 {
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   margin-bottom: 0.25rem;
 }
 
 .brand-title-modal {
   font-family: var(--font-serif);
-  font-size: 2rem;
-  font-weight: 400;
+  font-size: 2.2rem;
+  font-weight: 600;
   letter-spacing: 0.05em;
-  color: var(--gold-primary);
+  color: var(--primary);
   margin-bottom: 1.25rem;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .welcome-modal-card p {
   font-family: var(--font-sans);
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 2rem;
 }
 
 .welcome-modal-cta {
-  background: linear-gradient(135deg, var(--gold-primary), #B88D2F);
-  color: #121212;
-  border: none;
+  background: var(--primary);
+  color: #ffffff;
+  border: 1px solid var(--primary-container);
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   padding: 0.9rem 2.5rem;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
   transition: all 0.3s ease;
   width: 100%;
 }
 
 .welcome-modal-cta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
-  background: linear-gradient(135deg, #F5D268, var(--gold-primary));
+  background: var(--primary-hover);
+  box-shadow: 0 8px 20px rgba(111, 70, 39, 0.2);
 }
 
 /* ============================================================
@@ -7356,31 +7351,38 @@ body.dark-theme .modal-star.filled {
 /* Search Input */
 .shop-search-wrap {
   position: relative;
+  width: 100%;
 }
 
 .shop-search-input {
   width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(111, 70, 39, 0.2);
-  padding: 0.5rem 2rem 0.5rem 0;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-glass);
+  border-radius: 30px;
+  padding: 0.7rem 2.5rem 0.7rem 1.25rem;
   font-family: var(--font-sans);
   font-size: 0.9rem;
   color: var(--text-primary);
   outline: none;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.shop-search-input::placeholder {
+  color: var(--text-muted);
 }
 
 .shop-search-input:focus {
-  border-bottom-color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(111, 70, 39, 0.1);
+  background: var(--bg-primary);
 }
 
 .shop-search-icon {
   position: absolute;
-  right: 0;
+  right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: rgba(111, 70, 39, 0.4);
+  color: rgba(111, 70, 39, 0.5);
   pointer-events: none;
 }
 
