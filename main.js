@@ -3470,12 +3470,13 @@ function initAppFlow() {
       const activePanel = document.getElementById(`homepanel-${activeHomeTab}-content`);
       if (activePanel) activePanel.classList.remove('hidden');
 
-      // Update Header Title depending on active tab
       if (homepageDashboardTitle) {
         if (activeHomeTab === 'inquiries') homepageDashboardTitle.textContent = "Bulk Inquiries Database";
         if (activeHomeTab === 'bookings') homepageDashboardTitle.textContent = "Order Bookings Database";
         if (activeHomeTab === 'payments') homepageDashboardTitle.textContent = "Payment Transaction Records";
         if (activeHomeTab === 'whatsapp') homepageDashboardTitle.textContent = "WhatsApp Sent Reminders Log";
+        if (activeHomeTab === 'wheel-rewards') homepageDashboardTitle.textContent = "Wheel Rewards Claims";
+        if (activeHomeTab === 'locations') homepageDashboardTitle.textContent = "Map Locations";
       }
 
       await renderHomepageActiveTab();
@@ -3491,6 +3492,10 @@ function initAppFlow() {
       await renderHomepagePayments();
     } else if (activeHomeTab === 'whatsapp') {
       await renderHomepageWhatsApp();
+    } else if (activeHomeTab === 'wheel-rewards') {
+      await renderHomepageWheelRewards();
+    } else if (activeHomeTab === 'locations') {
+      await renderHomepageLocations();
     }
   }
 
@@ -3706,6 +3711,134 @@ function initAppFlow() {
       `;
       homepageWhatsAppTableBody.appendChild(tr);
     });
+  }
+
+  async function renderHomepageWheelRewards() {
+    const tableBody = document.getElementById('homepage-wheel-rewards-table-body');
+    if (!tableBody) return;
+    tableBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Loading wheel logs...</td></tr>';
+
+    let logs = [];
+    try {
+      const res = await fetch('http://localhost:5000/api/spin-rewards');
+      if (res.ok) {
+        logs = await res.json();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (logs.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align: center; padding: 4rem 1.25rem; color: var(--text-secondary);">
+            <div style="font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;">🎯</div>
+            No wheel rewards claimed yet.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tableBody.innerHTML = '';
+    logs.forEach(log => {
+      const tr = document.createElement('tr');
+      const dateStr = new Date(log.timestamp).toLocaleString();
+      tr.innerHTML = `
+        <td style="padding: 1.25rem; font-weight: bold;">${log.phone}</td>
+        <td style="padding: 1.25rem;">${log.country || 'India'}</td>
+        <td style="padding: 1.25rem; font-weight: bold; color: var(--gold-primary);">${log.code || 'None'}</td>
+        <td style="padding: 1.25rem; white-space: nowrap;">${dateStr}</td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  }
+
+  let homepageAdminMap = null;
+  async function renderHomepageLocations() {
+    const mapContainer = document.getElementById('homepage-admin-map');
+    if (!mapContainer) return;
+
+    if (!homepageAdminMap) {
+      homepageAdminMap = L.map('homepage-admin-map').setView([12.9716, 77.5946], 12);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 20
+      }).addTo(homepageAdminMap);
+    } else {
+      homepageAdminMap.invalidateSize();
+    }
+
+    if (!window.homepageMapMarkersLayer) {
+      window.homepageMapMarkersLayer = L.layerGroup().addTo(homepageAdminMap);
+    } else {
+      window.homepageMapMarkersLayer.clearLayers();
+    }
+
+    let bookings = [];
+    try {
+      const res = await fetch('http://localhost:5000/api/bookings');
+      if (res.ok) bookings = await res.json();
+    } catch (e) {
+      console.error(e);
+      return;
+    }
+
+    let geocodeCache = JSON.parse(sessionStorage.getItem('geocodeCache') || '{}');
+
+    for (const booking of bookings) {
+      const address = booking.customerInfo.address;
+      if (!address || address.length < 3) continue;
+
+      let latlng = geocodeCache[address];
+
+      if (!latlng) {
+        try {
+          const query = encodeURIComponent(address);
+          const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`);
+          const geoData = await geoRes.json();
+          if (geoData && geoData.length > 0) {
+            latlng = [parseFloat(geoData[0].lat), parseFloat(geoData[0].lon)];
+            geocodeCache[address] = latlng;
+            sessionStorage.setItem('geocodeCache', JSON.stringify(geocodeCache));
+          } else {
+            geocodeCache[address] = 'not_found';
+            sessionStorage.setItem('geocodeCache', JSON.stringify(geocodeCache));
+          }
+          await new Promise(r => setTimeout(r, 1100)); // Rate limit 1 request per second
+        } catch (e) {
+          console.error("Geocoding failed for", address);
+        }
+      }
+
+      if (latlng && latlng !== 'not_found') {
+        const scatterLat = latlng[0] + ((Math.random() - 0.5) * 0.04);
+        const scatterLng = latlng[1] + ((Math.random() - 0.5) * 0.04);
+
+        const customIcon = L.divIcon({
+          className: 'map-dot-marker',
+          iconSize: [24, 24],
+          iconAnchor: [12, 12],
+          popupAnchor: [0, -12],
+          html: ''
+        });
+
+        const popupContent = `
+            <div style="text-align: left; font-family: var(--font-sans); color: var(--text-primary); padding: 5px;">
+              <strong style="margin-bottom:4px; display:block; color: var(--gold-primary);">${booking.orderId}</strong>
+              <div style="font-size: 0.85rem; line-height: 1.4;">
+                <strong>${booking.customerInfo.name}</strong><br>
+                ${address}
+              </div>
+            </div>
+         `;
+
+        L.marker([scatterLat, scatterLng], { icon: customIcon })
+          .addTo(window.homepageMapMarkersLayer)
+          .bindPopup(popupContent);
+      }
+    }
   }
 
   // Logout Handler

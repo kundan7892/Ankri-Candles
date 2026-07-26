@@ -2653,6 +2653,11 @@
             style="font-size: 0.9rem; padding: 0.5rem 1rem;">Payment Transactions</button>
           <button class="filter-btn" data-homedashboardtab="whatsapp"
             style="font-size: 0.9rem; padding: 0.5rem 1rem;">WhatsApp Reminders</button>
+          <button class="filter-btn" data-homedashboardtab="wheel-rewards"
+            style="font-size: 0.9rem; padding: 0.5rem 1rem;">Wheel Rewards</button>
+          <button class="filter-btn" data-homedashboardtab="locations"
+            style="font-size: 0.9rem; padding: 0.5rem 1rem; background: var(--gold-primary); color: #000; font-weight: 600; border-color: var(--gold-primary);">Map
+            Locations</button>
         </div>
 
         <!-- Tab 1: Inquiries -->
@@ -2856,6 +2861,44 @@
         </div>
       </div>
       <button class="btn btn-primary" id="close-wishlist-btn-bottom" style="width: 100%;">Close Wishlist</button>
+    </div>
+  </div>
+
+  <!-- Tab 5: Wheel Rewards -->
+  <div class="tab-panel hidden" id="homepanel-wheel-rewards-content">
+    <div class="table-container"
+      style="overflow-x: auto; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: 8px;">
+      <table class="logs-table"
+        style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-sans); font-size: 0.85rem;">
+        <thead>
+          <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-glass);">
+            <th
+              style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+              Phone Number</th>
+            <th
+              style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+              Country</th>
+            <th
+              style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+              Reward Won</th>
+            <th
+              style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+              Won Date & Time</th>
+          </tr>
+        </thead>
+        <tbody id="homepage-wheel-rewards-table-body">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tab 6: Locations Map -->
+  <div class="tab-panel hidden" id="homepanel-locations-content"
+    style="display: flex; flex-direction: column; height: 600px; padding: 1rem;">
+    <div style="flex: 1; position: relative;">
+      <div id="homepage-admin-map"
+        style="position: absolute; top:0; left:0; width: 100%; height: 100%; border-radius: 8px; border: 1px solid var(--border-glass); z-index: 1;">
+      </div>
     </div>
   </div>
 
