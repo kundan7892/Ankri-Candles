@@ -7745,12 +7745,11 @@ body.dark-theme .modal-star.filled {
    GIFT FINDER MODULE
    ═══════════════════════════════════════════════════════════ */
 .gf-section {
-  padding: 5rem 1.5rem 8rem;
+  padding: 5rem 1.5rem 3rem;
   background: var(--bg-secondary);
   /* surface container tone */
   position: relative;
   overflow: hidden;
-  min-height: 70vh;
   display: flex;
   flex-direction: column;
 }
