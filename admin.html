@@ -10,6 +10,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap"
     rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="/styles.css">
   <style>
     body {
@@ -235,6 +236,9 @@
             Reminders</button>
           <button class="filter-btn" data-tab="wheel-rewards" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Wheel
             Rewards</button>
+          <button class="filter-btn" data-tab="locations"
+            style="font-size: 0.9rem; padding: 0.5rem 1rem; background: var(--gold-primary); color: #000; font-weight: 600; border-color: var(--gold-primary);">Map
+            Locations</button>
         </div>
 
         <!-- Tab 1: Inquiries -->
@@ -346,6 +350,20 @@
             </table>
           </div>
         </div>
+
+        <!-- Tab 6: Locations Map -->
+        <div id="tab-locations-content" class="tab-panel hidden"
+          style="display: flex; flex-direction: column; height: 600px;">
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Interactive delivery
+            dashboard displaying active order booking delivery locations.</p>
+
+          <div style="flex: 1; position: relative;">
+            <div id="admin-map"
+              style="position: absolute; top:0; left:0; width: 100%; height: 100%; border-radius: 8px; border: 1px solid var(--border-glass); z-index: 1;">
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <a href="/" class="back-home-link"><i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back to
@@ -358,6 +376,7 @@
     <span id="toast-message">Logged out successfully!</span>
   </div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script type="module" src="/admin.js"></script>
 </body>

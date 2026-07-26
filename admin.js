@@ -18,6 +18,8 @@ function initAdminPanel() {
   const toastMessage = document.getElementById('toast-message');
 
   let activeTab = 'inquiries';
+  let adminMap = null;
+  let geocodeCache = JSON.parse(sessionStorage.getItem('geocodeCache') || '{}');
 
   initAdmin();
 
@@ -127,6 +129,7 @@ function initAdminPanel() {
           if (activeTab === 'payments') dashboardTitle.textContent = "Payment Transaction Records";
           if (activeTab === 'whatsapp') dashboardTitle.textContent = "WhatsApp Sent Reminders Log";
           if (activeTab === 'wheel-rewards') dashboardTitle.textContent = "Wheel Spin Rewards Log";
+          if (activeTab === 'locations') dashboardTitle.textContent = "Delivery Locations Dashboard";
         }
 
         await renderActiveTab();
@@ -145,6 +148,8 @@ function initAdminPanel() {
       await renderWhatsApp();
     } else if (activeTab === 'wheel-rewards') {
       await renderWheelRewards();
+    } else if (activeTab === 'locations') {
+      await renderLocations();
     }
   }
 
@@ -409,6 +414,96 @@ function initAdminPanel() {
     });
   }
 
+  async function renderLocations() {
+    if (!adminMap) {
+      // Initialize Leaflet map targeting Bangalore default (12.9716, 77.5946)
+      adminMap = L.map('admin-map').setView([12.9716, 77.5946], 11);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO'
+      }).addTo(adminMap);
+    }
+
+    // Invalidate size to ensure it renders correctly after unhiding the tab
+    setTimeout(() => {
+      adminMap.invalidateSize();
+    }, 150);
+
+    let bookings = [];
+    try {
+      const res = await fetch('http://localhost:5000/api/bookings');
+      if (res.ok) {
+        bookings = await res.json();
+      }
+    } catch (e) {
+      console.error('Failed to fetch bookings for map', e);
+      return;
+    }
+
+    if (bookings.length === 0) return;
+
+    if (!window.mapMarkersLayer) {
+      window.mapMarkersLayer = L.layerGroup().addTo(adminMap);
+    } else {
+      window.mapMarkersLayer.clearLayers();
+    }
+
+    // Geocode and plot
+    for (const booking of bookings) {
+      let address = booking.customerInfo.address;
+      if (!address) continue;
+
+      let latlng = null;
+      if (geocodeCache[address]) {
+        latlng = geocodeCache[address];
+      } else {
+        try {
+          const query = encodeURIComponent(address);
+          const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`);
+          const geoData = await geoRes.json();
+          if (geoData && geoData.length > 0) {
+            latlng = [parseFloat(geoData[0].lat), parseFloat(geoData[0].lon)];
+            geocodeCache[address] = latlng;
+            sessionStorage.setItem('geocodeCache', JSON.stringify(geocodeCache));
+          } else {
+            geocodeCache[address] = 'not_found';
+            sessionStorage.setItem('geocodeCache', JSON.stringify(geocodeCache));
+          }
+          await new Promise(r => setTimeout(r, 1100)); // Rate limit 1 request per second
+        } catch (e) {
+          console.error("Geocoding failed for", address);
+        }
+      }
+
+      if (latlng && latlng !== 'not_found') {
+        // Apply random jitter (scatter offset) to spread out overlapping generic locations
+        const scatterLat = latlng[0] + ((Math.random() - 0.5) * 0.04);
+        const scatterLng = latlng[1] + ((Math.random() - 0.5) * 0.04);
+
+        const customIcon = L.divIcon({
+          className: 'map-dot-marker',
+          iconSize: [24, 24],
+          iconAnchor: [12, 12],
+          popupAnchor: [0, -12],
+          html: ''
+        });
+
+        const popupContent = `
+            <div style="text-align: left; font-family: var(--font-sans); color: var(--text-primary); padding: 5px;">
+              <strong style="margin-bottom:4px; display:block; color: var(--gold-primary);">${booking.orderId}</strong>
+              <div style="font-size: 0.85rem; line-height: 1.4;">
+                <strong>${booking.customerInfo.name}</strong><br>
+                ${address}
+              </div>
+            </div>
+         `;
+
+        L.marker([scatterLat, scatterLng], { icon: customIcon })
+          .addTo(window.mapMarkersLayer)
+          .bindPopup(popupContent);
+      }
+    }
+  }
+
   // Logout Handler
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
@@ -438,6 +533,9 @@ function initAdminPanel() {
       } else if (activeTab === 'wheel-rewards') {
         deleteUrl = 'http://localhost:5000/api/spin-rewards';
         tabLabel = 'spin wheel rewards';
+      } else if (activeTab === 'locations') {
+        showToast("Cannot clear bookings directly from the Map View.");
+        return;
       }
 
       if (confirm(`Are you sure you want to delete all local ${tabLabel}? This cannot be undone.`)) {
