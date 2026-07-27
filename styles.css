@@ -8395,9 +8395,9 @@ body.dark-theme {
 /* Main grid */
 .pdp-grid {
   display: grid;
-  grid-template-columns: 7fr 5fr;
+  grid-template-columns: 5fr 7fr;
   gap: 3.5rem;
-  align-items: center;
+  align-items: start;
 }
 
 /* ---- Gallery ---- */
