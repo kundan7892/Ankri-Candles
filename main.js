@@ -2727,7 +2727,7 @@ function initAppFlow() {
 
       itemCard.innerHTML = `
         <div class="item-thumb-wrapper">
-          <div class="item-candle-mini-preview" style="border: 1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02)">
+          <div class="item-candle-mini-preview">
             <div class="item-candle-wax-bar" style="background: ${visualBackground}"></div>
           </div>
         </div>
