@@ -4441,6 +4441,33 @@ function initAppFlow() {
     });
   }
 
+  // --- GLOBAL CART BRIDGE FOR PDP ---
+  window.addToCart = function (payload) {
+    const defaultColor = '#D4AF37, #111D16, #09100C'; // default luxurious gradient
+
+    // Check if it already exists
+    const id = payload.name.toLowerCase().replace(/\s+/g, '-');
+    const existing = state.cart.find(item => item.id === id);
+
+    if (existing) {
+      existing.quantity += payload.quantity || 1;
+    } else {
+      state.cart.push({
+        id: id,
+        name: payload.name,
+        price: payload.price,
+        description: `Signature Scent | ${payload.jar || 'Classic Glass'}`,
+        colors: defaultColor,
+        isCustom: false,
+        quantity: payload.quantity || 1
+      });
+    }
+
+    renderCart();
+    showToast(`"${payload.name}" added to bag!`);
+    setTimeout(toggleCartDrawer, 400);
+  };
+
 }
 
 if (document.readyState === 'loading') {
