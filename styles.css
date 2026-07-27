@@ -8329,7 +8329,7 @@ body.dark-theme {
 .pdp-container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 5rem 1.5rem 1.5rem;
+  padding: 5rem 1.5rem 0;
   position: relative;
 }
 
@@ -8773,7 +8773,7 @@ body.dark-theme .pdp-close-btn {
 /* ---- Mobile responsive ---- */
 @media (max-width: 768px) {
   .pdp-container {
-    padding: 4rem 1rem 1rem;
+    padding: 4rem 1rem 0;
   }
 
   .pdp-grid {
