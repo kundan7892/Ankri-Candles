@@ -8397,7 +8397,7 @@ body.dark-theme {
   display: grid;
   grid-template-columns: 7fr 5fr;
   gap: 3.5rem;
-  align-items: start;
+  align-items: center;
 }
 
 /* ---- Gallery ---- */
@@ -8740,7 +8740,8 @@ body.dark-theme {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  padding: 1rem 0 0;
+  padding: 0;
+  margin-top: 0.5rem;
 }
 
 .pdp-trust-item {
