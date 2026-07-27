@@ -8413,6 +8413,9 @@ body.dark-theme {
   border-radius: 8px;
   overflow: hidden;
   position: relative;
+  max-height: 55vh;
+  width: auto;
+  margin: 0 auto;
 }
 
 .pdp-main-img {
