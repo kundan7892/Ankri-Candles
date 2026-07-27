@@ -8365,6 +8365,7 @@ body.dark-theme {
 /* Breadcrumb */
 .pdp-breadcrumb {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
   font-family: var(--font-sans);
@@ -8374,6 +8375,17 @@ body.dark-theme {
   text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: 2rem;
+}
+
+.pdp-breadcrumb-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.pdp-breadcrumb-link:hover {
+  color: var(--primary);
 }
 
 .pdp-breadcrumb-sep {
