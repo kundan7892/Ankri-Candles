@@ -13,6 +13,9 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
+
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
@@ -2655,6 +2658,8 @@
             style="font-size: 0.9rem; padding: 0.5rem 1rem;">WhatsApp Reminders</button>
           <button class="filter-btn" data-homedashboardtab="wheel-rewards"
             style="font-size: 0.9rem; padding: 0.5rem 1rem;">Wheel Rewards</button>
+          <button class="filter-btn" data-homedashboardtab="customers"
+            style="font-size: 0.9rem; padding: 0.5rem 1rem;">Registered Customers</button>
           <button class="filter-btn" data-homedashboardtab="locations"
             style="font-size: 0.9rem; padding: 0.5rem 1rem; background: var(--gold-primary); color: #000; font-weight: 600; border-color: var(--gold-primary);">Map
             Locations</button>
@@ -2746,9 +2751,6 @@
                     Amount</th>
                   <th
                     style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
-                    Method</th>
-                  <th
-                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
                     Status</th>
                 </tr>
               </thead>
@@ -2759,8 +2761,8 @@
           </div>
         </div>
 
-        <!-- Tab 4: WhatsApp Reminders -->
-        <div class="tab-panel hidden" id="homepanel-whatsapp-content">
+        <!-- Tab 4: Customers -->
+        <div class="tab-panel hidden" id="homepanel-customers-content">
           <div class="table-container"
             style="overflow-x: auto; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: 8px;">
             <table class="logs-table"
@@ -2769,30 +2771,73 @@
                 <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-glass);">
                   <th
                     style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
-                    Customer Name</th>
+                    Account ID</th>
                   <th
                     style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
-                    Phone</th>
+                    Contact Detail</th>
                   <th
                     style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
-                    Message Sent</th>
+                    Type</th>
                   <th
                     style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
-                    Timestamp</th>
-                  <th
-                    style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
-                    Status</th>
+                    Registered On</th>
                 </tr>
               </thead>
-              <tbody id="homepage-whatsapp-table-body">
+              <tbody id="homepage-customers-table-body">
                 <!-- Javascript will load here -->
               </tbody>
             </table>
           </div>
         </div>
-
+        style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid
+        var(--border-glass) !important;">
+        Method</th>
+        <th
+          style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+          Status</th>
+        </tr>
+        </thead>
+        <tbody id="homepage-payments-table-body">
+          <!-- Javascript will load here -->
+        </tbody>
+        </table>
       </div>
     </div>
+
+    <!-- Tab 4: WhatsApp Reminders -->
+    <div class="tab-panel hidden" id="homepanel-whatsapp-content">
+      <div class="table-container"
+        style="overflow-x: auto; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: 8px;">
+        <table class="logs-table"
+          style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-sans); font-size: 0.85rem;">
+          <thead>
+            <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-glass);">
+              <th
+                style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                Customer Name</th>
+              <th
+                style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                Phone</th>
+              <th
+                style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                Message Sent</th>
+              <th
+                style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                Timestamp</th>
+              <th
+                style="padding: 1rem 1.25rem; font-weight: 600; color: var(--gold-text); border-bottom: 1px solid var(--border-glass) !important;">
+                Status</th>
+            </tr>
+          </thead>
+          <tbody id="homepage-whatsapp-table-body">
+            <!-- Javascript will load here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+  </div>
   </div>
 
   <!-- Search Modal Overlay -->
@@ -3471,10 +3516,71 @@
     });
   </script>
 
+  <!-- ================= AUTH & ACCOUNT MODALS ================= -->
+  <!-- Auth Modal -->
+  <div class="auth-modal-overlay hidden" id="auth-modal">
+    <div class="auth-modal-content">
+      <button class="close-modal-btn" id="close-auth-btn"><i data-lucide="x"></i></button>
+      <div id="auth-step-1">
+        <h2 style="font-family:'Newsreader', serif; font-size:2rem; margin-bottom:0.5rem;">Welcome Back</h2>
+        <p style="color:var(--text-secondary); margin-bottom:1.5rem;">Enter your email or phone number to receive a
+          secure login code.</p>
+        <form id="auth-send-form">
+          <input type="text" id="auth-contact" class="form-input" placeholder="Email or Phone Number" required
+            style="width:100%; margin-bottom:1rem; padding:0.75rem;">
+          <button type="submit" class="btn btn-primary" id="auth-send-btn" style="width:100%;">Send Code</button>
+        </form>
+      </div>
+      <div id="auth-step-2" class="hidden">
+        <h2 style="font-family:'Newsreader', serif; font-size:2rem; margin-bottom:0.5rem;">Verify Code</h2>
+        <p style="color:var(--text-secondary); margin-bottom:1.5rem;">Enter the 6-digit code sent to <span
+            id="auth-sent-target" style="font-weight:600; color:var(--accent);"></span>.</p>
+        <form id="auth-verify-form">
+          <input type="text" id="auth-code" class="form-input" placeholder="000000" maxlength="6" required
+            style="width:100%; margin-bottom:1rem; text-align:center; letter-spacing:4px; font-size:1.25rem; font-weight:600; padding:0.75rem;">
+          <button type="submit" class="btn btn-primary" id="auth-verify-btn" style="width:100%;">Login</button>
+        </form>
+        <button type="button" id="auth-back-btn" class="btn-text"
+          style="width:100%; margin-top:1rem; text-align:center; color:var(--text-secondary); background:none; border:none; cursor:pointer;">&larr;
+          Use different contact</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Dashboard Modal -->
+  <div class="account-modal-overlay hidden" id="account-modal">
+    <div class="account-modal-content"
+      style="max-width:800px; width:95%; height:90vh; display:flex; flex-direction:column;">
+      <button class="close-modal-btn" id="close-account-btn"><i data-lucide="x"></i></button>
+      <div class="account-header"
+        style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem;">
+        <h2 style="font-family:'Newsreader', serif; font-size:2.5rem; margin:0;">My Account</h2>
+        <button id="auth-logout-btn" class="btn btn-outline"
+          style="padding:0.5rem 1rem; border-color:rgba(213,195,184,0.4); color:var(--text-primary); font-size:0.85rem;">Logout</button>
+      </div>
+      <div class="account-tabs"
+        style="border-bottom:1px solid var(--border-glass); margin-bottom:1.5rem; display:flex; gap:2rem;">
+        <button class="acc-tab active"
+          style="background:none; border:none; padding-bottom:0.5rem; border-bottom:2px solid var(--accent); font-weight:600; color:var(--text-primary); font-size:1rem; cursor:pointer;">Order
+          History</button>
+      </div>
+      <div class="account-orders-container" id="user-orders-list"
+        style="flex:1; overflow-y:auto; padding-right:1rem; display:flex; flex-direction:column; gap:1.5rem;">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
   <!-- Main Script -->
   <script type="module" src="/main.js"></script>
   <!-- Product Detail Page Modal -->
   <script type="module" src="/pdp.js"></script>
+
+  <script>
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  </script>
 </body>
 
 </html>
