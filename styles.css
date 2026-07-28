@@ -170,7 +170,8 @@ button {
 }
 
 section {
-  padding: 8rem 2rem;
+  padding: 4rem 2rem;
+  /* Reduced from 8rem to remove massive blank gaps between all sections */
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
@@ -3460,6 +3461,8 @@ section {
 .faq-section {
   background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   border-top: 1px solid var(--border-glass);
+  padding-bottom: 3rem;
+  /* Reduced from 8rem global default */
 }
 
 .faq-accordion-container {
@@ -3535,6 +3538,8 @@ section {
 .corporate-section {
   background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   border-top: 1px solid var(--border-glass);
+  padding-top: 3rem;
+  /* Reduced from 8rem global default */
 }
 
 .corporate-container {
