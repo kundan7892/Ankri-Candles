@@ -3664,7 +3664,12 @@ section {
   }
 }
 
-.whatsapp-widget-container * {
+/* Only pointer-events on the distinct visible widgets to avoid overlapping clicks on background elements */
+.whatsapp-float-widget,
+.whatsapp-support-card.show,
+.whatsapp-support-card.show *,
+.support-chat-panel.show,
+.support-chat-panel.show * {
   pointer-events: auto;
 }
 
@@ -8930,4 +8935,44 @@ body.dark-theme .pdp-close-btn {
 
 .leaflet-popup-close-button {
   color: var(--text-muted) !important;
+}
+
+/* Fix product rating cut-off on mobile */
+.product-rating {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  width: 100%;
+}
+
+.rating-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .product-rating {
+    justify-content: center !important;
+    flex-wrap: nowrap !important;
+    /* Force everything on one line */
+    gap: 1px !important;
+  }
+
+  .rating-text {
+    font-size: 0.65rem !important;
+    /* Small enough to fit */
+    white-space: nowrap !important;
+    /* Keep it on one line ALWAYS */
+    width: auto !important;
+    margin-left: 3px !important;
+    margin-top: 0 !important;
+  }
+
+  .rating-star {
+    font-size: 0.7rem !important;
+    /* Reduce star size so it fits side-by-side */
+  }
 }
