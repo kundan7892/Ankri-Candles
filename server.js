@@ -12,7 +12,7 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET || 'ankri-super-secret-key-2026';
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: { user: process.env.EMAIL_USER || 'placeholder', pass: process.env.EMAIL_PASS || 'placeholder' }
+  auth: { user: process.env.EMAIL_USER || 'ankricandle@gmail.com', pass: process.env.EMAIL_PASS || 'CDS2027@' }
 });
 
 // Helper to save to local backup JSON when database is offline
@@ -300,6 +300,85 @@ async function checkAndSendWhatsAppReminders() {
 
 setInterval(checkAndSendWhatsAppReminders, 30000); // 30 seconds interval
 
+
+// --- ACCOUNT CREATION / VERIFICATION ROUTES ---
+app.post('/api/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    if (!email) return res.status(400).json({ message: 'Email required' });
+
+    // Generate 6 digit code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
+
+    if (mongoose.connection.readyState === 1) {
+      let user = await User.findOne({ email });
+      if (!user) {
+        user = new User({ email, name });
+      } else {
+        user.name = name || user.name;
+      }
+      user.otp = verificationCode;
+      user.otpExpiry = otpExpiry;
+      await user.save();
+    } else {
+      saveToBackupFile('users_temp.json', { email, name, otp: verificationCode, otpExpiry, timestamp: new Date() });
+    }
+
+    const mailOptions = {
+      from: 'ankricandle@gmail.com',
+      to: email,
+      subject: 'Verify your Ankri Candle Account',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; text-align: center;">
+          <h2>Ankri Candle Verification</h2>
+          <p>Welcome, ${name || 'Artisan'}!</p>
+          <p>Please use the following 6-digit code to complete your registration:</p>
+          <h1 style="color: #D4AF37; letter-spacing: 5px;">${verificationCode}</h1>
+          <p>This code expires in 10 minutes.</p>
+        </div>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ success: true, message: 'Verification email sent' });
+  } catch (error) {
+    console.error('Error in /api/register:', error);
+    res.status(500).json({ success: false, message: 'Error sending verification code' });
+  }
+});
+
+app.post('/api/verify', async (req, res) => {
+  try {
+    const { email, code } = req.body;
+
+    if (mongoose.connection.readyState === 1) {
+      const user = await User.findOne({ email });
+      if (!user || user.otp !== code) {
+        return res.status(400).json({ success: false, message: 'Invalid verification code' });
+      }
+      if (new Date() > user.otpExpiry) {
+        return res.status(400).json({ success: false, message: 'Verification code expired' });
+      }
+
+      user.otp = undefined;
+      user.otpExpiry = undefined;
+      await user.save();
+
+      return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: user.name, email: user.email } });
+    } else {
+      let tempUsers = readFromBackupFile('users_temp.json');
+      const userIdx = tempUsers.findIndex(u => u.email === email && u.otp === code);
+      if (userIdx === -1) {
+        return res.status(400).json({ success: false, message: 'Invalid or expired code' });
+      }
+      return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: tempUsers[userIdx].name, email: tempUsers[userIdx].email } });
+    }
+  } catch (error) {
+    console.error('Error in /api/verify:', error);
+    res.status(500).json({ success: false, message: 'Server error during verification' });
+  }
+});
 
 // Routes
 app.post('/api/admin/login', (req, res) => {
