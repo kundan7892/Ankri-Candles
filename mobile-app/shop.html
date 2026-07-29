@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
+    <title>Shop All - ANKRI CANDLE</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@500;600&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script type="module" src="/src/app.js"></script>
+    <style>
+        .product-card-shadow {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+
+<body class="font-body-md text-on-surface bg-background safe-pb">
+    <!-- Top App Bar -->
+    <header
+        class="fixed top-0 w-full z-50 bg-surface/80 glass-panel shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex justify-between items-center px-4 safe-pt pb-4 transition-all duration-300">
+        <button onclick="window.location.href='/index.html'"
+            class="text-primary hover:opacity-70 transition-opacity active:scale-95 duration-200">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+        <h1 class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-primary">ANKRI CANDLE</h1>
+        <button class="text-primary hover:opacity-70 transition-opacity active:scale-95 duration-200">
+            <span class="material-symbols-outlined">shopping_bag</span>
+        </button>
+    </header>
+    <main class="pt-24 pb-32 px-4">
+        <!-- Search Bar Section -->
+        <div class="mb-6">
+            <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-4 text-outline">search</span>
+                <input
+                    class="w-full pl-12 pr-4 py-3 rounded-full bg-slate-200 border-none focus:ring-1 focus:ring-primary/20 text-body-sm text-on-surface-variant transition-all duration-300"
+                    placeholder="Find your signature scent..." type="text" />
+            </div>
+        </div>
+        <!-- Filter Chips Section -->
+        <div class="flex gap-3 overflow-x-auto hide-scrollbar mb-8 -mx-4 px-4">
+            <button
+                class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary/10 text-secondary border border-secondary/20 font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-transform">
+                Fragrance <span class="material-symbols-outlined text-[16px]">expand_more</span>
+            </button>
+            <button
+                class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface border border-outline-variant text-on-surface-variant font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-transform">
+                Wax Type <span class="material-symbols-outlined text-[16px]">expand_more</span>
+            </button>
+            <button
+                class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface border border-outline-variant text-on-surface-variant font-label-caps text-label-caps whitespace-nowrap active:scale-95 transition-transform">
+                Price <span class="material-symbols-outlined text-[16px]">expand_more</span>
+            </button>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <!-- Product Card 1 -->
+            <div onclick="window.location.href='/pdp.html'"
+                class="flex flex-col h-full bg-[#fffcfb] rounded-xl overflow-hidden product-card-shadow group border border-[#eee2dc]">
+                <div class="relative aspect-[4/5] overflow-hidden">
+                    <div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAv-zMMwR7wnyO_0wJSY8Lm2t2naFBAAzcRxWZhyKYbkPMfZzywce7xNq3Oe9q63HPhWN-IYwVpbiApw6ucdTlTSHEXul21csBmnOhVyolw-DCCWPCRB3_sphNvOhNObE70qc3xqO8HoOaSrOQZ__EPmuO6xtOJ3PZ-jCqJklTcaW5cKETrLJ05ObEc1xxo32e7eL5rtKRPtMEKhdkThzJjLKrx-fboXb3CB6yJxAX4236wKIvyMLD8tA')">
+                    </div>
+                </div>
+                <div class="p-3 pb-4 flex flex-col flex-grow items-center text-center">
+                    <h3 class="font-headline-sm text-[16px] text-[#2c1f16] mb-0.5 truncate w-full">Santal &amp; Cedar
+                    </h3>
+                    <p class="font-body-sm text-[#735d4f] text-[11px] mb-2 truncate w-full">Earthy, grounding, warm</p>
+                    <p class="font-headline-sm text-[#8c593b] text-sm mb-4">₹1,299</p>
+                    <button
+                        class="w-full mt-auto bg-[#6f4627] text-white py-2.5 rounded hover:bg-opacity-90 transition-colors uppercase text-[10px] tracking-[0.15em] font-bold">VIEW
+                        DETAILS</button>
+                </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div onclick="window.location.href='/pdp.html'"
+                class="flex flex-col h-full bg-[#fffcfb] rounded-xl overflow-hidden product-card-shadow group border border-[#eee2dc]">
+                <div class="relative aspect-[4/5] overflow-hidden">
+                    <div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAlbLBhGiW67fSlTRTvzDHbpUrsn2MYTY39JbtqxzWl7V2S5-6BYoIdT1lbjNfehrx1lfIfEeIVLON6vpua6Q3Q3eIMqHyt6ys1JeTxlKIZgrFFpJySqetwMCdiek1AkIcysCNr_HeOnO1_wTJIfi5-XxboU4tbnWPEe4pJSB8l7aNmdqt5MGi7vy-i_fa8tUpAq0HN4qqM8hWR9cERVMEaDfGKsFa7qaJrqNw-VmbbDCIyKbvGg2AyDg')">
+                    </div>
+                </div>
+                <div class="p-3 pb-4 flex flex-col flex-grow items-center text-center">
+                    <h3 class="font-headline-sm text-[16px] text-[#2c1f16] mb-0.5 truncate w-full">Midnight Fig</h3>
+                    <p class="font-body-sm text-[#735d4f] text-[11px] mb-2 truncate w-full">Rich, fruity, deep</p>
+                    <p class="font-headline-sm text-[#8c593b] text-sm mb-4">₹1,099</p>
+                    <button
+                        class="w-full mt-auto bg-[#6f4627] text-white py-2.5 rounded hover:bg-opacity-90 transition-colors uppercase text-[10px] tracking-[0.15em] font-bold">VIEW
+                        DETAILS</button>
+                </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div onclick="window.location.href='/pdp.html'"
+                class="flex flex-col h-full bg-[#fffcfb] rounded-xl overflow-hidden product-card-shadow group border border-[#eee2dc]">
+                <div class="relative aspect-[4/5] overflow-hidden">
+                    <div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBfhrwp3AZub99YkWvhlp_Fdzmuic-2rN8t9RtP9pw2VZVR5WDpaD5UlGOfxUVHl3zPI5S7XUgjzS85RBD0Z1woIc-rP9b_cCMrmLUmsnqtJDJJS9kJQjs2dhv-GWuTlqq0IPXIrimwOMG-Oa8Ywbr4pVboojRqu2YsMAyaI6kqAwHsVbLoTpgNZfYZ8ozLSQG06zlmwkUkfm0aR_1l9H2yJjMnpJf8Jjfshspe23t8SAEJblG9z2G6XA')">
+                    </div>
+                </div>
+                <div class="p-3 pb-4 flex flex-col flex-grow items-center text-center">
+                    <h3 class="font-headline-sm text-[16px] text-[#2c1f16] mb-0.5 truncate w-full">White Linen</h3>
+                    <p class="font-body-sm text-[#735d4f] text-[11px] mb-2 truncate w-full">Crisp, airy, fresh</p>
+                    <p class="font-headline-sm text-[#8c593b] text-sm mb-4">₹999</p>
+                    <button
+                        class="w-full mt-auto bg-[#6f4627] text-white py-2.5 rounded hover:bg-opacity-90 transition-colors uppercase text-[10px] tracking-[0.15em] font-bold">VIEW
+                        DETAILS</button>
+                </div>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div onclick="window.location.href='/pdp.html'"
+                class="flex flex-col h-full bg-[#fffcfb] rounded-xl overflow-hidden product-card-shadow group border border-[#eee2dc]">
+                <div class="relative aspect-[4/5] overflow-hidden">
+                    <div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBDEpKxRneZhjF1Q61_oZoHrMej8LQw21r2zatB7tAflgZAksrzp9kHSfbRp2n5rDzgIVXjgxY61YGgNdlaGGf-xbNU1kzhWDI4rcE93KRkjejFXRgnYFA6sIewhY6GqyO_brjw5wIy2qkAwvborI1dNWjV1ZTy5sBOlsKheV3YrzHugqC7blQqqqP8CQYxI_4EQwFPLjYfU7Dz4E-eEdM_Ffird2GjAp3b5MMcdvy0MZbGvGUJSvhsOw')">
+                    </div>
+                </div>
+                <div class="p-3 pb-4 flex flex-col flex-grow items-center text-center">
+                    <h3 class="font-headline-sm text-[16px] text-[#2c1f16] mb-0.5 truncate w-full">Amber Noir</h3>
+                    <p class="font-body-sm text-[#735d4f] text-[11px] mb-2 truncate w-full">Patchouli &amp; Cedar</p>
+                    <p class="font-headline-sm text-[#8c593b] text-sm mb-4">₹1,199</p>
+                    <button
+                        class="w-full mt-auto bg-[#6f4627] text-white py-2.5 rounded hover:bg-opacity-90 transition-colors uppercase text-[10px] tracking-[0.15em] font-bold">VIEW
+                        DETAILS</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <nav
+        class="fixed bottom-0 left-0 w-full z-10 flex justify-around items-center px-4 pt-3 pb-2 safe-pb glass-panel rounded-t-2xl shadow-[0_-8px_30px_rgba(0,0,0,0.05)] border-t border-outline-variant/20 dark:border-white/10">
+        <a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity active:scale-90 duration-200"
+            href="/index.html">
+            <span class="material-symbols-outlined">home_max</span>
+            <span class="font-label-caps text-[10px] mt-1 tracking-wider">Home</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-primary dark:text-yellow-500 scale-110 transition-transform"
+            href="/shop.html">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+            <span class="font-label-caps text-[10px] mt-1 tracking-wider">Shop</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity active:scale-90 duration-200"
+            href="/builder.html">
+            <span class="material-symbols-outlined">flare</span>
+            <span class="font-label-caps text-[10px] mt-1 tracking-wider">Create</span>
+        </a>
+    </nav>
+    <script>
+        const filterChips = document.querySelectorAll('.flex.gap-3.overflow-x-auto button');
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                filterChips.forEach(c => {
+                    c.classList.remove('bg-secondary/10', 'text-secondary', 'border-secondary/20');
+                    c.classList.add('bg-surface', 'border-outline-variant', 'text-on-surface-variant');
+                });
+                chip.classList.remove('bg-surface', 'border-outline-variant', 'text-on-surface-variant');
+                chip.classList.add('bg-secondary/10', 'text-secondary', 'border-secondary/20');
+            });
+        });
+
+        const addButtons = document.querySelectorAll('.absolute.bottom-3.right-3');
+        addButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const icon = btn.querySelector('.material-symbols-outlined');
+                icon.textContent = 'check';
+                btn.classList.add('bg-secondary', 'text-on-secondary');
+                btn.classList.remove('text-primary');
+
+                setTimeout(() => {
+                    icon.textContent = 'add';
+                    btn.classList.remove('bg-secondary', 'text-on-secondary');
+                    btn.classList.add('bg-surface/90', 'text-primary');
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+
+</html>

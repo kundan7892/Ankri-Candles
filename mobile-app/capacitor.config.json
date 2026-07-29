@@ -1,0 +1,6 @@
+{
+    "appId": "com.ankricandles.app",
+    "appName": "Ankri Candles",
+    "webDir": "dist",
+    "bundledWebRuntime": false
+}
