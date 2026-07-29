@@ -3008,8 +3008,12 @@
           Out</button>
       </div>
 
-      <!-- Auth Logic Script inline for ease of integration into current HTML file -->
       <script>
+        function getApiUrl(endpoint) {
+          const base = (window.VITE_API_URL || window.API_BASE_URL || (window.location.protocol === 'file:' ? 'http://localhost:5000' : '')).replace(/\/$/, '');
+          return `${base}${endpoint}`;
+        }
+
         function notify(msg) {
           if (typeof window.showToast === 'function') {
             window.showToast(msg);
@@ -3044,8 +3048,7 @@
           btn.disabled = true;
 
           try {
-            const apiHost = window.location.hostname || 'localhost';
-            const res = await fetch(`http://${apiHost}:5000/api/register`, {
+            const res = await fetch(getApiUrl('/api/register'), {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ name, email, password })
@@ -3058,7 +3061,7 @@
               sessionStorage.setItem('pending_verify_email', email);
               switchAuthView('verify');
             } else {
-              notify("Error: " + data.message);
+              notify("Error: " + (data.message || "Failed to send code"));
             }
           } catch (err) {
             console.error(err);
@@ -3084,8 +3087,7 @@
           btn.disabled = true;
 
           try {
-            const apiHost = window.location.hostname || 'localhost';
-            const res = await fetch(`http://${apiHost}:5000/api/verify`, {
+            const res = await fetch(getApiUrl('/api/verify'), {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ email, code })
