@@ -2606,12 +2606,18 @@ function initAppFlow() {
 
   // --- TOAST ALERTS ---
   function showToast(msg) {
-    toastMessage.textContent = msg;
-    toastNotification.classList.add('active');
-    setTimeout(() => {
-      toastNotification.classList.remove('active');
-    }, 3000);
+    if (toastMessage && toastNotification) {
+      toastMessage.textContent = msg;
+      toastNotification.classList.add('active');
+      setTimeout(() => {
+        toastNotification.classList.remove('active');
+      }, 3000);
+    } else {
+      console.log('Toast notification:', msg);
+    }
   }
+  window.showToast = showToast;
+  window.I = showToast;
 
   // --- CART ENGINE ---
   function toggleCartDrawer() {

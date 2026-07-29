@@ -2930,7 +2930,7 @@
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Welcome
           back, candle artisan.</p>
         <form class="enquiry-form"
-          onsubmit="event.preventDefault(); window.I('Login simulated.'); switchAuthView('profile');">
+          onsubmit="event.preventDefault(); (window.showToast||window.I||alert)('Login simulated.'); switchAuthView('profile');">
           <div class="form-group" style="margin-bottom: 1rem;">
             <input type="email" placeholder="Email Address" required
               style="width:100%; border-radius:8px !important; padding: 0.85rem;">
@@ -3003,12 +3003,22 @@
           </div>
         </div>
         <button class="btn btn-primary"
-          onclick="switchAuthView('login'); window.I('Signed out of your customer account.');" style="width: 100%;">Sign
+          onclick="switchAuthView('login'); (window.showToast||window.I||alert)('Signed out of your customer account.');" style="width: 100%;">Sign
           Out</button>
       </div>
 
       <!-- Auth Logic Script inline for ease of integration into current HTML file -->
       <script>
+        function notify(msg) {
+          if (typeof window.showToast === 'function') {
+            window.showToast(msg);
+          } else if (typeof window.I === 'function') {
+            window.I(msg);
+          } else {
+            alert(msg);
+          }
+        }
+
         window.switchAuthView = function (view) {
           document.getElementById('auth-login-view').style.display = view === 'login' ? 'block' : 'none';
           document.getElementById('auth-register-view').style.display = view === 'register' ? 'block' : 'none';
@@ -3033,7 +3043,8 @@
           btn.disabled = true;
 
           try {
-            const res = await fetch('http://localhost:5000/api/register', {
+            const apiHost = window.location.hostname || 'localhost';
+            const res = await fetch(`http://${apiHost}:5000/api/register`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ name, email, password })
@@ -3041,16 +3052,16 @@
             const data = await res.json();
 
             if (data.success) {
-              window.I("Verification code sent to " + email);
+              notify("Verification code sent to " + email);
               // Save email in session to verify next step
               sessionStorage.setItem('pending_verify_email', email);
               switchAuthView('verify');
             } else {
-              window.I("Error: " + data.message);
+              notify("Error: " + data.message);
             }
           } catch (err) {
             console.error(err);
-            window.I("Error connecting to server.");
+            notify("Error connecting to server. Make sure the backend server is running.");
           }
           btn.textContent = 'Create Account';
           btn.disabled = false;
@@ -3063,7 +3074,7 @@
           const btn = document.getElementById('btn-verify-submit');
 
           if (!email) {
-            window.I("Verification session expired. Please register again.");
+            notify("Verification session expired. Please register again.");
             switchAuthView('register');
             return;
           }
@@ -3072,7 +3083,8 @@
           btn.disabled = true;
 
           try {
-            const res = await fetch('http://localhost:5000/api/verify', {
+            const apiHost = window.location.hostname || 'localhost';
+            const res = await fetch(`http://${apiHost}:5000/api/verify`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ email, code })
@@ -3080,18 +3092,18 @@
             const data = await res.json();
 
             if (data.success) {
-              window.I("Account verified & created successfully!");
+              notify("Account verified & created successfully!");
               document.getElementById('auth-profile-name').textContent = data.user.name || 'Ankri Artisan';
               document.getElementById('auth-profile-email').textContent = data.user.email;
               switchAuthView('profile');
               // Clear session
               sessionStorage.removeItem('pending_verify_email');
             } else {
-              window.I("Error: " + (data.message || 'Invalid code'));
+              notify("Error: " + (data.message || 'Invalid code'));
             }
           } catch (err) {
             console.error(err);
-            window.I("Error connecting to server.");
+            notify("Error connecting to server. Make sure the backend server is running.");
           }
           btn.textContent = 'Verify Account';
           btn.disabled = false;

@@ -325,6 +325,8 @@ app.post('/api/register', async (req, res) => {
       saveToBackupFile('users_temp.json', { email, name, otp: verificationCode, otpExpiry, timestamp: new Date() });
     }
 
+    console.log(`🔑 [ANKRI OTP] Code for ${email} is: ${verificationCode}`);
+
     const mailOptions = {
       from: 'ankricandle@gmail.com',
       to: email,
@@ -340,8 +342,14 @@ app.post('/api/register', async (req, res) => {
       `
     };
 
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ success: true, message: 'Verification email sent' });
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`✉️ [ANKRI OTP] Successfully emailed OTP code to ${email}`);
+    } catch (mailErr) {
+      console.error(`⚠️ [ANKRI OTP SMTP NOTICE] Could not deliver email to ${email}:`, mailErr.message);
+    }
+
+    res.status(200).json({ success: true, message: 'Verification code generated and sent' });
   } catch (error) {
     console.error('Error in /api/register:', error);
     res.status(500).json({ success: false, message: 'Error sending verification code' });
