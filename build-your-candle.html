@@ -440,6 +440,20 @@
                     }
                 });
             });
+
+            const filterChips = document.querySelectorAll('.flex-wrap.gap-xs.mb-lg button');
+            filterChips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    filterChips.forEach(c => {
+                        c.classList.remove('bg-primary', 'text-on-primary', 'border-primary');
+                        c.classList.add('bg-transparent', 'border-outline-variant', 'text-on-surface-variant');
+                        c.classList.remove('hover:border-primary', 'hover:text-primary');
+                        c.classList.add('hover:border-primary', 'hover:text-primary'); // Make sure hover states remain
+                    });
+                    chip.classList.remove('bg-transparent', 'border-outline-variant', 'text-on-surface-variant', 'hover:border-primary', 'hover:text-primary');
+                    chip.classList.add('bg-primary', 'text-on-primary', 'border-primary');
+                });
+            });
         });
     </script>
 </body>

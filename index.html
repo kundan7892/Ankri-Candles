@@ -174,10 +174,11 @@
             <div class="shop-filter-group shop-filter-divider">
               <h3 class="shop-filter-heading">Fragrance Notes</h3>
               <div class="shop-tag-cloud">
-                <span class="shop-frag-tag active" data-note="woody">Woody</span>
-                <span class="shop-frag-tag active" data-note="spicy">Spicy</span>
-                <span class="shop-frag-tag active" data-note="citrus">Citrus</span>
-                <span class="shop-frag-tag active" data-note="fruity">Fruity</span>
+                <span class="shop-frag-tag active" data-note="all">All</span>
+                <span class="shop-frag-tag" data-note="woody">Woody</span>
+                <span class="shop-frag-tag" data-note="spicy">Spicy</span>
+                <span class="shop-frag-tag" data-note="citrus">Citrus</span>
+                <span class="shop-frag-tag" data-note="fruity">Fruity</span>
                 <span class="shop-frag-tag" data-note="floral">Floral</span>
                 <span class="shop-frag-tag" data-note="fresh">Fresh</span>
                 <span class="shop-frag-tag" data-note="vanilla">Vanilla</span>
@@ -189,9 +190,12 @@
             <div class="shop-filter-group">
               <h3 class="shop-filter-heading">Wax Type</h3>
               <ul class="shop-check-list">
-                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox"> Soy Wax</label></li>
-                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox"> Beeswax</label></li>
-                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox"> Coconut Blend</label>
+                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox shop-wax-check"
+                      value="soy"> Soy Wax</label></li>
+                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox shop-wax-check"
+                      value="beeswax"> Beeswax</label></li>
+                <li><label class="shop-check-label"><input type="checkbox" class="shop-checkbox shop-wax-check"
+                      value="coconut"> Coconut Blend</label>
                 </li>
               </ul>
             </div>
@@ -228,7 +232,7 @@
 
             <!-- Card: Santal Noir -->
             <article class="shop-card" data-product="santal-noir" data-notes="woody,spicy" data-price="1299"
-              data-category="jar">
+              data-category="jar" data-wax="soy">
               <div class="shop-card-image-wrap">
                 <img src="luxury_candles_banner.png" alt="Santal Noir" class="shop-card-img">
                 <button class="shop-card-wishlist" aria-label="Wishlist">
@@ -245,7 +249,7 @@
 
             <!-- Card: Midnight Fig -->
             <article class="shop-card" data-product="midnight-fig" data-notes="fruity,deep" data-price="1099"
-              data-category="jar">
+              data-category="jar" data-wax="beeswax">
               <div class="shop-card-image-wrap">
                 <img src="luxury_candles_banner.png" alt="Midnight Fig" class="shop-card-img">
                 <span class="shop-card-badge">NEW</span>
@@ -263,7 +267,7 @@
 
             <!-- Card: White Linen -->
             <article class="shop-card" data-product="white-linen" data-notes="fresh,airy" data-price="999"
-              data-category="pillar">
+              data-category="pillar" data-wax="soy,coconut">
               <div class="shop-card-image-wrap">
                 <img src="luxury_candles_banner.png" alt="White Linen" class="shop-card-img">
                 <button class="shop-card-wishlist" aria-label="Wishlist">
@@ -280,7 +284,7 @@
 
             <!-- Card: Bergamot Vetiver -->
             <article class="shop-card" data-product="bergamot-vetiver" data-notes="citrus,smoky" data-price="1199"
-              data-category="jar">
+              data-category="jar" data-wax="coconut">
               <div class="shop-card-image-wrap">
                 <img src="luxury_candles_banner.png" alt="Bergamot Vetiver" class="shop-card-img">
                 <button class="shop-card-wishlist" aria-label="Wishlist">
@@ -297,7 +301,7 @@
 
             <!-- Card: Rose Oud -->
             <article class="shop-card" data-product="santal-noir" data-notes="floral,woody" data-price="1499"
-              data-category="jar">
+              data-category="jar" data-wax="soy">
               <div class="shop-card-image-wrap">
                 <img src="luxury_candles_banner.png" alt="Rose Oud" class="shop-card-img">
                 <button class="shop-card-wishlist" aria-label="Wishlist">
@@ -314,7 +318,7 @@
 
             <!-- Card: Cedarwood Mist -->
             <article class="shop-card" data-product="bergamot-vetiver" data-notes="woody,fresh" data-price="899"
-              data-category="votive">
+              data-category="votive" data-wax="beeswax">
               <div class="shop-card-image-wrap">
                 <img src="luxury_candles_banner.png" alt="Cedarwood Mist" class="shop-card-img">
                 <span class="shop-card-badge">SALE</span>
@@ -809,6 +813,18 @@
               <h3>Build Your Scent Profile</h3>
               <p class="step-desc">Layer essential extracts. Our formula divides the pour into three distinct aromatic
                 depths.</p>
+
+              <!-- Optional Search bar for scents -->
+              <div class="scent-search-wrapper" style="margin-bottom: 2rem; position: relative;">
+                <input type="text" id="customizer-scent-search" placeholder="Search scents (e.g. Vanilla)..."
+                  style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.5rem; border: 1px solid var(--border-glass); border-radius: 8px; font-family: var(--font-sans); background: var(--bg-primary);" />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"
+                  style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
 
               <!-- Aromatic Selectors -->
               <div class="scent-selectors-group">
@@ -3227,6 +3243,18 @@
               <!-- Injected by JS -->
             </div>
 
+            <!-- Search for more products -->
+            <div class="pdp-search" style="margin-bottom: 1.5rem; position: relative;">
+              <input type="text" id="pdp-scent-search" placeholder="Search other scents..."
+                style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.5rem; border: 1px solid var(--border-glass); border-radius: 8px; font-family: var(--font-sans); background: var(--surface-container-low);"
+                onkeypress="if(event.key === 'Enter') { const shopSearch = document.getElementById('shop-search'); if(shopSearch) { shopSearch.value = this.value; const closeBtn = document.getElementById('pdp-close-btn'); if(closeBtn) closeBtn.click(); shopSearch.dispatchEvent(new Event('input')); shopSearch.focus(); } }">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+
             <!-- Title & Price -->
             <h1 class="pdp-title" id="pdp-title">Santal Noir</h1>
             <p class="pdp-price" id="pdp-price">₹799</p>
@@ -3367,6 +3395,7 @@
       const priceLabel = document.getElementById('shop-price-label');
       const fragTags = document.querySelectorAll('.shop-frag-tag');
       const catChecks = document.querySelectorAll('.shop-cat-check');
+      const waxChecks = document.querySelectorAll('.shop-wax-check');
       const cards = document.querySelectorAll('.shop-card');
       const resultsCount = document.getElementById('shop-results-count');
       const noResults = document.getElementById('shop-no-results');
@@ -3380,12 +3409,18 @@
         const activeTags = Array.from(fragTags)
           .filter(t => t.classList.contains('active'))
           .map(t => t.getAttribute('data-note'));
+        const allFragsChecked = activeTags.includes('all');
 
         // Get active categories
         const activeCats = Array.from(catChecks)
           .filter(c => c.checked)
           .map(c => c.value);
         const allCatsChecked = activeCats.includes('all');
+
+        // Get active wax types
+        const activeWaxes = Array.from(waxChecks)
+          .filter(c => c.checked)
+          .map(c => c.value);
 
         let visibleCount = 0;
 
@@ -3394,6 +3429,7 @@
           const cardPrice = parseInt(card.getAttribute('data-price'), 10);
           const cardNotes = card.getAttribute('data-notes').split(',');
           const cardCat = card.getAttribute('data-category');
+          const cardWaxes = (card.getAttribute('data-wax') || '').split(',');
 
           // Match Search
           const matchesSearch = name.includes(query);
@@ -3401,13 +3437,16 @@
           // Match Price
           const matchesPrice = cardPrice <= maxPrice;
 
-          // Match Fragrance (Card must have AT LEAST ONE active note to show, or show all if none selected)
-          const matchesFrag = activeTags.length === 0 || cardNotes.some(note => activeTags.includes(note));
+          // Match Fragrance (Card must have AT LEAST ONE active note to show, or show all if none selected / all checked)
+          const matchesFrag = allFragsChecked || activeTags.length === 0 || cardNotes.some(note => activeTags.includes(note));
 
           // Match Category
           const matchesCat = allCatsChecked || activeCats.includes(cardCat);
 
-          if (matchesSearch && matchesPrice && matchesFrag && matchesCat) {
+          // Match Wax
+          const matchesWax = activeWaxes.length === 0 || cardWaxes.some(wax => activeWaxes.includes(wax));
+
+          if (matchesSearch && matchesPrice && matchesFrag && matchesCat && matchesWax) {
             card.style.display = 'flex';
             visibleCount++;
           } else {
@@ -3431,10 +3470,47 @@
       // Scent tag toggling
       fragTags.forEach(tag => {
         tag.addEventListener('click', () => {
-          tag.classList.toggle('active');
+          if (tag.getAttribute('data-note') === 'all') {
+            if (!tag.classList.contains('active')) {
+              tag.classList.add('active');
+              fragTags.forEach(t => t.getAttribute('data-note') !== 'all' && t.classList.remove('active'));
+            }
+          } else {
+            tag.classList.toggle('active');
+            let anyActive = false;
+            fragTags.forEach(t => {
+              if (t.getAttribute('data-note') !== 'all' && t.classList.contains('active')) anyActive = true;
+            });
+            if (anyActive) {
+              document.querySelector('.shop-frag-tag[data-note="all"]')?.classList.remove('active');
+            } else {
+              document.querySelector('.shop-frag-tag[data-note="all"]')?.classList.add('active');
+            }
+          }
           filterCards();
         });
       });
+
+      // Customizer scent search
+      const scentSearch = document.getElementById('customizer-scent-search');
+      if (scentSearch) {
+        scentSearch.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase();
+          ['scent-select-heart', 'scent-select-depth'].forEach(id => {
+            const select = document.getElementById(id);
+            if (select) {
+              Array.from(select.options).forEach(opt => {
+                const text = opt.text.toLowerCase();
+                if (text.includes(query)) {
+                  opt.style.display = '';
+                } else {
+                  opt.style.display = 'none';
+                }
+              });
+            }
+          });
+        });
+      }
 
       // Price slider
       priceRange.addEventListener('input', (e) => {
@@ -3456,6 +3532,12 @@
           filterCards();
         });
       });
+
+      // Wax type checkboxes
+      waxChecks.forEach(chk => {
+        chk.addEventListener('change', filterCards);
+      });
+    });
   </script>
 
   <!-- Main Script -->
@@ -3464,9 +3546,9 @@
   <script type="module" src="/pdp.js"></script>
 
   <script>
-      if (window.lucide) {
-        window.lucide.createIcons();
-      }
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
   </script>
 </body>
 
