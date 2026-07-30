@@ -336,19 +336,30 @@ app.post('/api/register', async (req, res) => {
 
     const isConnected = await ensureDbConnected();
     if (isConnected) {
-      let user = await User.findOne({ email: cleanEmail });
-      if (!user) {
-        user = new User({ email: cleanEmail, name: cleanName });
-      } else {
-        user.name = cleanName || user.name;
+      try {
+        let user = await User.findOne({ email: cleanEmail });
+        if (!user) {
+          user = new User({ email: cleanEmail, name: cleanName });
+        } else {
+          user.name = cleanName || user.name;
+        }
+        user.otp = verificationCode;
+        user.otpExpiry = otpExpiry;
+        await user.save();
+      } catch (dbErr) {
+        console.error('MongoDB save error in /api/register:', dbErr.message);
       }
-      user.otp = verificationCode;
-      user.otpExpiry = otpExpiry;
-      await user.save();
     }
 
-    // Always save to local backup as fallback
+    // Always save to local backup JSON as fallback
     saveToBackupFile('users_temp.json', { email: cleanEmail, name: cleanName, otp: verificationCode, otpExpiry, timestamp: new Date() });
+
+    // Generate a stateless signed OTP token as a fail-safe for serverless/Vercel environments
+    const otpToken = jwt.sign(
+      { email: cleanEmail, name: cleanName, otp: verificationCode },
+      JWT_SECRET,
+      { expiresIn: '10m' }
+    );
 
     console.log(`🔑 [ANKRI OTP] Code for ${cleanEmail} is: ${verificationCode}`);
 
@@ -374,7 +385,7 @@ app.post('/api/register', async (req, res) => {
       console.error(`⚠️ [ANKRI OTP SMTP NOTICE] Could not deliver email to ${cleanEmail}:`, mailErr.message);
     }
 
-    res.status(200).json({ success: true, message: 'Verification code generated and sent' });
+    res.status(200).json({ success: true, message: 'Verification code generated and sent', otpToken });
   } catch (error) {
     console.error('Error in /api/register:', error);
     res.status(500).json({ success: false, message: 'Error sending verification code' });
@@ -383,9 +394,9 @@ app.post('/api/register', async (req, res) => {
 
 app.post('/api/verify', async (req, res) => {
   try {
-    const { email, code } = req.body;
+    const { email, code, otpToken } = req.body;
     if (!email || !code) {
-      return res.status(400).json({ success: false, message: 'Email and code are required' });
+      return res.status(400).json({ success: false, message: 'Email and verification code are required' });
     }
 
     const cleanEmail = String(email).trim().toLowerCase();
@@ -393,46 +404,77 @@ app.post('/api/verify', async (req, res) => {
 
     const isConnected = await ensureDbConnected();
 
+    // Strategy 1: Check MongoDB first if connected
     if (isConnected) {
-      const user = await User.findOne({ email: cleanEmail });
-      if (user && user.otp && String(user.otp).trim() === cleanCode) {
-        if (user.otpExpiry && new Date() > new Date(user.otpExpiry)) {
-          return res.status(400).json({ success: false, message: 'Verification code expired' });
+      try {
+        const user = await User.findOne({ email: cleanEmail });
+        if (user && user.otp && String(user.otp).trim() === cleanCode) {
+          if (user.otpExpiry && new Date() > new Date(user.otpExpiry)) {
+            return res.status(400).json({ success: false, message: 'Verification code expired' });
+          }
+
+          user.otp = undefined;
+          user.otpExpiry = undefined;
+          await user.save();
+
+          return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: user.name || 'Ankri Artisan', email: user.email } });
         }
-
-        user.otp = undefined;
-        user.otpExpiry = undefined;
-        await user.save();
-
-        return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: user.name, email: user.email } });
+      } catch (dbErr) {
+        console.error('MongoDB query error in /api/verify:', dbErr.message);
       }
     }
 
-    // Fallback: check backup file if user not matched in MongoDB or DB offline
+    // Strategy 2: Check Stateless Signed JWT Token (Vercel Serverless / Stateless fail-safe)
+    if (otpToken) {
+      try {
+        const decoded = jwt.verify(otpToken, JWT_SECRET);
+        if (decoded && decoded.email === cleanEmail && String(decoded.otp).trim() === cleanCode) {
+          if (isConnected) {
+            try {
+              let user = await User.findOne({ email: cleanEmail });
+              if (!user) {
+                user = new User({ email: cleanEmail, name: decoded.name });
+              }
+              user.otp = undefined;
+              user.otpExpiry = undefined;
+              await user.save();
+            } catch (err) {}
+          }
+          return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: decoded.name || 'Ankri Artisan', email: cleanEmail } });
+        }
+      } catch (jwtErr) {
+        if (jwtErr.name === 'TokenExpiredError') {
+          return res.status(400).json({ success: false, message: 'Verification code expired. Please request a new code.' });
+        }
+      }
+    }
+
+    // Strategy 3: Check local backup file (Local Dev Fallback)
     const tempUsers = readFromBackupFile('users_temp.json');
     const matchingRecords = tempUsers.filter(u => String(u.email || '').trim().toLowerCase() === cleanEmail);
     const latestRecord = matchingRecords.length > 0 ? matchingRecords[matchingRecords.length - 1] : null;
 
-    if (!latestRecord || String(latestRecord.otp || '').trim() !== cleanCode) {
-      return res.status(400).json({ success: false, message: 'Invalid verification code' });
-    }
-
-    if (latestRecord.otpExpiry && new Date() > new Date(latestRecord.otpExpiry)) {
-      return res.status(400).json({ success: false, message: 'Verification code expired' });
-    }
-
-    // If DB is connected now, save user to DB as verified
-    if (isConnected) {
-      let user = await User.findOne({ email: cleanEmail });
-      if (!user) {
-        user = new User({ email: cleanEmail, name: latestRecord.name });
+    if (latestRecord && String(latestRecord.otp || '').trim() === cleanCode) {
+      if (latestRecord.otpExpiry && new Date() > new Date(latestRecord.otpExpiry)) {
+        return res.status(400).json({ success: false, message: 'Verification code expired' });
       }
-      user.otp = undefined;
-      user.otpExpiry = undefined;
-      await user.save();
+
+      if (isConnected) {
+        try {
+          let user = await User.findOne({ email: cleanEmail });
+          if (!user) {
+            user = new User({ email: cleanEmail, name: latestRecord.name });
+          }
+          user.otp = undefined;
+          user.otpExpiry = undefined;
+          await user.save();
+        } catch (err) {}
+      }
+
+      return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: latestRecord.name || 'Ankri Artisan', email: cleanEmail } });
     }
 
-    return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: latestRecord.name || 'Ankri Artisan', email: cleanEmail } });
+    return res.status(400).json({ success: false, message: 'Invalid verification code' });
   } catch (error) {
     console.error('Error in /api/verify:', error);
     res.status(500).json({ success: false, message: 'Server error during verification' });

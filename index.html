@@ -3061,8 +3061,11 @@
 
             if (data.success) {
               notify("Verification code sent to " + email);
-              // Save email in session to verify next step
+              // Save email and signed OTP token in session to verify next step
               sessionStorage.setItem('pending_verify_email', email);
+              if (data.otpToken) {
+                sessionStorage.setItem('pending_verify_otp_token', data.otpToken);
+              }
               switchAuthView('verify');
             } else {
               notify("Error: " + (data.message || "Failed to send code"));
@@ -3079,6 +3082,7 @@
           e.preventDefault();
           const code = (document.getElementById('verify-code').value || '').trim();
           const email = (sessionStorage.getItem('pending_verify_email') || '').trim().toLowerCase();
+          const otpToken = sessionStorage.getItem('pending_verify_otp_token') || '';
           const btn = document.getElementById('btn-verify-submit');
 
           if (!email) {
@@ -3099,7 +3103,7 @@
             const res = await fetch(getApiUrl('/api/verify'), {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, code })
+              body: JSON.stringify({ email, code, otpToken })
             });
             const data = await res.json();
 
@@ -3110,6 +3114,7 @@
               switchAuthView('profile');
               // Clear session
               sessionStorage.removeItem('pending_verify_email');
+              sessionStorage.removeItem('pending_verify_otp_token');
             } else {
               notify("Error: " + (data.message || 'Invalid code'));
             }
