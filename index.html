@@ -3038,10 +3038,15 @@
 
         window.handleRegister = async function (e) {
           e.preventDefault();
-          const name = document.getElementById('reg-name').value;
-          const email = document.getElementById('reg-email').value;
+          const name = (document.getElementById('reg-name').value || '').trim();
+          const email = (document.getElementById('reg-email').value || '').trim().toLowerCase();
           const password = document.getElementById('reg-password').value;
           const btn = document.getElementById('btn-register-submit');
+
+          if (!email) {
+            notify("Please enter a valid email address.");
+            return;
+          }
 
           btn.textContent = 'Sending Code...';
           btn.disabled = true;
@@ -3072,13 +3077,18 @@
 
         window.handleVerify = async function (e) {
           e.preventDefault();
-          const code = document.getElementById('verify-code').value;
-          const email = sessionStorage.getItem('pending_verify_email');
+          const code = (document.getElementById('verify-code').value || '').trim();
+          const email = (sessionStorage.getItem('pending_verify_email') || '').trim().toLowerCase();
           const btn = document.getElementById('btn-verify-submit');
 
           if (!email) {
             notify("Verification session expired. Please register again.");
             switchAuthView('register');
+            return;
+          }
+
+          if (!code) {
+            notify("Please enter the 6-digit verification code.");
             return;
           }
 

@@ -71,6 +71,26 @@ mongoose.connect(MONGO_URI, {
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log('MongoDB connection error:', err));
 
+// Helper to ensure database is connected before processing requests
+async function ensureDbConnected() {
+  if (mongoose.connection.readyState === 1) return true;
+  if (mongoose.connection.readyState === 2) {
+    let waited = 0;
+    while (mongoose.connection.readyState === 2 && waited < 3000) {
+      await new Promise(r => setTimeout(r, 100));
+      waited += 100;
+    }
+    if (mongoose.connection.readyState === 1) return true;
+  }
+  try {
+    await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 3000 });
+    return mongoose.connection.readyState === 1;
+  } catch (err) {
+    return false;
+  }
+}
+
+
 // --- USER SCHEMA (Customer Accounts) ---
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true, sparse: true },
@@ -305,36 +325,41 @@ setInterval(checkAndSendWhatsAppReminders, 30000); // 30 seconds interval
 app.post('/api/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    if (!email) return res.status(400).json({ message: 'Email required' });
+    if (!email) return res.status(400).json({ success: false, message: 'Email required' });
+
+    const cleanEmail = String(email).trim().toLowerCase();
+    const cleanName = String(name || '').trim();
 
     // Generate 6 digit code
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
 
-    if (mongoose.connection.readyState === 1) {
-      let user = await User.findOne({ email });
+    const isConnected = await ensureDbConnected();
+    if (isConnected) {
+      let user = await User.findOne({ email: cleanEmail });
       if (!user) {
-        user = new User({ email, name });
+        user = new User({ email: cleanEmail, name: cleanName });
       } else {
-        user.name = name || user.name;
+        user.name = cleanName || user.name;
       }
       user.otp = verificationCode;
       user.otpExpiry = otpExpiry;
       await user.save();
-    } else {
-      saveToBackupFile('users_temp.json', { email, name, otp: verificationCode, otpExpiry, timestamp: new Date() });
     }
 
-    console.log(`🔑 [ANKRI OTP] Code for ${email} is: ${verificationCode}`);
+    // Always save to local backup as fallback
+    saveToBackupFile('users_temp.json', { email: cleanEmail, name: cleanName, otp: verificationCode, otpExpiry, timestamp: new Date() });
+
+    console.log(`🔑 [ANKRI OTP] Code for ${cleanEmail} is: ${verificationCode}`);
 
     const mailOptions = {
       from: 'ankricandle@gmail.com',
-      to: email,
+      to: cleanEmail,
       subject: 'Verify your Ankri Candle Account',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; text-align: center;">
           <h2>Ankri Candle Verification</h2>
-          <p>Welcome, ${name || 'Artisan'}!</p>
+          <p>Welcome, ${cleanName || 'Artisan'}!</p>
           <p>Please use the following 6-digit code to complete your registration:</p>
           <h1 style="color: #D4AF37; letter-spacing: 5px;">${verificationCode}</h1>
           <p>This code expires in 10 minutes.</p>
@@ -344,9 +369,9 @@ app.post('/api/register', async (req, res) => {
 
     try {
       await transporter.sendMail(mailOptions);
-      console.log(`✉️ [ANKRI OTP] Successfully emailed OTP code to ${email}`);
+      console.log(`✉️ [ANKRI OTP] Successfully emailed OTP code to ${cleanEmail}`);
     } catch (mailErr) {
-      console.error(`⚠️ [ANKRI OTP SMTP NOTICE] Could not deliver email to ${email}:`, mailErr.message);
+      console.error(`⚠️ [ANKRI OTP SMTP NOTICE] Could not deliver email to ${cleanEmail}:`, mailErr.message);
     }
 
     res.status(200).json({ success: true, message: 'Verification code generated and sent' });
@@ -359,29 +384,55 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/verify', async (req, res) => {
   try {
     const { email, code } = req.body;
+    if (!email || !code) {
+      return res.status(400).json({ success: false, message: 'Email and code are required' });
+    }
 
-    if (mongoose.connection.readyState === 1) {
-      const user = await User.findOne({ email });
-      if (!user || user.otp !== code) {
-        return res.status(400).json({ success: false, message: 'Invalid verification code' });
-      }
-      if (new Date() > user.otpExpiry) {
-        return res.status(400).json({ success: false, message: 'Verification code expired' });
-      }
+    const cleanEmail = String(email).trim().toLowerCase();
+    const cleanCode = String(code).trim();
 
+    const isConnected = await ensureDbConnected();
+
+    if (isConnected) {
+      const user = await User.findOne({ email: cleanEmail });
+      if (user && user.otp && String(user.otp).trim() === cleanCode) {
+        if (user.otpExpiry && new Date() > new Date(user.otpExpiry)) {
+          return res.status(400).json({ success: false, message: 'Verification code expired' });
+        }
+
+        user.otp = undefined;
+        user.otpExpiry = undefined;
+        await user.save();
+
+        return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: user.name, email: user.email } });
+      }
+    }
+
+    // Fallback: check backup file if user not matched in MongoDB or DB offline
+    const tempUsers = readFromBackupFile('users_temp.json');
+    const matchingRecords = tempUsers.filter(u => String(u.email || '').trim().toLowerCase() === cleanEmail);
+    const latestRecord = matchingRecords.length > 0 ? matchingRecords[matchingRecords.length - 1] : null;
+
+    if (!latestRecord || String(latestRecord.otp || '').trim() !== cleanCode) {
+      return res.status(400).json({ success: false, message: 'Invalid verification code' });
+    }
+
+    if (latestRecord.otpExpiry && new Date() > new Date(latestRecord.otpExpiry)) {
+      return res.status(400).json({ success: false, message: 'Verification code expired' });
+    }
+
+    // If DB is connected now, save user to DB as verified
+    if (isConnected) {
+      let user = await User.findOne({ email: cleanEmail });
+      if (!user) {
+        user = new User({ email: cleanEmail, name: latestRecord.name });
+      }
       user.otp = undefined;
       user.otpExpiry = undefined;
       await user.save();
-
-      return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: user.name, email: user.email } });
-    } else {
-      let tempUsers = readFromBackupFile('users_temp.json');
-      const userIdx = tempUsers.findIndex(u => u.email === email && u.otp === code);
-      if (userIdx === -1) {
-        return res.status(400).json({ success: false, message: 'Invalid or expired code' });
-      }
-      return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: tempUsers[userIdx].name, email: tempUsers[userIdx].email } });
     }
+
+    return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: latestRecord.name || 'Ankri Artisan', email: cleanEmail } });
   } catch (error) {
     console.error('Error in /api/verify:', error);
     res.status(500).json({ success: false, message: 'Server error during verification' });
