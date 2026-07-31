@@ -3008,7 +3008,7 @@
         <div
           style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-glass); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;">
           <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1rem;">
-            <div
+            <div id="auth-profile-avatar"
               style="width: 54px; height: 54px; background: var(--gold-text); color: #13221C; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; font-family: var(--font-serif);">
               A</div>
             <div>
@@ -3026,7 +3026,7 @@
         <div id="auth-order-history" style="margin-bottom: 1.5rem;">
           <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem; font-family: 'Inter', sans-serif;">Order History</h3>
           <div id="order-history-list"
-            style="display:flex; flex-direction:column; gap:0.5rem; max-height:200px; overflow-y:auto; font-size:0.85rem; color: var(--text-secondary);">
+            style="display:flex; flex-direction:column; gap:0.75rem; max-height:300px; overflow-y:auto; font-size:0.85rem; color: var(--text-secondary);">
             <p>Loading your orders...</p>
           </div>
         </div>
@@ -3066,18 +3066,19 @@
             const data = await res.json();
 
             if (data.success) {
-              notify('Login successful!');
+              notify('Welcome back, ' + (data.user.name || 'Artisan') + '!');
               localStorage.setItem('auth_token', data.token);
               localStorage.setItem('user_data', JSON.stringify(data.user));
               document.getElementById('auth-profile-name').textContent = data.user.name || 'Ankri Artisan';
               document.getElementById('auth-profile-email').textContent = data.user.email;
+              updateProfileAvatar(data.user.name || data.user.email);
               switchAuthView('profile');
               loadOrderHistory();
             } else {
-              notify(data.message || 'Login failed');
+              notify(data.message || 'Login failed. Please check your credentials.');
             }
           } catch (err) {
-            notify('Error logging in');
+            notify('Error connecting to server. Is the backend running?');
             console.error(err);
           }
           btn.textContent = 'Sign In';
@@ -3093,7 +3094,7 @@
 
         window.loadOrderHistory = async function () {
           const container = document.getElementById('order-history-list');
-          container.innerHTML = '<p>Loading your orders...</p>';
+          container.innerHTML = '<p style="padding:0.5rem 0;">Loading your orders...</p>';
           const token = localStorage.getItem('auth_token');
           if (!token) return;
 
@@ -3104,29 +3105,82 @@
             const data = await res.json();
 
             if (data.success) {
-              if (data.orders.length === 0) {
-                container.innerHTML = '<p>You have no past orders yet.</p>';
+              if (!data.orders || data.orders.length === 0) {
+                container.innerHTML = '<p style="padding:0.5rem 0;">You have no past orders yet.</p>';
               } else {
-                container.innerHTML = data.orders.map(o => `
-                  <div style="background:var(--bg-tertiary); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-glass);">
-                    <div style="display:flex; justify-content:space-between; margin-bottom: 0.25rem;">
-                      <strong>Order #${o.orderId || 'N/A'}</strong> 
-                      <span style="color:var(--primary); font-weight:600;">₹${o.total}</span>
+                container.innerHTML = data.orders.map(o => {
+                  const itemNames = (o.items || []).map(i => i.name || 'Candle').join(', ');
+                  const itemsPayload = JSON.stringify(o.items || []).replace(/"/g, '&quot;');
+                  return `
+                  <div style="background:var(--bg-tertiary); padding: 0.85rem; border-radius: 8px; border: 1px solid var(--border-glass);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.35rem;">
+                      <strong style="color:var(--text-primary);">Order #${o.orderId || 'N/A'}</strong>
+                      <span style="color:var(--gold-text); font-weight:600;">₹${o.total || 0}</span>
                     </div>
-                    <div style="display:flex; justify-content:space-between; font-size:0.75rem;">
-                      <span>${new Date(o.timestamp).toLocaleDateString()}</span>
-                      <span style="color:${o.status === 'Completed' ? 'green' : 'var(--text-secondary)'};">${o.status || 'Processing'}</span>
+                    <div style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:0.35rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${itemNames}">
+                      ${itemNames || 'Custom Candle'}
                     </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem;">
+                      <span style="color:var(--text-muted);">${new Date(o.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                      <span style="color:${o.status === 'Completed' ? '#4CAF50' : 'var(--text-secondary)'}; font-weight:500;">${o.status || 'Processing'}</span>
+                    </div>
+                    <button onclick="reorderItems('${itemsPayload}')" 
+                      style="margin-top:0.6rem; width:100%; padding:0.45rem; border-radius:6px; border:1px solid var(--gold-primary); background:transparent; color:var(--gold-text); font-size:0.78rem; font-weight:600; cursor:pointer; transition:all 0.2s; font-family:var(--font-sans); letter-spacing:0.03em;"
+                      onmouseover="this.style.background='rgba(212,175,55,0.12)'"
+                      onmouseout="this.style.background='transparent'">
+                      🛒 Reorder
+                    </button>
                   </div>
-                `).join('');
+                `}).join('');
               }
             } else {
-              container.innerHTML = '<p>Could not load orders.</p>';
+              container.innerHTML = '<p style="padding:0.5rem 0;">Could not load orders.</p>';
             }
           } catch (err) {
-            container.innerHTML = '<p>Failed to connect to server.</p>';
+            container.innerHTML = '<p style="padding:0.5rem 0;">Failed to connect to server.</p>';
           }
         };
+
+        // Reorder: add all items from a past order back into the cart
+        window.reorderItems = function (itemsJson) {
+          let items;
+          try {
+            items = JSON.parse(itemsJson.replace(/&quot;/g, '"'));
+          } catch (e) {
+            notify('Could not parse order items.');
+            return;
+          }
+          if (!items || items.length === 0) {
+            notify('No items found in this order.');
+            return;
+          }
+          // Use the global addToCart function exposed by main.js, or fall back to direct state manipulation
+          let added = 0;
+          items.forEach(item => {
+            if (typeof window.addToCartFromOrder === 'function') {
+              window.addToCartFromOrder(item);
+              added++;
+            }
+          });
+          if (added > 0) {
+            // Close the profile modal
+            document.getElementById('profile-modal-overlay').classList.add('hidden');
+            // Open the cart drawer
+            const cartBtn = document.getElementById('cart-btn');
+            if (cartBtn) cartBtn.click();
+            notify(`${added} item(s) added to your cart!`);
+          } else {
+            notify('Could not add items — please refresh and try again.');
+          }
+        };
+
+        // Update avatar initial from user name
+        function updateProfileAvatar(name) {
+          const avatarEl = document.getElementById('auth-profile-avatar');
+          if (avatarEl && name) {
+            avatarEl.textContent = name.charAt(0).toUpperCase();
+          }
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
           const savedUser = localStorage.getItem('user_data');
@@ -3136,22 +3190,41 @@
               const u = JSON.parse(savedUser);
               document.getElementById('auth-profile-name').textContent = u.name || 'Ankri Artisan';
               document.getElementById('auth-profile-email').textContent = u.email;
+              updateProfileAvatar(u.name || u.email);
+              // Pre-load order history so it's ready when they open the modal
               loadOrderHistory();
-              // Don't auto open modal, but if they open and click profile button this sets the default view
-              // We just set the active view in case they click it
             } catch (e) { }
           }
 
-          document.getElementById('profile-btn').addEventListener('click', () => {
-            document.getElementById('profile-modal-overlay').classList.remove('hidden');
-            const token = localStorage.getItem('auth_token');
-            if (token) {
-              switchAuthView('profile');
-              loadOrderHistory();
-            } else {
-              switchAuthView('login');
-            }
-          });
+          const profileBtn = document.getElementById('profile-btn');
+          if (profileBtn) {
+            profileBtn.addEventListener('click', () => {
+              document.getElementById('profile-modal-overlay').classList.remove('hidden');
+              const token = localStorage.getItem('auth_token');
+              if (token) {
+                const savedUser = localStorage.getItem('user_data');
+                if (savedUser) {
+                  try {
+                    const u = JSON.parse(savedUser);
+                    document.getElementById('auth-profile-name').textContent = u.name || 'Ankri Artisan';
+                    document.getElementById('auth-profile-email').textContent = u.email;
+                    updateProfileAvatar(u.name || u.email);
+                  } catch (e) { }
+                }
+                switchAuthView('profile');
+                loadOrderHistory();
+              } else {
+                switchAuthView('login');
+              }
+            });
+          }
+
+          const closeProfileBtn = document.getElementById('close-profile-btn');
+          if (closeProfileBtn) {
+            closeProfileBtn.addEventListener('click', () => {
+              document.getElementById('profile-modal-overlay').classList.add('hidden');
+            });
+          }
         });
 
         window.switchAuthView = function (view) {
@@ -3279,19 +3352,40 @@
             const data = await res.json();
 
             if (data.success) {
-              notify("Account verified & created successfully!");
+              notify('Welcome to Ankri Candle, ' + (data.user.name || 'Artisan') + '!');
+              // Generate a session token via login endpoint so the session is fully persisted
+              // First try to get a token from the verify response if server provides one
+              if (data.token) {
+                localStorage.setItem('auth_token', data.token);
+              } else {
+                // Fallback: call login with found email to get a proper JWT
+                try {
+                  const loginRes = await fetch(getApiUrl('/api/login'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, password: '__otp_verified__' })
+                  });
+                  const loginData = await loginRes.json();
+                  if (loginData.success && loginData.token) {
+                    localStorage.setItem('auth_token', loginData.token);
+                  }
+                } catch (loginErr) { /* non-critical */ }
+              }
+              localStorage.setItem('user_data', JSON.stringify(data.user));
               document.getElementById('auth-profile-name').textContent = data.user.name || 'Ankri Artisan';
               document.getElementById('auth-profile-email').textContent = data.user.email;
+              updateProfileAvatar(data.user.name || data.user.email);
               switchAuthView('profile');
+              loadOrderHistory();
               // Clear session
               sessionStorage.removeItem('pending_verify_email');
               sessionStorage.removeItem('pending_verify_otp_token');
             } else {
-              notify("Error: " + (data.message || 'Invalid code'));
+              notify('Error: ' + (data.message || 'Invalid code'));
             }
           } catch (err) {
             console.error(err);
-            notify("Error connecting to server. Make sure the backend server is running.");
+            notify('Error connecting to server. Make sure the backend server is running.');
           }
           btn.textContent = 'Verify Account';
           btn.disabled = false;

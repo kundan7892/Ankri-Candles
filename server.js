@@ -485,7 +485,8 @@ app.post('/api/verify', async (req, res) => {
           user.forgotPasswordMode = false;
           await user.save();
 
-          return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: user.name || 'Ankri Artisan', email: user.email } });
+          const token = jwt.sign({ email: cleanEmail, name: user.name || 'Ankri Artisan' }, JWT_SECRET, { expiresIn: '7d' });
+          return res.status(200).json({ success: true, message: 'Account verified successfully', token, user: { name: user.name || 'Ankri Artisan', email: user.email } });
         }
       } catch (dbErr) {
         console.error('MongoDB query error in /api/verify:', dbErr.message);
@@ -509,7 +510,8 @@ app.post('/api/verify', async (req, res) => {
               await user.save();
             } catch (err) { }
           }
-          return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: decoded.name || 'Ankri Artisan', email: cleanEmail } });
+          const token = jwt.sign({ email: cleanEmail, name: decoded.name || 'Ankri Artisan' }, JWT_SECRET, { expiresIn: '7d' });
+          return res.status(200).json({ success: true, message: 'Account verified successfully', token, user: { name: decoded.name || 'Ankri Artisan', email: cleanEmail } });
         }
       } catch (jwtErr) {
         if (jwtErr.name === 'TokenExpiredError') {
@@ -541,7 +543,8 @@ app.post('/api/verify', async (req, res) => {
         } catch (err) { }
       }
 
-      return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: latestRecord.name || 'Ankri Artisan', email: cleanEmail } });
+      const token = jwt.sign({ email: cleanEmail, name: latestRecord.name || 'Ankri Artisan' }, JWT_SECRET, { expiresIn: '7d' });
+      return res.status(200).json({ success: true, message: 'Account verified successfully', token, user: { name: latestRecord.name || 'Ankri Artisan', email: cleanEmail } });
     }
 
     return res.status(400).json({ success: false, message: 'Invalid verification code' });

@@ -4451,6 +4451,28 @@ function initAppFlow() {
 
 
   // --- GLOBAL CART BRIDGE FOR PDP ---
+  // Reorder bridge: add a saved booking item back into the cart (used by profile modal)
+  window.addToCartFromOrder = function (item) {
+    if (!item || !item.name) return;
+    const defaultColor = '#D4AF37, #111D16, #09100C';
+    const id = (item.id || item.name.toLowerCase().replace(/\s+/g, '-'));
+    const existing = state.cart.find(c => c.id === id);
+    if (existing) {
+      existing.quantity += (item.quantity || 1);
+    } else {
+      state.cart.push({
+        id: id,
+        name: item.name,
+        price: item.price || 799,
+        description: item.description || 'Signature Candle',
+        colors: item.colors || defaultColor,
+        isCustom: item.isCustom || false,
+        quantity: item.quantity || 1
+      });
+    }
+    renderCart();
+  };
+
   window.addToCart = function (payload) {
     const defaultColor = '#D4AF37, #111D16, #09100C'; // default luxurious gradient
 
