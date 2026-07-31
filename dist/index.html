@@ -3257,6 +3257,89 @@
           btn.disabled = false;
         };
 
+        window.handleForgotPassword = async function (e) {
+          e.preventDefault();
+          const email = (document.getElementById('forgot-email').value || '').trim().toLowerCase();
+          const btn = document.getElementById('btn-forgot-submit');
+
+          if (!email) {
+            notify("Please enter your email address.");
+            return;
+          }
+
+          btn.textContent = 'Sending Link...';
+          btn.disabled = true;
+
+          try {
+            const res = await fetch(getApiUrl('/api/forgot-password'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+              notify("Encrypted password reset link sent to " + email);
+              sessionStorage.setItem('pending_reset_email', email);
+              if (data.resetToken) {
+                sessionStorage.setItem('pending_reset_token', data.resetToken);
+              }
+            } else {
+              notify("Error: " + (data.message || "Email address not found"));
+            }
+          } catch (err) {
+            console.error(err);
+            notify("Error connecting to server.");
+          }
+          btn.textContent = 'Send Reset Link';
+          btn.disabled = false;
+        };
+
+        window.handleResetPassword = async function (e) {
+          e.preventDefault();
+          const code = (document.getElementById('reset-code').value || '').trim();
+          const newPassword = document.getElementById('reset-new-password').value;
+          const email = (sessionStorage.getItem('pending_reset_email') || '').trim().toLowerCase();
+          const resetToken = sessionStorage.getItem('pending_reset_token') || '';
+          const btn = document.getElementById('btn-reset-submit');
+
+          if (!newPassword) {
+            notify("Please enter a new password.");
+            return;
+          }
+          if (!resetToken && !code) {
+            notify("Please enter the reset code or click the encrypted link in your email.");
+            return;
+          }
+
+          btn.textContent = 'Updating Password...';
+          btn.disabled = true;
+
+          try {
+            const res = await fetch(getApiUrl('/api/reset-password'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, code, newPassword, resetToken })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+              notify("Password updated successfully! Please sign in with your new password.");
+              sessionStorage.removeItem('pending_reset_email');
+              sessionStorage.removeItem('pending_reset_token');
+              window.history.replaceState({}, document.title, window.location.pathname);
+              switchAuthView('login');
+            } else {
+              notify("Error: " + (data.message || "Password reset failed"));
+            }
+          } catch (err) {
+            console.error(err);
+            notify("Error connecting to server.");
+          }
+          btn.textContent = 'Update Password';
+          btn.disabled = false;
+        };
+
         window.handleVerify = async function (e) {
           e.preventDefault();
           const code = (document.getElementById('verify-code').value || '').trim();

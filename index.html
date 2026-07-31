@@ -3339,38 +3339,6 @@
           btn.disabled = false;
         };
 
-          if (!code || !newPassword) {
-            notify("Please fill in all fields.");
-            return;
-          }
-
-          btn.textContent = 'Updating Password...';
-          btn.disabled = true;
-
-          try {
-            const res = await fetch(getApiUrl('/api/reset-password'), {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, code, newPassword, resetToken })
-            });
-            const data = await res.json();
-
-            if (data.success) {
-              notify("Password updated successfully! Please sign in with your new password.");
-              sessionStorage.removeItem('pending_reset_email');
-              sessionStorage.removeItem('pending_reset_token');
-              switchAuthView('login');
-            } else {
-              notify("Error: " + (data.message || "Password reset failed"));
-            }
-          } catch (err) {
-            console.error(err);
-            notify("Error connecting to server.");
-          }
-          btn.textContent = 'Update Password';
-          btn.disabled = false;
-        };
-
         window.handleVerify = async function (e) {
           e.preventDefault();
           const code = (document.getElementById('verify-code').value || '').trim();
