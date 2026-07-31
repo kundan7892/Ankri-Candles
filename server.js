@@ -592,83 +592,77 @@ app.post('/api/forgot-password', async (req, res) => {
 
     saveToBackupFile('resets_temp.json', { email: cleanEmail, resetCode, resetExpiry, timestamp: new Date() });
 
+    // Generate encrypted signed JWT reset token for direct email link
     const resetToken = jwt.sign(
       { email: cleanEmail, resetCode, type: 'password_reset' },
       JWT_SECRET,
       { expiresIn: '15m' }
     );
 
-    console.log(`🔑 [ANKRI FORGOT PASSWORD] Reset code for ${cleanEmail} is: ${resetCode}`);
+    // Build absolute encrypted reset link
+    const origin = req.headers.origin || (req.headers.host ? `${req.protocol || 'http'}://${req.headers.host}` : '');
+    const siteUrl = process.env.SITE_URL || origin || 'http://localhost:5000';
+    const resetLink = `${siteUrl.replace(/\/$/, '')}/?reset_token=${resetToken}`;
+
+    console.log(`🔑 [ANKRI FORGOT PASSWORD] Encrypted reset link for ${cleanEmail}: ${resetLink}`);
 
     const mailOptions = {
       from: 'ankricandle@gmail.com',
       to: cleanEmail,
       subject: 'Reset your Ankri Candle Password',
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; text-align: center;">
-          <h2>Ankri Candle Password Reset</h2>
-          <p>We received a request to reset your account password.</p>
-          <p>Please use the following 6-digit code to set a new password:</p>
-          <h1 style="color: #D4AF37; letter-spacing: 5px;">${resetCode}</h1>
-          <p>This code expires in 15 minutes.</p>
+        <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; text-align: center; background: #13221C; color: #F5E6D3; padding: 30px; border-radius: 12px; border: 1px solid #D4AF37;">
+          <h2 style="color: #D4AF37; margin-bottom: 10px;">Ankri Candle Password Reset</h2>
+          <p style="color: #ddd;">We received a request to reset your account password.</p>
+          <p style="color: #ddd;">Please click the button below to reset your password securely:</p>
+          <div style="margin: 25px 0;">
+            <a href="${resetLink}" target="_blank" style="background-color: #D4AF37; color: #13221C; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 1rem; display: inline-block; box-shadow: 0 4px 15px rgba(212,175,55,0.4);">Reset Password</a>
+          </div>
+          <p style="font-size: 0.85rem; color: #bbb;">Or copy and paste this encrypted reset link into your browser:</p>
+          <p style="font-size: 0.75rem; word-break: break-all; color: #D4AF37; margin-bottom: 20px;">${resetLink}</p>
+          <p style="font-size: 0.8rem; color: #888; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">Backup code: <strong style="color: #D4AF37;">${resetCode}</strong> (Expires in 15 minutes)</p>
         </div>
       `
     };
 
     try {
       await transporter.sendMail(mailOptions);
-      console.log(`✉️ [ANKRI RESET] Sent reset code email to ${cleanEmail}`);
+      console.log(`✉️ [ANKRI RESET LINK] Sent encrypted password reset link to ${cleanEmail}`);
     } catch (mailErr) {
       console.error(`⚠️ [ANKRI RESET SMTP NOTICE] Could not send reset email:`, mailErr.message);
     }
 
     return res.status(200).json({
       success: true,
-      message: 'Password reset code sent to your email',
-      resetToken
+      message: 'Password reset link sent to your email',
+      resetToken,
+      resetLink
     });
   } catch (error) {
     console.error('Error in /api/forgot-password:', error);
-    res.status(500).json({ success: false, message: 'Server error sending password reset code' });
+    res.status(500).json({ success: false, message: 'Server error sending password reset link' });
   }
 });
 
 app.post('/api/reset-password', async (req, res) => {
   try {
     const { email, code, newPassword, resetToken } = req.body;
-    if (!email || !code || !newPassword) {
-      return res.status(400).json({ success: false, message: 'Email, reset code, and new password are required' });
+    if (!newPassword) {
+      return res.status(400).json({ success: false, message: 'New password is required' });
     }
 
-    const cleanEmail = String(email).trim().toLowerCase();
-    const cleanCode = String(code).trim();
+    const cleanCode = code ? String(code).trim() : '';
     const isConnected = await ensureDbConnected();
 
-    // Strategy 1: Check MongoDB
-    if (isConnected) {
-      const user = await User.findOne({ email: cleanEmail });
-      if (user && user.resetPasswordToken && String(user.resetPasswordToken).trim() === cleanCode) {
-        if (user.resetPasswordExpiry && new Date() > new Date(user.resetPasswordExpiry)) {
-          return res.status(400).json({ success: false, message: 'Reset code expired. Please request a new code.' });
-        }
-        user.password = newPassword;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpiry = undefined;
-        user.isVerified = true;
-        await user.save();
-
-        return res.status(200).json({ success: true, message: 'Password updated successfully. Please sign in.' });
-      }
-    }
-
-    // Strategy 2: Check Stateless JWT resetToken
+    // Strategy 1: Check Encrypted JWT Reset Token (direct link verification)
     if (resetToken) {
       try {
         const decoded = jwt.verify(resetToken, JWT_SECRET);
-        if (decoded && decoded.type === 'password_reset' && decoded.email === cleanEmail && String(decoded.resetCode).trim() === cleanCode) {
+        if (decoded && decoded.type === 'password_reset') {
+          const targetEmail = decoded.email;
           if (isConnected) {
             try {
-              let user = await User.findOne({ email: cleanEmail });
+              let user = await User.findOne({ email: targetEmail });
               if (user) {
                 user.password = newPassword;
                 user.resetPasswordToken = undefined;
@@ -678,28 +672,49 @@ app.post('/api/reset-password', async (req, res) => {
               }
             } catch (err) {}
           }
+          saveToBackupFile('users_verified.json', { email: targetEmail, isVerified: true, timestamp: new Date() });
           return res.status(200).json({ success: true, message: 'Password updated successfully. Please sign in.' });
         }
       } catch (jwtErr) {
         if (jwtErr.name === 'TokenExpiredError') {
-          return res.status(400).json({ success: false, message: 'Reset code expired. Please request a new code.' });
+          return res.status(400).json({ success: false, message: 'Encrypted reset link has expired. Please request a new link.' });
         }
       }
     }
 
-    // Strategy 3: Check local backup file
-    const resets = readFromBackupFile('resets_temp.json');
-    const matches = resets.filter(r => String(r.email || '').trim().toLowerCase() === cleanEmail);
-    const latest = matches.length > 0 ? matches[matches.length - 1] : null;
+    // Strategy 2: Check MongoDB via email & 6-digit code
+    if (email && cleanCode) {
+      const cleanEmail = String(email).trim().toLowerCase();
+      if (isConnected) {
+        const user = await User.findOne({ email: cleanEmail });
+        if (user && user.resetPasswordToken && String(user.resetPasswordToken).trim() === cleanCode) {
+          if (user.resetPasswordExpiry && new Date() > new Date(user.resetPasswordExpiry)) {
+            return res.status(400).json({ success: false, message: 'Reset code expired. Please request a new link.' });
+          }
+          user.password = newPassword;
+          user.resetPasswordToken = undefined;
+          user.resetPasswordExpiry = undefined;
+          user.isVerified = true;
+          await user.save();
 
-    if (latest && String(latest.resetCode).trim() === cleanCode) {
-      if (latest.resetExpiry && new Date() > new Date(latest.resetExpiry)) {
-        return res.status(400).json({ success: false, message: 'Reset code expired' });
+          return res.status(200).json({ success: true, message: 'Password updated successfully. Please sign in.' });
+        }
       }
-      return res.status(200).json({ success: true, message: 'Password updated successfully. Please sign in.' });
+
+      // Strategy 3: Check local backup file via 6-digit code
+      const resets = readFromBackupFile('resets_temp.json');
+      const matches = resets.filter(r => String(r.email || '').trim().toLowerCase() === cleanEmail);
+      const latest = matches.length > 0 ? matches[matches.length - 1] : null;
+
+      if (latest && String(latest.resetCode).trim() === cleanCode) {
+        if (latest.resetExpiry && new Date() > new Date(latest.resetExpiry)) {
+          return res.status(400).json({ success: false, message: 'Reset code expired' });
+        }
+        return res.status(200).json({ success: true, message: 'Password updated successfully. Please sign in.' });
+      }
     }
 
-    return res.status(400).json({ success: false, message: 'Invalid reset code' });
+    return res.status(400).json({ success: false, message: 'Invalid or expired reset link/code' });
   } catch (error) {
     console.error('Error in /api/reset-password:', error);
     res.status(500).json({ success: false, message: 'Server error during password reset' });

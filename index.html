@@ -2991,13 +2991,13 @@
 
       <!-- Forgot Password View -->
       <div id="auth-forgot-view" style="display: none;">
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Enter your registered email address to receive a password reset code.</p>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Enter your registered email address to receive an encrypted password reset link.</p>
         <form class="enquiry-form" id="forgot-form" onsubmit="handleForgotPassword(event)">
           <div class="form-group" style="margin-bottom: 1.5rem;">
             <input type="email" id="forgot-email" placeholder="Email Address" required
               style="width:100%; border-radius:8px !important; padding: 0.85rem;">
           </div>
-          <button type="submit" id="btn-forgot-submit" class="btn btn-primary btn-large btn-grow" style="width: 100%;">Send Reset Code</button>
+          <button type="submit" id="btn-forgot-submit" class="btn btn-primary btn-large btn-grow" style="width: 100%;">Send Reset Link</button>
           <button type="button" onclick="switchAuthView('login')"
             style="width: 100%; background: none; border: none; color: var(--text-secondary); text-decoration: underline; margin-top: 1rem; cursor: pointer; font-size: 0.8rem;">Back to Sign In</button>
         </form>
@@ -3005,10 +3005,10 @@
 
       <!-- Reset Password View -->
       <div id="auth-reset-view" style="display: none;">
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Enter the 6-digit reset code sent to your email and set a new password.</p>
+        <p id="reset-view-subtitle" style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Set a new password for your account.</p>
         <form class="enquiry-form" id="reset-form" onsubmit="handleResetPassword(event)">
-          <div class="form-group" style="margin-bottom: 1rem;">
-            <input type="text" id="reset-code" placeholder="6-Digit Reset Code" required maxlength="6"
+          <div class="form-group" id="reset-code-group" style="margin-bottom: 1rem;">
+            <input type="text" id="reset-code" placeholder="6-Digit Reset Code (Optional if using email link)" maxlength="6"
               style="width:100%; border-radius:8px !important; padding: 0.85rem; text-align: center; font-size: 1.2rem; letter-spacing: 0.15em; font-weight: bold; color: var(--gold-primary);">
           </div>
           <div class="form-group" style="margin-bottom: 1.5rem;">
@@ -3048,6 +3048,21 @@
 
       <script>
         let otpTimerInterval = null;
+
+        // Auto-detect encrypted password reset link from email
+        window.addEventListener('DOMContentLoaded', () => {
+          const urlParams = new URLSearchParams(window.location.search);
+          const resetToken = urlParams.get('reset_token');
+          if (resetToken) {
+            sessionStorage.setItem('pending_reset_token', resetToken);
+            const profileOverlay = document.getElementById('profile-modal-overlay');
+            if (profileOverlay) {
+              profileOverlay.classList.remove('hidden');
+              document.body.style.overflow = 'hidden';
+            }
+            switchAuthView('reset');
+          }
+        });
 
         function startOtpTimer() {
           if (otpTimerInterval) clearInterval(otpTimerInterval);
@@ -3139,6 +3154,19 @@
           if (document.getElementById('tab-login') && document.getElementById('tab-register')) {
             document.getElementById('tab-login').classList.toggle('active', view === 'login');
             document.getElementById('tab-register').classList.toggle('active', view === 'register');
+          }
+
+          if (view === 'reset') {
+            const hasToken = !!sessionStorage.getItem('pending_reset_token');
+            const codeGroup = document.getElementById('reset-code-group');
+            const subtitle = document.getElementById('reset-view-subtitle');
+            if (hasToken) {
+              if (codeGroup) codeGroup.style.display = 'none';
+              if (subtitle) subtitle.textContent = 'Encrypted reset link verified. Enter your new password below.';
+            } else {
+              if (codeGroup) codeGroup.style.display = 'block';
+              if (subtitle) subtitle.textContent = 'Enter the 6-digit reset code sent to your email and set a new password.';
+            }
           }
 
           if (view === 'verify') {
@@ -3238,7 +3266,7 @@
             return;
           }
 
-          btn.textContent = 'Sending Code...';
+          btn.textContent = 'Sending Link...';
           btn.disabled = true;
 
           try {
@@ -3250,12 +3278,11 @@
             const data = await res.json();
 
             if (data.success) {
-              notify("Password reset code sent to " + email);
+              notify("Encrypted password reset link sent to " + email);
               sessionStorage.setItem('pending_reset_email', email);
               if (data.resetToken) {
                 sessionStorage.setItem('pending_reset_token', data.resetToken);
               }
-              switchAuthView('reset');
             } else {
               notify("Error: " + (data.message || "Email address not found"));
             }
@@ -3263,7 +3290,7 @@
             console.error(err);
             notify("Error connecting to server.");
           }
-          btn.textContent = 'Send Reset Code';
+          btn.textContent = 'Send Reset Link';
           btn.disabled = false;
         };
 
@@ -3274,6 +3301,43 @@
           const email = (sessionStorage.getItem('pending_reset_email') || '').trim().toLowerCase();
           const resetToken = sessionStorage.getItem('pending_reset_token') || '';
           const btn = document.getElementById('btn-reset-submit');
+
+          if (!newPassword) {
+            notify("Please enter a new password.");
+            return;
+          }
+          if (!resetToken && !code) {
+            notify("Please enter the reset code or click the encrypted link in your email.");
+            return;
+          }
+
+          btn.textContent = 'Updating Password...';
+          btn.disabled = true;
+
+          try {
+            const res = await fetch(getApiUrl('/api/reset-password'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, code, newPassword, resetToken })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+              notify("Password updated successfully! Please sign in with your new password.");
+              sessionStorage.removeItem('pending_reset_email');
+              sessionStorage.removeItem('pending_reset_token');
+              window.history.replaceState({}, document.title, window.location.pathname);
+              switchAuthView('login');
+            } else {
+              notify("Error: " + (data.message || "Password reset failed"));
+            }
+          } catch (err) {
+            console.error(err);
+            notify("Error connecting to server.");
+          }
+          btn.textContent = 'Update Password';
+          btn.disabled = false;
+        };
 
           if (!code || !newPassword) {
             notify("Please fill in all fields.");
