@@ -2928,26 +2928,28 @@
 
       <!-- Login View -->
       <div id="auth-login-view" style="display: block;">
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Welcome
-          back, candle artisan.</p>
-        <form class="enquiry-form"
-          onsubmit="event.preventDefault(); (window.showToast||window.I||alert)('Login simulated.'); switchAuthView('profile');">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Welcome back, candle artisan.</p>
+        <form class="enquiry-form" id="login-form" onsubmit="handleCustomerLogin(event)">
           <div class="form-group" style="margin-bottom: 1rem;">
-            <input type="email" placeholder="Email Address" required
+            <input type="email" id="login-email" placeholder="Email Address" required
               style="width:100%; border-radius:8px !important; padding: 0.85rem;">
           </div>
-          <div class="form-group" style="margin-bottom: 1.5rem;">
-            <input type="password" placeholder="Password" required
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <input type="password" id="login-password" placeholder="Password" required
               style="width:100%; border-radius:8px !important; padding: 0.85rem;">
           </div>
-          <button type="submit" class="btn btn-primary btn-large btn-grow" style="width: 100%;">Sign In</button>
+          <div style="text-align: right; margin-bottom: 1.25rem;">
+            <a href="#" onclick="switchAuthView('forgot'); return false;"
+              style="font-size: 0.8rem; color: var(--gold-primary); text-decoration: underline;">Forgot Password?</a>
+          </div>
+          <button type="submit" id="btn-login-submit" class="btn btn-primary btn-large btn-grow" style="width: 100%;">Sign In</button>
         </form>
       </div>
 
       <!-- Register View -->
       <div id="auth-register-view" style="display: none;">
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Join our
-          sanctuary of luxury fragrances.</p>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Join our sanctuary of luxury fragrances.</p>
+        <div id="reg-error-banner" style="display: none; background: rgba(231, 76, 60, 0.15); border: 1px solid rgba(231, 76, 60, 0.4); color: #ff6b6b; padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; text-align: center; margin-bottom: 1rem;"></div>
         <form class="enquiry-form" id="register-form" onsubmit="handleRegister(event)">
           <div class="form-group" style="margin-bottom: 1rem;">
             <input type="text" id="reg-name" placeholder="Full Name" required
@@ -2968,18 +2970,55 @@
 
       <!-- Verify View -->
       <div id="auth-verify-view" style="display: none;">
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">We've
-          sent a 6-digit verification code to your email.</p>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">We've sent a 6-digit verification code to your email.</p>
         <form class="enquiry-form" id="verify-form" onsubmit="handleVerify(event)">
-          <div class="form-group" style="margin-bottom: 1.5rem;">
+          <div class="form-group" style="margin-bottom: 1rem;">
             <input type="text" id="verify-code" placeholder="Enter 6-digit code" required maxlength="6"
               style="width:100%; border-radius:8px !important; padding: 0.85rem; text-align: center; font-size: 1.5rem; letter-spacing: 0.2em; font-weight: bold; color: var(--gold-primary);">
+          </div>
+          <div id="otp-timer-container" style="text-align: center; margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--text-secondary);">
+            <span id="otp-timer-text">Resend code available in <strong id="otp-timer-seconds" style="color: var(--gold-primary);">60</strong>s</span>
+            <button type="button" id="btn-resend-otp" onclick="handleResendOTP()"
+              style="display: none; margin: 0 auto; background: none; border: 1px solid var(--gold-primary); color: var(--gold-primary); padding: 0.4rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 500;">
+              Resend Code
+            </button>
           </div>
           <button type="submit" id="btn-verify-submit" class="btn btn-primary btn-large btn-grow"
             style="width: 100%;">Verify Account</button>
           <button type="button" onclick="switchAuthView('register')"
-            style="width: 100%; background: none; border: none; color: var(--text-secondary); text-decoration: underline; margin-top: 1rem; cursor: pointer; font-size: 0.8rem;">Change
-            Email</button>
+            style="width: 100%; background: none; border: none; color: var(--text-secondary); text-decoration: underline; margin-top: 1rem; cursor: pointer; font-size: 0.8rem;">Change Email</button>
+        </form>
+      </div>
+
+      <!-- Forgot Password View -->
+      <div id="auth-forgot-view" style="display: none;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Enter your registered email address to receive a password reset code.</p>
+        <form class="enquiry-form" id="forgot-form" onsubmit="handleForgotPassword(event)">
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <input type="email" id="forgot-email" placeholder="Email Address" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+          </div>
+          <button type="submit" id="btn-forgot-submit" class="btn btn-primary btn-large btn-grow" style="width: 100%;">Send Reset Code</button>
+          <button type="button" onclick="switchAuthView('login')"
+            style="width: 100%; background: none; border: none; color: var(--text-secondary); text-decoration: underline; margin-top: 1rem; cursor: pointer; font-size: 0.8rem;">Back to Sign In</button>
+        </form>
+      </div>
+
+      <!-- Reset Password View -->
+      <div id="auth-reset-view" style="display: none;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Enter the 6-digit reset code sent to your email and set a new password.</p>
+        <form class="enquiry-form" id="reset-form" onsubmit="handleResetPassword(event)">
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <input type="text" id="reset-code" placeholder="6-Digit Reset Code" required maxlength="6"
+              style="width:100%; border-radius:8px !important; padding: 0.85rem; text-align: center; font-size: 1.2rem; letter-spacing: 0.15em; font-weight: bold; color: var(--gold-primary);">
+          </div>
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <input type="password" id="reset-new-password" placeholder="New Password" required minlength="6"
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+          </div>
+          <button type="submit" id="btn-reset-submit" class="btn btn-primary btn-large btn-grow" style="width: 100%;">Update Password</button>
+          <button type="button" onclick="switchAuthView('login')"
+            style="width: 100%; background: none; border: none; color: var(--text-secondary); text-decoration: underline; margin-top: 1rem; cursor: pointer; font-size: 0.8rem;">Cancel</button>
         </form>
       </div>
 
@@ -3009,6 +3048,71 @@
       </div>
 
       <script>
+        let otpTimerInterval = null;
+
+        function startOtpTimer() {
+          if (otpTimerInterval) clearInterval(otpTimerInterval);
+          let secondsLeft = 60;
+          const timerText = document.getElementById('otp-timer-text');
+          const secondsElem = document.getElementById('otp-timer-seconds');
+          const resendBtn = document.getElementById('btn-resend-otp');
+
+          if (timerText) timerText.style.display = 'inline';
+          if (resendBtn) resendBtn.style.display = 'none';
+          if (secondsElem) secondsElem.textContent = '60';
+
+          otpTimerInterval = setInterval(() => {
+            secondsLeft--;
+            if (secondsElem) secondsElem.textContent = secondsLeft;
+            if (secondsLeft <= 0) {
+              clearInterval(otpTimerInterval);
+              otpTimerInterval = null;
+              if (timerText) timerText.style.display = 'none';
+              if (resendBtn) resendBtn.style.display = 'inline-block';
+            }
+          }, 1000);
+        }
+
+        window.handleResendOTP = async function () {
+          const email = (sessionStorage.getItem('pending_verify_email') || '').trim().toLowerCase();
+          const resendBtn = document.getElementById('btn-resend-otp');
+          if (!email) {
+            notify("Verification session expired. Please register again.");
+            switchAuthView('register');
+            return;
+          }
+
+          if (resendBtn) {
+            resendBtn.disabled = true;
+            resendBtn.textContent = 'Sending...';
+          }
+
+          try {
+            const res = await fetch(getApiUrl('/api/register'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+            if (data.success) {
+              if (data.otpToken) {
+                sessionStorage.setItem('pending_verify_otp_token', data.otpToken);
+              }
+              notify("New verification code sent to " + email);
+              startOtpTimer();
+            } else {
+              notify("Error: " + (data.message || "Failed to resend code"));
+            }
+          } catch (err) {
+            console.error(err);
+            notify("Error connecting to server.");
+          }
+          if (resendBtn) {
+            resendBtn.disabled = false;
+            resendBtn.textContent = 'Resend Code';
+          }
+        };
+
         function getApiUrl(endpoint) {
           const base = (window.VITE_API_URL || window.API_BASE_URL || (window.location.protocol === 'file:' ? 'http://localhost:5000' : '')).replace(/\/$/, '');
           return `${base}${endpoint}`;
@@ -3029,12 +3133,50 @@
           document.getElementById('auth-register-view').style.display = view === 'register' ? 'block' : 'none';
           document.getElementById('auth-verify-view').style.display = view === 'verify' ? 'block' : 'none';
           document.getElementById('auth-profile-view').style.display = view === 'profile' ? 'block' : 'none';
+          document.getElementById('auth-forgot-view').style.display = view === 'forgot' ? 'block' : 'none';
+          document.getElementById('auth-reset-view').style.display = view === 'reset' ? 'block' : 'none';
           document.getElementById('auth-tabs').style.display = (view === 'login' || view === 'register') ? 'flex' : 'none';
 
           if (document.getElementById('tab-login') && document.getElementById('tab-register')) {
             document.getElementById('tab-login').classList.toggle('active', view === 'login');
             document.getElementById('tab-register').classList.toggle('active', view === 'register');
           }
+
+          if (view === 'verify') {
+            startOtpTimer();
+          }
+        };
+
+        window.handleCustomerLogin = async function (e) {
+          e.preventDefault();
+          const email = (document.getElementById('login-email').value || '').trim().toLowerCase();
+          const password = document.getElementById('login-password').value;
+          const btn = document.getElementById('btn-login-submit');
+
+          btn.textContent = 'Signing In...';
+          btn.disabled = true;
+
+          try {
+            const res = await fetch(getApiUrl('/api/customer/login'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (data.success) {
+              notify("Welcome back!");
+              document.getElementById('auth-profile-name').textContent = data.user.name || 'Ankri Artisan';
+              document.getElementById('auth-profile-email').textContent = data.user.email;
+              switchAuthView('profile');
+            } else {
+              notify("Login Error: " + (data.message || "Invalid credentials"));
+            }
+          } catch (err) {
+            console.error(err);
+            notify("Error connecting to server.");
+          }
+          btn.textContent = 'Sign In';
+          btn.disabled = false;
         };
 
         window.handleRegister = async function (e) {
@@ -3043,6 +3185,9 @@
           const email = (document.getElementById('reg-email').value || '').trim().toLowerCase();
           const password = document.getElementById('reg-password').value;
           const btn = document.getElementById('btn-register-submit');
+          const errorBanner = document.getElementById('reg-error-banner');
+
+          if (errorBanner) errorBanner.style.display = 'none';
 
           if (!email) {
             notify("Please enter a valid email address.");
@@ -3062,13 +3207,18 @@
 
             if (data.success) {
               notify("Verification code sent to " + email);
-              // Save email and signed OTP token in session to verify next step
               sessionStorage.setItem('pending_verify_email', email);
               if (data.otpToken) {
                 sessionStorage.setItem('pending_verify_otp_token', data.otpToken);
               }
               switchAuthView('verify');
             } else {
+              if (data.exists || (data.message && data.message.includes("already exists"))) {
+                if (errorBanner) {
+                  errorBanner.innerHTML = `Account with this email already exists, <a href="#" onclick="switchAuthView('login'); return false;" style="color: var(--gold-primary); text-decoration: underline; font-weight: bold;">click here to sign in</a>`;
+                  errorBanner.style.display = 'block';
+                }
+              }
               notify("Error: " + (data.message || "Failed to send code"));
             }
           } catch (err) {

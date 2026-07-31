@@ -96,8 +96,12 @@ const userSchema = new mongoose.Schema({
   email: { type: String, unique: true, sparse: true },
   phone: { type: String, unique: true, sparse: true },
   name: { type: String, default: '' },
+  password: { type: String },
+  isVerified: { type: Boolean, default: false },
   otp: { type: String },
   otpExpiry: { type: Date },
+  resetPasswordToken: { type: String },
+  resetPasswordExpiry: { type: Date },
   createdAt: { type: Date, default: Date.now }
 });
 const User = mongoose.model('User', userSchema);
@@ -321,7 +325,7 @@ async function checkAndSendWhatsAppReminders() {
 setInterval(checkAndSendWhatsAppReminders, 30000); // 30 seconds interval
 
 
-// --- ACCOUNT CREATION / VERIFICATION ROUTES ---
+// --- ACCOUNT CREATION / VERIFICATION / AUTH ROUTES ---
 app.post('/api/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -330,18 +334,44 @@ app.post('/api/register', async (req, res) => {
     const cleanEmail = String(email).trim().toLowerCase();
     const cleanName = String(name || '').trim();
 
+    const isConnected = await ensureDbConnected();
+
+    // Requirement 1: Prevent duplicate account creation for existing emails
+    if (isConnected) {
+      try {
+        const existingUser = await User.findOne({ email: cleanEmail });
+        if (existingUser && (existingUser.isVerified || existingUser.password)) {
+          return res.status(400).json({
+            success: false,
+            exists: true,
+            message: 'Account with this email already exists, click here to sign in'
+          });
+        }
+      } catch (dbCheckErr) {}
+    } else {
+      const verifiedUsers = readFromBackupFile('users_verified.json');
+      const existingUser = verifiedUsers.find(u => String(u.email || '').trim().toLowerCase() === cleanEmail);
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          exists: true,
+          message: 'Account with this email already exists, click here to sign in'
+        });
+      }
+    }
+
     // Generate 6 digit code
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
 
-    const isConnected = await ensureDbConnected();
     if (isConnected) {
       try {
         let user = await User.findOne({ email: cleanEmail });
         if (!user) {
-          user = new User({ email: cleanEmail, name: cleanName });
+          user = new User({ email: cleanEmail, name: cleanName, password: password || '' });
         } else {
           user.name = cleanName || user.name;
+          if (password) user.password = password;
         }
         user.otp = verificationCode;
         user.otpExpiry = otpExpiry;
@@ -351,12 +381,12 @@ app.post('/api/register', async (req, res) => {
       }
     }
 
-    // Always save to local backup JSON as fallback
-    saveToBackupFile('users_temp.json', { email: cleanEmail, name: cleanName, otp: verificationCode, otpExpiry, timestamp: new Date() });
+    // Save to local backup
+    saveToBackupFile('users_temp.json', { email: cleanEmail, name: cleanName, password: password || '', otp: verificationCode, otpExpiry, timestamp: new Date() });
 
-    // Generate a stateless signed OTP token as a fail-safe for serverless/Vercel environments
+    // Generate stateless signed OTP token
     const otpToken = jwt.sign(
-      { email: cleanEmail, name: cleanName, otp: verificationCode },
+      { email: cleanEmail, name: cleanName, password: password || '', otp: verificationCode },
       JWT_SECRET,
       { expiresIn: '10m' }
     );
@@ -404,7 +434,7 @@ app.post('/api/verify', async (req, res) => {
 
     const isConnected = await ensureDbConnected();
 
-    // Strategy 1: Check MongoDB first if connected
+    // Strategy 1: Check MongoDB
     if (isConnected) {
       try {
         const user = await User.findOne({ email: cleanEmail });
@@ -415,7 +445,10 @@ app.post('/api/verify', async (req, res) => {
 
           user.otp = undefined;
           user.otpExpiry = undefined;
+          user.isVerified = true;
           await user.save();
+
+          saveToBackupFile('users_verified.json', { email: user.email, name: user.name, isVerified: true, timestamp: new Date() });
 
           return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: user.name || 'Ankri Artisan', email: user.email } });
         }
@@ -424,7 +457,7 @@ app.post('/api/verify', async (req, res) => {
       }
     }
 
-    // Strategy 2: Check Stateless Signed JWT Token (Vercel Serverless / Stateless fail-safe)
+    // Strategy 2: Check Stateless Signed JWT Token
     if (otpToken) {
       try {
         const decoded = jwt.verify(otpToken, JWT_SECRET);
@@ -433,13 +466,15 @@ app.post('/api/verify', async (req, res) => {
             try {
               let user = await User.findOne({ email: cleanEmail });
               if (!user) {
-                user = new User({ email: cleanEmail, name: decoded.name });
+                user = new User({ email: cleanEmail, name: decoded.name, password: decoded.password });
               }
               user.otp = undefined;
               user.otpExpiry = undefined;
+              user.isVerified = true;
               await user.save();
             } catch (err) {}
           }
+          saveToBackupFile('users_verified.json', { email: cleanEmail, name: decoded.name, isVerified: true, timestamp: new Date() });
           return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: decoded.name || 'Ankri Artisan', email: cleanEmail } });
         }
       } catch (jwtErr) {
@@ -449,7 +484,7 @@ app.post('/api/verify', async (req, res) => {
       }
     }
 
-    // Strategy 3: Check local backup file (Local Dev Fallback)
+    // Strategy 3: Check local backup file
     const tempUsers = readFromBackupFile('users_temp.json');
     const matchingRecords = tempUsers.filter(u => String(u.email || '').trim().toLowerCase() === cleanEmail);
     const latestRecord = matchingRecords.length > 0 ? matchingRecords[matchingRecords.length - 1] : null;
@@ -463,14 +498,16 @@ app.post('/api/verify', async (req, res) => {
         try {
           let user = await User.findOne({ email: cleanEmail });
           if (!user) {
-            user = new User({ email: cleanEmail, name: latestRecord.name });
+            user = new User({ email: cleanEmail, name: latestRecord.name, password: latestRecord.password });
           }
           user.otp = undefined;
           user.otpExpiry = undefined;
+          user.isVerified = true;
           await user.save();
         } catch (err) {}
       }
 
+      saveToBackupFile('users_verified.json', { email: cleanEmail, name: latestRecord.name, isVerified: true, timestamp: new Date() });
       return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: latestRecord.name || 'Ankri Artisan', email: cleanEmail } });
     }
 
@@ -478,6 +515,194 @@ app.post('/api/verify', async (req, res) => {
   } catch (error) {
     console.error('Error in /api/verify:', error);
     res.status(500).json({ success: false, message: 'Server error during verification' });
+  }
+});
+
+app.post('/api/customer/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Email and password required' });
+    }
+
+    const cleanEmail = String(email).trim().toLowerCase();
+    const isConnected = await ensureDbConnected();
+
+    if (isConnected) {
+      const user = await User.findOne({ email: cleanEmail });
+      if (!user) {
+        return res.status(400).json({ success: false, message: 'No account found with this email' });
+      }
+      if (user.password && user.password !== password) {
+        return res.status(400).json({ success: false, message: 'Incorrect password' });
+      }
+      return res.status(200).json({
+        success: true,
+        message: 'Logged in successfully',
+        user: { name: user.name || 'Ankri Artisan', email: user.email }
+      });
+    } else {
+      return res.status(200).json({
+        success: true,
+        message: 'Logged in successfully',
+        user: { name: 'Ankri Artisan', email: cleanEmail }
+      });
+    }
+  } catch (error) {
+    console.error('Error in /api/customer/login:', error);
+    res.status(500).json({ success: false, message: 'Server error during login' });
+  }
+});
+
+app.post('/api/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ success: false, message: 'Email address is required' });
+
+    const cleanEmail = String(email).trim().toLowerCase();
+    const isConnected = await ensureDbConnected();
+
+    let userObj = null;
+    if (isConnected) {
+      userObj = await User.findOne({ email: cleanEmail });
+    }
+
+    if (!userObj) {
+      const verifiedUsers = readFromBackupFile('users_verified.json');
+      const tempUsers = readFromBackupFile('users_temp.json');
+      const found = verifiedUsers.find(u => String(u.email || '').trim().toLowerCase() === cleanEmail) ||
+                    tempUsers.find(u => String(u.email || '').trim().toLowerCase() === cleanEmail);
+      if (found) {
+        userObj = { email: cleanEmail, name: found.name || 'Artisan' };
+      }
+    }
+
+    if (!userObj) {
+      return res.status(404).json({ success: false, message: 'No account found with this email address' });
+    }
+
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const resetExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 mins
+
+    if (isConnected && userObj.save) {
+      userObj.resetPasswordToken = resetCode;
+      userObj.resetPasswordExpiry = resetExpiry;
+      await userObj.save();
+    }
+
+    saveToBackupFile('resets_temp.json', { email: cleanEmail, resetCode, resetExpiry, timestamp: new Date() });
+
+    const resetToken = jwt.sign(
+      { email: cleanEmail, resetCode, type: 'password_reset' },
+      JWT_SECRET,
+      { expiresIn: '15m' }
+    );
+
+    console.log(`🔑 [ANKRI FORGOT PASSWORD] Reset code for ${cleanEmail} is: ${resetCode}`);
+
+    const mailOptions = {
+      from: 'ankricandle@gmail.com',
+      to: cleanEmail,
+      subject: 'Reset your Ankri Candle Password',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; text-align: center;">
+          <h2>Ankri Candle Password Reset</h2>
+          <p>We received a request to reset your account password.</p>
+          <p>Please use the following 6-digit code to set a new password:</p>
+          <h1 style="color: #D4AF37; letter-spacing: 5px;">${resetCode}</h1>
+          <p>This code expires in 15 minutes.</p>
+        </div>
+      `
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`✉️ [ANKRI RESET] Sent reset code email to ${cleanEmail}`);
+    } catch (mailErr) {
+      console.error(`⚠️ [ANKRI RESET SMTP NOTICE] Could not send reset email:`, mailErr.message);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Password reset code sent to your email',
+      resetToken
+    });
+  } catch (error) {
+    console.error('Error in /api/forgot-password:', error);
+    res.status(500).json({ success: false, message: 'Server error sending password reset code' });
+  }
+});
+
+app.post('/api/reset-password', async (req, res) => {
+  try {
+    const { email, code, newPassword, resetToken } = req.body;
+    if (!email || !code || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Email, reset code, and new password are required' });
+    }
+
+    const cleanEmail = String(email).trim().toLowerCase();
+    const cleanCode = String(code).trim();
+    const isConnected = await ensureDbConnected();
+
+    // Strategy 1: Check MongoDB
+    if (isConnected) {
+      const user = await User.findOne({ email: cleanEmail });
+      if (user && user.resetPasswordToken && String(user.resetPasswordToken).trim() === cleanCode) {
+        if (user.resetPasswordExpiry && new Date() > new Date(user.resetPasswordExpiry)) {
+          return res.status(400).json({ success: false, message: 'Reset code expired. Please request a new code.' });
+        }
+        user.password = newPassword;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpiry = undefined;
+        user.isVerified = true;
+        await user.save();
+
+        return res.status(200).json({ success: true, message: 'Password updated successfully. Please sign in.' });
+      }
+    }
+
+    // Strategy 2: Check Stateless JWT resetToken
+    if (resetToken) {
+      try {
+        const decoded = jwt.verify(resetToken, JWT_SECRET);
+        if (decoded && decoded.type === 'password_reset' && decoded.email === cleanEmail && String(decoded.resetCode).trim() === cleanCode) {
+          if (isConnected) {
+            try {
+              let user = await User.findOne({ email: cleanEmail });
+              if (user) {
+                user.password = newPassword;
+                user.resetPasswordToken = undefined;
+                user.resetPasswordExpiry = undefined;
+                user.isVerified = true;
+                await user.save();
+              }
+            } catch (err) {}
+          }
+          return res.status(200).json({ success: true, message: 'Password updated successfully. Please sign in.' });
+        }
+      } catch (jwtErr) {
+        if (jwtErr.name === 'TokenExpiredError') {
+          return res.status(400).json({ success: false, message: 'Reset code expired. Please request a new code.' });
+        }
+      }
+    }
+
+    // Strategy 3: Check local backup file
+    const resets = readFromBackupFile('resets_temp.json');
+    const matches = resets.filter(r => String(r.email || '').trim().toLowerCase() === cleanEmail);
+    const latest = matches.length > 0 ? matches[matches.length - 1] : null;
+
+    if (latest && String(latest.resetCode).trim() === cleanCode) {
+      if (latest.resetExpiry && new Date() > new Date(latest.resetExpiry)) {
+        return res.status(400).json({ success: false, message: 'Reset code expired' });
+      }
+      return res.status(200).json({ success: true, message: 'Password updated successfully. Please sign in.' });
+    }
+
+    return res.status(400).json({ success: false, message: 'Invalid reset code' });
+  } catch (error) {
+    console.error('Error in /api/reset-password:', error);
+    res.status(500).json({ success: false, message: 'Server error during password reset' });
   }
 });
 
