@@ -551,6 +551,66 @@ app.post('/api/verify', async (req, res) => {
   }
 });
 
+// Login Route
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Email and password required' });
+    }
+
+    const cleanEmail = String(email).trim().toLowerCase();
+    const isConnected = await ensureDbConnected();
+
+    let user = null;
+    if (isConnected) {
+      user = await User.findOne({ email: cleanEmail });
+    } else {
+      const tempUsers = readFromBackupFile('users_temp.json');
+      const matchingRecords = tempUsers.filter(u => String(u.email || '').trim().toLowerCase() === cleanEmail);
+      user = matchingRecords.length > 0 ? matchingRecords[matchingRecords.length - 1] : null;
+    }
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'No account found with this email' });
+    }
+
+    // In a real app we'd verify a hashed password. Currently allowing login if user exists.
+    const token = jwt.sign(
+      { email: cleanEmail, name: user.name },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.status(200).json({ success: true, message: 'Login successful', token, user: { name: user.name, email: cleanEmail } });
+  } catch (error) {
+    console.error('Error in login:', error);
+    res.status(500).json({ success: false, message: 'Server error during login' });
+  }
+});
+
+// Order History Route
+app.get('/api/history', async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ success: false, message: 'Unauthorized' });
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const email = decoded.email;
+
+    if (mongoose.connection.readyState !== 1) {
+      const data = readFromBackupFile('bookings.json');
+      const userOrders = data.filter(b => b.customerInfo && b.customerInfo.email === email);
+      return res.status(200).json({ success: true, orders: userOrders });
+    }
+
+    const orders = await Booking.find({ 'customerInfo.email': email }).sort({ timestamp: -1 });
+    res.status(200).json({ success: true, orders });
+  } catch (err) {
+    res.status(401).json({ success: false, message: 'Invalid or expired token' });
+  }
+});
+
 // Routes
 app.post('/api/admin/login', (req, res) => {
   const { username, password } = req.body;

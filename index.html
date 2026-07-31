@@ -2929,8 +2929,7 @@
       <div id="auth-login-view" style="display: block;">
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Welcome
           back, candle artisan.</p>
-        <form class="enquiry-form"
-          onsubmit="event.preventDefault(); (window.showToast||window.I||alert)('Login simulated.'); switchAuthView('profile');">
+        <form class="enquiry-form" id="login-form" onsubmit="handleLogin(event)">
           <div class="form-group" style="margin-bottom: 1rem;">
             <input type="email" placeholder="Email Address" required
               style="width:100%; border-radius:8px !important; padding: 0.85rem;">
@@ -3024,10 +3023,14 @@
             <div>Points: <strong>350</strong></div>
           </div>
         </div>
-        <button class="btn btn-primary"
-          onclick="switchAuthView('login'); (window.showToast||window.I||alert)('Signed out of your customer account.');"
-          style="width: 100%;">Sign
-          Out</button>
+        <div id="auth-order-history" style="margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem; font-family: 'Inter', sans-serif;">Order History</h3>
+          <div id="order-history-list"
+            style="display:flex; flex-direction:column; gap:0.5rem; max-height:200px; overflow-y:auto; font-size:0.85rem; color: var(--text-secondary);">
+            <p>Loading your orders...</p>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="handleSignOut()" style="width: 100%;">Sign Out</button>
       </div>
 
       <script>
@@ -3045,6 +3048,111 @@
             alert(msg);
           }
         }
+
+        window.handleLogin = async function (e) {
+          e.preventDefault();
+          const email = e.target.querySelector('input[type="email"]').value;
+          const password = e.target.querySelector('input[type="password"]').value;
+          const btn = e.target.querySelector('button[type="submit"]');
+          btn.textContent = 'Signing in...';
+          btn.disabled = true;
+
+          try {
+            const res = await fetch(getApiUrl('/api/login'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+              notify('Login successful!');
+              localStorage.setItem('auth_token', data.token);
+              localStorage.setItem('user_data', JSON.stringify(data.user));
+              document.getElementById('auth-profile-name').textContent = data.user.name || 'Ankri Artisan';
+              document.getElementById('auth-profile-email').textContent = data.user.email;
+              switchAuthView('profile');
+              loadOrderHistory();
+            } else {
+              notify(data.message || 'Login failed');
+            }
+          } catch (err) {
+            notify('Error logging in');
+            console.error(err);
+          }
+          btn.textContent = 'Sign In';
+          btn.disabled = false;
+        };
+
+        window.handleSignOut = function () {
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('user_data');
+          switchAuthView('login');
+          notify('Signed out of your customer account.');
+        };
+
+        window.loadOrderHistory = async function () {
+          const container = document.getElementById('order-history-list');
+          container.innerHTML = '<p>Loading your orders...</p>';
+          const token = localStorage.getItem('auth_token');
+          if (!token) return;
+
+          try {
+            const res = await fetch(getApiUrl('/api/history'), {
+              headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await res.json();
+
+            if (data.success) {
+              if (data.orders.length === 0) {
+                container.innerHTML = '<p>You have no past orders yet.</p>';
+              } else {
+                container.innerHTML = data.orders.map(o => `
+                  <div style="background:var(--bg-tertiary); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-glass);">
+                    <div style="display:flex; justify-content:space-between; margin-bottom: 0.25rem;">
+                      <strong>Order #${o.orderId || 'N/A'}</strong> 
+                      <span style="color:var(--primary); font-weight:600;">₹${o.total}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem;">
+                      <span>${new Date(o.timestamp).toLocaleDateString()}</span>
+                      <span style="color:${o.status === 'Completed' ? 'green' : 'var(--text-secondary)'};">${o.status || 'Processing'}</span>
+                    </div>
+                  </div>
+                `).join('');
+              }
+            } else {
+              container.innerHTML = '<p>Could not load orders.</p>';
+            }
+          } catch (err) {
+            container.innerHTML = '<p>Failed to connect to server.</p>';
+          }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+          const savedUser = localStorage.getItem('user_data');
+          const token = localStorage.getItem('auth_token');
+          if (savedUser && token) {
+            try {
+              const u = JSON.parse(savedUser);
+              document.getElementById('auth-profile-name').textContent = u.name || 'Ankri Artisan';
+              document.getElementById('auth-profile-email').textContent = u.email;
+              loadOrderHistory();
+              // Don't auto open modal, but if they open and click profile button this sets the default view
+              // We just set the active view in case they click it
+            } catch (e) { }
+          }
+
+          document.getElementById('profile-btn').addEventListener('click', () => {
+            document.getElementById('profile-modal-overlay').classList.remove('hidden');
+            const token = localStorage.getItem('auth_token');
+            if (token) {
+              switchAuthView('profile');
+              loadOrderHistory();
+            } else {
+              switchAuthView('login');
+            }
+          });
+        });
 
         window.switchAuthView = function (view) {
           document.getElementById('auth-login-view').style.display = view === 'login' ? 'block' : 'none';

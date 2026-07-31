@@ -2704,6 +2704,7 @@ function initAppFlow() {
 
     if (state.cart.length === 0) {
       emptyCartMessage.classList.remove('hidden');
+      cartItemsContainer.appendChild(emptyCartMessage);
       cartFooter.classList.add('hidden');
       cartCount.textContent = '0';
       return;
