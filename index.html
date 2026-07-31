@@ -2940,6 +2940,28 @@
               style="width:100%; border-radius:8px !important; padding: 0.85rem;">
           </div>
           <button type="submit" class="btn btn-primary btn-large btn-grow" style="width: 100%;">Sign In</button>
+          <div style="text-align: right; margin-top: 1rem;">
+            <button type="button" onclick="switchAuthView('forgot')"
+              style="background: none; border: none; color: var(--gold-primary); text-decoration: underline; cursor: pointer; font-size: 0.8rem;">Forgot
+              Password?</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Forgot Password View -->
+      <div id="auth-forgot-view" style="display: none;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Enter
+          your registered email to receive an OTP to log in.</p>
+        <form class="enquiry-form" id="forgot-form" onsubmit="handleForgotPassword(event)">
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <input type="email" id="forgot-email" placeholder="Registered Email Address" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+          </div>
+          <button type="submit" id="btn-forgot-submit" class="btn btn-primary btn-large btn-grow"
+            style="width: 100%;">Send Login Code</button>
+          <button type="button" onclick="switchAuthView('login')"
+            style="width: 100%; background: none; border: none; color: var(--text-secondary); text-decoration: underline; margin-top: 1rem; cursor: pointer; font-size: 0.8rem;">Back
+            to Sign In</button>
         </form>
       </div>
 
@@ -3003,7 +3025,8 @@
           </div>
         </div>
         <button class="btn btn-primary"
-          onclick="switchAuthView('login'); (window.showToast||window.I||alert)('Signed out of your customer account.');" style="width: 100%;">Sign
+          onclick="switchAuthView('login'); (window.showToast||window.I||alert)('Signed out of your customer account.');"
+          style="width: 100%;">Sign
           Out</button>
       </div>
 
@@ -3027,11 +3050,12 @@
           document.getElementById('auth-login-view').style.display = view === 'login' ? 'block' : 'none';
           document.getElementById('auth-register-view').style.display = view === 'register' ? 'block' : 'none';
           document.getElementById('auth-verify-view').style.display = view === 'verify' ? 'block' : 'none';
+          document.getElementById('auth-forgot-view').style.display = view === 'forgot' ? 'block' : 'none';
           document.getElementById('auth-profile-view').style.display = view === 'profile' ? 'block' : 'none';
-          document.getElementById('auth-tabs').style.display = (view === 'login' || view === 'register') ? 'flex' : 'none';
+          document.getElementById('auth-tabs').style.display = (view === 'login' || view === 'register' || view === 'forgot') ? 'flex' : 'none';
 
           if (document.getElementById('tab-login') && document.getElementById('tab-register')) {
-            document.getElementById('tab-login').classList.toggle('active', view === 'login');
+            document.getElementById('tab-login').classList.toggle('active', view === 'login' || view === 'forgot');
             document.getElementById('tab-register').classList.toggle('active', view === 'register');
           }
         };
@@ -3075,6 +3099,45 @@
             notify("Error connecting to server. Make sure the backend server is running.");
           }
           btn.textContent = 'Create Account';
+          btn.disabled = false;
+        };
+
+        window.handleForgotPassword = async function (e) {
+          e.preventDefault();
+          const email = (document.getElementById('forgot-email').value || '').trim().toLowerCase();
+          const btn = document.getElementById('btn-forgot-submit');
+
+          if (!email) {
+            notify("Please enter a valid email address.");
+            return;
+          }
+
+          btn.textContent = 'Sending Code...';
+          btn.disabled = true;
+
+          try {
+            const res = await fetch(getApiUrl('/api/forgot-password'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+              notify("OTP code sent to " + email);
+              sessionStorage.setItem('pending_verify_email', email);
+              if (data.otpToken) {
+                sessionStorage.setItem('pending_verify_otp_token', data.otpToken);
+              }
+              switchAuthView('verify');
+            } else {
+              notify("Error: " + (data.message || "Failed to send code"));
+            }
+          } catch (err) {
+            console.error(err);
+            notify("Error connecting to server.");
+          }
+          btn.textContent = 'Send Login Code';
           btn.disabled = false;
         };
 

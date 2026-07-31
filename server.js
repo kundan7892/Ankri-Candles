@@ -98,6 +98,7 @@ const userSchema = new mongoose.Schema({
   name: { type: String, default: '' },
   otp: { type: String },
   otpExpiry: { type: Date },
+  forgotPasswordMode: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now }
 });
 const User = mongoose.model('User', userSchema);
@@ -392,6 +393,72 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+app.post('/api/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ success: false, message: 'Email required' });
+
+    const cleanEmail = String(email).trim().toLowerCase();
+    const isConnected = await ensureDbConnected();
+
+    let user = null;
+    if (isConnected) {
+      user = await User.findOne({ email: cleanEmail });
+    } else {
+      const tempUsers = readFromBackupFile('users_temp.json');
+      const matchingRecords = tempUsers.filter(u => String(u.email || '').trim().toLowerCase() === cleanEmail);
+      user = matchingRecords.length > 0 ? matchingRecords[matchingRecords.length - 1] : null;
+    }
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'No account found with this email' });
+    }
+
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
+
+    if (isConnected) {
+      user.otp = verificationCode;
+      user.otpExpiry = otpExpiry;
+      user.forgotPasswordMode = true;
+      await user.save();
+    } else {
+      saveToBackupFile('users_temp.json', { email: cleanEmail, name: user.name, otp: verificationCode, otpExpiry, forgotPasswordMode: true, timestamp: new Date() });
+    }
+
+    const otpToken = jwt.sign(
+      { email: cleanEmail, otp: verificationCode, forgotPasswordMode: true },
+      JWT_SECRET,
+      { expiresIn: '10m' }
+    );
+
+    const mailOptions = {
+      from: 'ankricandle@gmail.com',
+      to: cleanEmail,
+      subject: 'Login to Ankri Candle',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; text-align: center;">
+          <h2>Ankri Candle Login</h2>
+          <p>We received a request to log in to your account.</p>
+          <p>Please use the following 6-digit code to log in:</p>
+          <h1 style="color: #D4AF37; letter-spacing: 5px;">${verificationCode}</h1>
+          <p>This code expires in 10 minutes and can only be used once.</p>
+        </div>
+      `
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (mailErr) {
+      console.error('Mail error in forgot-password:', mailErr);
+    }
+
+    res.status(200).json({ success: true, message: 'Verification code sent', otpToken });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error sending code' });
+  }
+});
+
 app.post('/api/verify', async (req, res) => {
   try {
     const { email, code, otpToken } = req.body;
@@ -415,6 +482,7 @@ app.post('/api/verify', async (req, res) => {
 
           user.otp = undefined;
           user.otpExpiry = undefined;
+          user.forgotPasswordMode = false;
           await user.save();
 
           return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: user.name || 'Ankri Artisan', email: user.email } });
@@ -437,8 +505,9 @@ app.post('/api/verify', async (req, res) => {
               }
               user.otp = undefined;
               user.otpExpiry = undefined;
+              user.forgotPasswordMode = false;
               await user.save();
-            } catch (err) {}
+            } catch (err) { }
           }
           return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: decoded.name || 'Ankri Artisan', email: cleanEmail } });
         }
@@ -467,8 +536,9 @@ app.post('/api/verify', async (req, res) => {
           }
           user.otp = undefined;
           user.otpExpiry = undefined;
+          user.forgotPasswordMode = false;
           await user.save();
-        } catch (err) {}
+        } catch (err) { }
       }
 
       return res.status(200).json({ success: true, message: 'Account verified successfully', user: { name: latestRecord.name || 'Ankri Artisan', email: cleanEmail } });
