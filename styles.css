@@ -1625,23 +1625,52 @@ section {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-secondary);
+  background: transparent;
+  border: none;
   border-bottom: 2px solid transparent;
-  transition: var(--transition-fast);
+  border-radius: 0 !important;
+  /* Force reset to fix weird U-curves */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  /* cover the transparent border */
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background: var(--gold-primary);
+  transform: scaleX(0);
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-radius: 2px 2px 0 0;
 }
 
 .tab-num {
   font-size: 0.6rem;
   color: var(--text-muted);
+  transition: color 0.3s ease;
 }
 
 .tab-btn.active {
   color: var(--text-primary);
-  border-bottom-color: var(--gold-primary);
-  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 2px solid transparent;
+  background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.05));
+}
+
+.tab-btn.active::after {
+  transform: scaleX(1);
+}
+
+.tab-btn.active .tab-num {
+  color: var(--gold-primary);
 }
 
 .config-steps {
