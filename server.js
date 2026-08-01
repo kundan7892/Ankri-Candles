@@ -403,15 +403,35 @@ app.post('/api/forgot-password', async (req, res) => {
 
     let user = null;
     if (isConnected) {
+      // Primary: check MongoDB
       user = await User.findOne({ email: cleanEmail });
+
+      // Fallback: if not in MongoDB, check local backup (e.g. registered while DB was offline)
+      if (!user) {
+        console.log(`[FORGOT-PASSWORD] User not found in MongoDB, checking local backup for: ${cleanEmail}`);
+        const tempUsers = readFromBackupFile('users_temp.json');
+        const matchingRecords = tempUsers.filter(u => String(u.email || '').trim().toLowerCase() === cleanEmail);
+        const backupUser = matchingRecords.length > 0 ? matchingRecords[matchingRecords.length - 1] : null;
+        if (backupUser) {
+          // Sync the user back into MongoDB
+          try {
+            user = new User({ email: cleanEmail, name: backupUser.name || '' });
+            await user.save();
+            console.log(`[FORGOT-PASSWORD] Synced backup user to MongoDB: ${cleanEmail}`);
+          } catch (syncErr) {
+            user = await User.findOne({ email: cleanEmail }) || backupUser;
+          }
+        }
+      }
     } else {
+      // DB offline: read entirely from local backup
       const tempUsers = readFromBackupFile('users_temp.json');
       const matchingRecords = tempUsers.filter(u => String(u.email || '').trim().toLowerCase() === cleanEmail);
       user = matchingRecords.length > 0 ? matchingRecords[matchingRecords.length - 1] : null;
     }
 
     if (!user) {
-      return res.status(404).json({ success: false, message: 'No account found with this email' });
+      return res.status(404).json({ success: false, message: 'No account found with this email. Please create an account first.' });
     }
 
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
@@ -567,18 +587,39 @@ app.post('/api/login', async (req, res) => {
 
     let user = null;
     if (isConnected) {
+      // Primary: check MongoDB
       user = await User.findOne({ email: cleanEmail });
+
+      // Fallback: if not in MongoDB, check local backup (e.g. registered while DB was offline)
+      if (!user) {
+        console.log(`[LOGIN] User not found in MongoDB, checking local backup for: ${cleanEmail}`);
+        const tempUsers = readFromBackupFile('users_temp.json');
+        const matchingRecords = tempUsers.filter(u => String(u.email || '').trim().toLowerCase() === cleanEmail);
+        const backupUser = matchingRecords.length > 0 ? matchingRecords[matchingRecords.length - 1] : null;
+        if (backupUser) {
+          // Sync the user back into MongoDB so future lookups succeed
+          try {
+            user = new User({ email: cleanEmail, name: backupUser.name || '' });
+            await user.save();
+            console.log(`[LOGIN] Synced backup user to MongoDB: ${cleanEmail}`);
+          } catch (syncErr) {
+            // If unique key violation (already exists), just fetch it
+            user = await User.findOne({ email: cleanEmail }) || backupUser;
+            console.log(`[LOGIN] Sync conflict — fetched existing user for: ${cleanEmail}`);
+          }
+        }
+      }
     } else {
+      // DB offline: read entirely from local backup
       const tempUsers = readFromBackupFile('users_temp.json');
       const matchingRecords = tempUsers.filter(u => String(u.email || '').trim().toLowerCase() === cleanEmail);
       user = matchingRecords.length > 0 ? matchingRecords[matchingRecords.length - 1] : null;
     }
 
     if (!user) {
-      return res.status(404).json({ success: false, message: 'No account found with this email' });
+      return res.status(404).json({ success: false, message: 'No account found with this email. Please create an account first.' });
     }
 
-    // In a real app we'd verify a hashed password. Currently allowing login if user exists.
     const token = jwt.sign(
       { email: cleanEmail, name: user.name },
       JWT_SECRET,
