@@ -2969,51 +2969,63 @@ section {
 }
 
 .promo-box {
+  position: relative;
   display: flex;
-  gap: 0.75rem;
+  width: 100%;
   margin-bottom: 2rem;
+  min-width: 0;
 }
 
 .promo-box input {
-  flex-grow: 1;
+  flex: 1 1 100%;
+  min-width: 0;
   background: var(--bg-primary);
-  border: 1px solid var(--border-glass);
+  border: 1.5px solid var(--border-glass);
   color: var(--text-primary);
-  padding: 1.1rem 1.25rem;
-  border-radius: 8px;
+  padding: 1.1rem 7.5rem 1.1rem 1.25rem;
+  /* Extended right padding for the absolute button */
+  border-radius: 50px;
   font-family: inherit;
   font-size: 0.95rem;
   outline: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-sizing: border-box;
 }
 
 .promo-box input:focus {
   border-color: var(--primary);
   background: var(--bg-tertiary);
-  box-shadow: 0 0 0 4px rgba(111, 70, 39, 0.05);
+  box-shadow: 0 0 15px rgba(111, 70, 39, 0.1);
 }
 
 .promo-box button {
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-glass);
-  color: var(--text-primary);
-  padding: 1.1rem 1.75rem;
-  border-radius: 8px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  bottom: 5px;
+  height: auto;
+  background: var(--primary);
+  border: none;
+  color: #fff;
+  padding: 0 1.5rem;
+  border-radius: 45px;
   font-family: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  transition: all 0.3s ease;
+  letter-spacing: 0.1em;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .promo-box button:hover {
   background: var(--gold-primary);
   color: #000;
-  border-color: var(--gold-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(212, 175, 55, 0.35);
 }
 
 /* Toast Notifications */
