@@ -1022,13 +1022,15 @@ section {
 }
 
 .swatch-color {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  /* Box instead of circle */
   display: block;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: var(--transition-smooth);
   position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .swatch-color::after {
@@ -1038,8 +1040,9 @@ section {
   left: -4px;
   right: -4px;
   bottom: -4px;
-  border: 1px solid transparent;
-  border-radius: 50%;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  /* Matches the inner 8px box nicely */
   transition: var(--transition-smooth);
 }
 
@@ -1613,44 +1616,32 @@ section {
 }
 
 .config-tabs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-bottom: 1px solid var(--border-glass);
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-bottom: none;
+  background: transparent;
+  justify-content: space-between;
 }
 
 .tab-btn {
-  padding: 1rem 0.5rem;
+  flex: 1;
+  padding: 0.85rem 0.5rem;
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-secondary);
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  border-radius: 0 !important;
-  /* Force reset to fix weird U-curves */
+  background: var(--bg-primary);
+  border: 1px solid var(--border-glass);
+  border-radius: 50px !important;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
-  position: relative;
   cursor: pointer;
-}
-
-.tab-btn::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  /* cover the transparent border */
-  left: 10%;
-  width: 80%;
-  height: 2px;
-  background: var(--gold-primary);
-  transform: scaleX(0);
-  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  border-radius: 2px 2px 0 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
 .tab-num {
@@ -1659,18 +1650,21 @@ section {
   transition: color 0.3s ease;
 }
 
-.tab-btn.active {
-  color: var(--text-primary);
-  border-bottom: 2px solid transparent;
-  background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.05));
+.tab-btn:hover {
+  border-color: var(--gold-primary);
+  background: rgba(212, 175, 55, 0.05);
 }
 
-.tab-btn.active::after {
-  transform: scaleX(1);
+.tab-btn.active {
+  background: var(--gold-primary);
+  border-color: var(--gold-primary);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
+  transform: translateY(-2px);
 }
 
 .tab-btn.active .tab-num {
-  color: var(--gold-primary);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .config-steps {
