@@ -9254,13 +9254,13 @@ body.dark-theme .pdp-close-btn {
     right: -60px;
   }
 
-  .footer-brand-title {
+  .footer-brand .footer-brand-title {
     color: #fff;
     font-size: 1.6rem;
     letter-spacing: 0.12em;
   }
 
-  .footer-desc {
+  .footer-brand .footer-desc {
     color: rgba(255, 255, 255, 0.75);
     font-size: 0.82rem;
     max-width: 100%;
