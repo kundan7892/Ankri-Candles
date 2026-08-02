@@ -96,6 +96,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, unique: true, sparse: true },
   phone: { type: String, unique: true, sparse: true },
   name: { type: String, default: '' },
+  password: { type: String },
   otp: { type: String },
   otpExpiry: { type: Date },
   forgotPasswordMode: { type: Boolean, default: false },
@@ -340,9 +341,10 @@ app.post('/api/register', async (req, res) => {
       try {
         let user = await User.findOne({ email: cleanEmail });
         if (!user) {
-          user = new User({ email: cleanEmail, name: cleanName });
+          user = new User({ email: cleanEmail, name: cleanName, password: password });
         } else {
           user.name = cleanName || user.name;
+          if (password) user.password = password;
         }
         user.otp = verificationCode;
         user.otpExpiry = otpExpiry;
