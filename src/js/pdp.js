@@ -13,10 +13,10 @@ export const CANDLE_CATALOGUE = [
         description:
             'A deeply resonant fragrance that captures the essence of a quiet study at midnight. Rich sandalwood and dry cedar are softened by subtle whispers of vanilla and cracked black pepper.',
         images: [
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
         ],
         notes: [
             { label: 'Top', value: 'Black Pepper, Cardamom' },
@@ -39,10 +39,10 @@ export const CANDLE_CATALOGUE = [
         description:
             'Rich, ripe fig wrapped in dark musks and a whisper of blackcurrant. An intimate evening fragrance that lingers long after the flame is extinguished.',
         images: [
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
         ],
         notes: [
             { label: 'Top', value: 'Blackcurrant, Fig Leaf' },
@@ -64,10 +64,10 @@ export const CANDLE_CATALOGUE = [
         description:
             'Crisp, sunlit linen drying in a coastal breeze. Clean aldehydes and soft florals conjure the perfect lazy Sunday morning.',
         images: [
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
         ],
         notes: [
             { label: 'Top', value: 'Aldehydes, Bergamot' },
@@ -88,10 +88,10 @@ export const CANDLE_CATALOGUE = [
         description:
             'Citrus and smoky vetiver in an unexpected harmony. Bright bergamot opens slowly into deep, earthy vetiver — complex, alluring, layered.',
         images: [
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
-            'luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
+            '/images/luxury_candles_banner.png',
         ],
         notes: [
             { label: 'Top', value: 'Bergamot, Pink Pepper' },
@@ -184,7 +184,7 @@ function populate(p) {
     });
 
     // Gallery
-    const images = p.images && p.images.length ? p.images : ['luxury_candles_banner.png'];
+    const images = p.images && p.images.length ? p.images : ['/images/luxury_candles_banner.png'];
     mainImg.src = images[0];
     mainImg.alt = p.name;
 
