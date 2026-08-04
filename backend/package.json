@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "build": "echo \"Backend build bypassed\""
   },
   "dependencies": {
     "cors": "^2.8.6",
