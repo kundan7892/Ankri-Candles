@@ -194,7 +194,7 @@ app.post('/api/register', async (req, res) => {
 
     let finalHashedPassword = password;
     if (password) {
-      const salt = await bcrypt.genSalt(10);
+      const salt = await bcrypt.genSalt(8);
       finalHashedPassword = await bcrypt.hash(password, salt);
     }
 

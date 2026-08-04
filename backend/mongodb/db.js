@@ -29,7 +29,7 @@ export async function ensureDbConnected() {
         if (mongoose.connection.readyState === 1) return true;
     }
     try {
-        await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 3000 });
+        await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 1500 });
         return mongoose.connection.readyState === 1;
     } catch (err) {
         return false;
