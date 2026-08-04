@@ -980,7 +980,7 @@ app.post('/api/ratings/:productId', async (req, res) => {
   }
 });
 
-app.get('*', (req, res) => {
+app.use((req, res) => {
   if (!req.path.startsWith('/api')) {
     res.sendFile(path.join(__dirname, '../dist', 'index.html'));
   } else {
