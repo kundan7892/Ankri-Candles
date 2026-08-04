@@ -3003,11 +3003,11 @@ function initAppFlow() {
         });
         showToast("Order booked in database!");
       } else {
-        showToast("Error processing checkout. Please try again.");
+        showToast(`Error processing checkout. Please try again. Code: B${bookingResponse.status} P${paymentResponse.status}`);
       }
     } catch (error) {
       console.error(error);
-      showToast("Failed to connect to local server.");
+      showToast("Network Error: Failed to connect to server.");
     } finally {
       payBtn.disabled = false;
       payBtn.textContent = originalText;
