@@ -6,8 +6,8 @@ import fs from 'fs';
 import path from 'path';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
-import { connectDB, ensureDbConnected } from '../mongodb/db.js';
-import { User, Inquiry, Booking, Payment, AbandonedCart, WhatsAppLog, SpinReward, ProductRating } from '../mongodb/models.js';
+import { connectDB, ensureDbConnected } from './mongodb/db.js';
+import { User, Inquiry, Booking, Payment, AbandonedCart, WhatsAppLog, SpinReward, ProductRating } from './mongodb/models.js';
 
 dotenv.config();
 
