@@ -244,12 +244,10 @@ app.post('/api/register', async (req, res) => {
       `
     };
 
-    try {
-      await transporter.sendMail(mailOptions);
-      console.log(`✉️ [ANKRI OTP] Successfully emailed OTP code to ${cleanEmail}`);
-    } catch (mailErr) {
-      console.error(`⚠️ [ANKRI OTP SMTP NOTICE] Could not deliver email to ${cleanEmail}:`, mailErr.message);
-    }
+    // Fire and forget email delivery to avoid stalling API response
+    transporter.sendMail(mailOptions)
+      .then(() => console.log(`✉️ [ANKRI OTP] Successfully emailed OTP code to ${cleanEmail}`))
+      .catch(mailErr => console.error(`⚠️ [ANKRI OTP SMTP NOTICE] Could not deliver email to ${cleanEmail}:`, mailErr.message));
 
     res.status(200).json({ success: true, message: 'Verification code generated and sent', otpToken });
   } catch (error) {
@@ -332,11 +330,8 @@ app.post('/api/forgot-password', async (req, res) => {
       `
     };
 
-    try {
-      await transporter.sendMail(mailOptions);
-    } catch (mailErr) {
-      console.error('Mail error in forgot-password:', mailErr);
-    }
+    transporter.sendMail(mailOptions)
+      .catch(mailErr => console.error('Mail error in forgot-password:', mailErr));
 
     res.status(200).json({ success: true, message: 'Verification code sent', otpToken });
   } catch (error) {
