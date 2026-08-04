@@ -63,12 +63,6 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Serve frontend static files from dist directory in production
-app.use(express.static(path.join(__dirname, '../dist')));
 
 
 
@@ -977,14 +971,6 @@ app.post('/api/ratings/:productId', async (req, res) => {
   } catch (error) {
     console.error('Error submitting rating:', error);
     res.status(500).json({ message: 'Error submitting rating' });
-  }
-});
-
-app.use((req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, '../dist', 'index.html'));
-  } else {
-    res.status(404).json({ message: 'API route not found' });
   }
 });
 

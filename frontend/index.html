@@ -3034,10 +3034,10 @@
       </div>
 
       <script>
-        // Inject Vercel/Vite environment variables at build time
+        // Bulletproof API URL parsing
         let rawApiStr = "%VITE_API_URL%";
-        window.VITE_API_URL = rawApiStr.startsWith('%') ? '' : rawApiStr;
-        window.API_BASE_URL = (window.VITE_API_URL || (window.location.protocol === 'file:' ? 'http://localhost:5000' : '')).replace(/\/$/, '');
+        window.VITE_API_URL = rawApiStr.startsWith('%') ? '' : rawApiStr.replace(/\/+$/, '').replace(/\/api$/, '');
+        window.API_BASE_URL = window.VITE_API_URL || (window.location.protocol === 'file:' ? 'http://localhost:5000' : '');
 
         function getApiUrl(endpoint) {
           return `${window.API_BASE_URL}${endpoint}`;
