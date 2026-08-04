@@ -4,7 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ankri Candles | Super Admin Portal</title>
+  <title>Ankri Candles - Admin Dashboard</title>
+
+  <script>
+    // Inject Vercel/Vite environment variables at build time
+    let rawApiStr = "%VITE_API_URL%";
+    window.VITE_API_URL = rawApiStr.startsWith('%') ? '' : rawApiStr;
+    window.API_BASE_URL = (window.VITE_API_URL || (window.location.protocol === 'file:' ? 'http://localhost:5000' : '')).replace(/\/$/, '');
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
