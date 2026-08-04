@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
+import bcrypt from 'bcryptjs';
 import { connectDB, ensureDbConnected } from './mongodb/db.js';
 import { User, Inquiry, Booking, Payment, AbandonedCart, WhatsAppLog, SpinReward, ProductRating } from './mongodb/models.js';
 
@@ -191,15 +192,22 @@ app.post('/api/register', async (req, res) => {
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
 
+    let finalHashedPassword = password;
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      finalHashedPassword = await bcrypt.hash(password, salt);
+    }
+
     const isConnected = await ensureDbConnected();
     if (isConnected) {
       try {
         let user = await User.findOne({ email: cleanEmail });
+
         if (!user) {
-          user = new User({ email: cleanEmail, name: cleanName, password: password });
+          user = new User({ email: cleanEmail, name: cleanName, password: finalHashedPassword });
         } else {
           user.name = cleanName || user.name;
-          if (password) user.password = password;
+          if (finalHashedPassword) user.password = finalHashedPassword;
         }
         user.otp = verificationCode;
         user.otpExpiry = otpExpiry;
@@ -210,7 +218,7 @@ app.post('/api/register', async (req, res) => {
     }
 
     // Always save to local backup JSON as fallback
-    saveToBackupFile('users_temp.json', { email: cleanEmail, name: cleanName, otp: verificationCode, otpExpiry, timestamp: new Date() });
+    saveToBackupFile('users_temp.json', { email: cleanEmail, name: cleanName, password: finalHashedPassword, otp: verificationCode, otpExpiry, timestamp: new Date() });
 
     // Generate a stateless signed OTP token as a fail-safe for serverless/Vercel environments
     const otpToken = jwt.sign(
@@ -456,7 +464,7 @@ app.post('/api/login', async (req, res) => {
         if (backupUser) {
           // Sync the user back into MongoDB so future lookups succeed
           try {
-            user = new User({ email: cleanEmail, name: backupUser.name || '' });
+            user = new User({ email: cleanEmail, name: backupUser.name || '', password: backupUser.password });
             await user.save();
             console.log(`[LOGIN] Synced backup user to MongoDB: ${cleanEmail}`);
           } catch (syncErr) {
@@ -475,6 +483,16 @@ app.post('/api/login', async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ success: false, message: 'No account found with this email. Please create an account first.' });
+    }
+
+    if (!user.password) {
+      return res.status(401).json({ success: false, message: 'Account requires password reset. Please use Forgot Password.' });
+    }
+
+    // Compare passwords safely
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Incorrect password.' });
     }
 
     const token = jwt.sign(
