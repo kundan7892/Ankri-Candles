@@ -486,8 +486,19 @@ app.post('/api/login', async (req, res) => {
 
     // Compare passwords safely
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    const isPlaintextMatch = (password === user.password);
+
+    if (!isMatch && !isPlaintextMatch) {
       return res.status(401).json({ success: false, message: 'Incorrect password.' });
+    }
+
+    // Auto-migrate legacy plaintext passwords to hashed versions seamlessly
+    if (!isMatch && isPlaintextMatch) {
+      const salt = await bcrypt.genSalt(8);
+      user.password = await bcrypt.hash(password, salt);
+      if (typeof user.save === 'function') {
+        await user.save();
+      }
     }
 
     const token = jwt.sign(
