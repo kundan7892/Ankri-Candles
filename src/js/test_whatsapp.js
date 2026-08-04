@@ -74,7 +74,7 @@ async function insertMockCart() {
 
     console.log("\n4. Checking if WhatsApp reminder was sent...");
     try {
-        const resLogs = await fetch('http://localhost:5000/api/whatsapp-logs');
+        const resLogs = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/whatsapp-logs');
         const logs = await resLogs.json();
         const mockLog = logs.find(l => l.phone === cartPhone);
         if (mockLog) {

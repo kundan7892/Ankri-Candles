@@ -1867,7 +1867,7 @@ function initAppFlow() {
 
           try {
             // Dispatch live chat request to backend Express Support Route
-            const response = await fetch('http://localhost:5000/api/support-chat', {
+            const response = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/support-chat', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
@@ -2895,7 +2895,7 @@ function initAppFlow() {
 
     if (state.promoApplied && ["ANKRI10", "ANKRISHIP", "ANKRIB2G1"].includes(state.appliedPromoCode)) {
       try {
-        const checkRes = await fetch('http://localhost:5000/api/spin-rewards/validate', {
+        const checkRes = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/spin-rewards/validate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ phone: phone, code: state.appliedPromoCode })
@@ -2965,14 +2965,14 @@ function initAppFlow() {
 
     try {
       // 1. Save Booking
-      const bookingResponse = await fetch('http://localhost:5000/api/bookings', {
+      const bookingResponse = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookingData)
       });
 
       // 2. Save Payment
-      const paymentResponse = await fetch('http://localhost:5000/api/payments', {
+      const paymentResponse = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/payments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(paymentData)
@@ -3050,7 +3050,7 @@ function initAppFlow() {
     };
 
     try {
-      await fetch('http://localhost:5000/api/abandoned-carts', {
+      await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/abandoned-carts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(cartData)
@@ -3159,7 +3159,7 @@ function initAppFlow() {
 
   async function saveInquiryToLocalStorage(data) {
     try {
-      const response = await fetch('http://localhost:5000/api/inquiries', {
+      const response = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/inquiries', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -3419,7 +3419,7 @@ function initAppFlow() {
       const password = homepagePassInput.value.trim();
 
       try {
-        const res = await fetch('http://localhost:5000/api/admin/login', {
+        const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/admin/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, password })
@@ -3513,7 +3513,7 @@ function initAppFlow() {
 
     let logs = [];
     try {
-      const res = await fetch('http://localhost:5000/api/inquiries');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/inquiries');
       if (res.ok) {
         logs = await res.json();
       }
@@ -3584,7 +3584,7 @@ function initAppFlow() {
 
     let bookings = [];
     try {
-      const res = await fetch('http://localhost:5000/api/bookings');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/bookings');
       if (res.ok) {
         bookings = await res.json();
       }
@@ -3641,7 +3641,7 @@ function initAppFlow() {
 
     let payments = [];
     try {
-      const res = await fetch('http://localhost:5000/api/payments');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/payments');
       if (res.ok) {
         payments = await res.json();
       }
@@ -3686,7 +3686,7 @@ function initAppFlow() {
 
     let logs = [];
     try {
-      const res = await fetch('http://localhost:5000/api/whatsapp-logs');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/whatsapp-logs');
       if (res.ok) {
         logs = await res.json();
       }
@@ -3728,7 +3728,7 @@ function initAppFlow() {
 
     let logs = [];
     try {
-      const res = await fetch('http://localhost:5000/api/spin-rewards');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/spin-rewards');
       if (res.ok) {
         logs = await res.json();
       }
@@ -3786,7 +3786,7 @@ function initAppFlow() {
 
     let bookings = [];
     try {
-      const res = await fetch('http://localhost:5000/api/bookings');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/bookings');
       if (res.ok) bookings = await res.json();
     } catch (e) {
       console.error(e);
@@ -3864,16 +3864,16 @@ function initAppFlow() {
       let deleteUrl = '';
       let tabLabel = '';
       if (activeHomeTab === 'inquiries') {
-        deleteUrl = 'http://localhost:5000/api/inquiries';
+        deleteUrl = (typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/inquiries';
         tabLabel = 'inquiry logs';
       } else if (activeHomeTab === 'bookings') {
-        deleteUrl = 'http://localhost:5000/api/bookings';
+        deleteUrl = (typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/bookings';
         tabLabel = 'order bookings';
       } else if (activeHomeTab === 'payments') {
-        deleteUrl = 'http://localhost:5000/api/payments';
+        deleteUrl = (typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/payments';
         tabLabel = 'payment transaction details';
       } else if (activeHomeTab === 'whatsapp') {
-        deleteUrl = 'http://localhost:5000/api/whatsapp-logs';
+        deleteUrl = (typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/whatsapp-logs';
         tabLabel = 'WhatsApp reminder logs';
       }
 
@@ -4119,7 +4119,7 @@ function initAppFlow() {
 
         setTimeout(async () => {
           try {
-            await fetch('http://localhost:5000/api/spin-rewards', {
+            await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/spin-rewards', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({

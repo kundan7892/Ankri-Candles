@@ -60,7 +60,7 @@ function initAdminPanel() {
       const password = passInput.value.trim();
 
       try {
-        const res = await fetch('http://localhost:5000/api/admin/login', {
+        const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/admin/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, password })
@@ -159,7 +159,7 @@ function initAdminPanel() {
 
     let logs = [];
     try {
-      const res = await fetch('http://localhost:5000/api/inquiries');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/inquiries');
       if (res.ok) {
         logs = await res.json();
       }
@@ -233,7 +233,7 @@ function initAdminPanel() {
 
     let bookings = [];
     try {
-      const res = await fetch('http://localhost:5000/api/bookings');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/bookings');
       if (res.ok) {
         bookings = await res.json();
       }
@@ -291,7 +291,7 @@ function initAdminPanel() {
 
     let payments = [];
     try {
-      const res = await fetch('http://localhost:5000/api/payments');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/payments');
       if (res.ok) {
         payments = await res.json();
       }
@@ -338,7 +338,7 @@ function initAdminPanel() {
 
     let logs = [];
     try {
-      const res = await fetch('http://localhost:5000/api/whatsapp-logs');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/whatsapp-logs');
       if (res.ok) {
         logs = await res.json();
       }
@@ -380,7 +380,7 @@ function initAdminPanel() {
 
     let logs = [];
     try {
-      const res = await fetch('http://localhost:5000/api/spin-rewards');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/spin-rewards');
       if (res.ok) {
         logs = await res.json();
       }
@@ -430,7 +430,7 @@ function initAdminPanel() {
 
     let bookings = [];
     try {
-      const res = await fetch('http://localhost:5000/api/bookings');
+      const res = await fetch((typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/bookings');
       if (res.ok) {
         bookings = await res.json();
       }
@@ -519,19 +519,19 @@ function initAdminPanel() {
       let deleteUrl = '';
       let tabLabel = '';
       if (activeTab === 'inquiries') {
-        deleteUrl = 'http://localhost:5000/api/inquiries';
+        deleteUrl = (typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/inquiries';
         tabLabel = 'inquiry logs';
       } else if (activeTab === 'bookings') {
-        deleteUrl = 'http://localhost:5000/api/bookings';
+        deleteUrl = (typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/bookings';
         tabLabel = 'order bookings';
       } else if (activeTab === 'payments') {
-        deleteUrl = 'http://localhost:5000/api/payments';
+        deleteUrl = (typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/payments';
         tabLabel = 'payment transaction details';
       } else if (activeTab === 'whatsapp') {
-        deleteUrl = 'http://localhost:5000/api/whatsapp-logs';
+        deleteUrl = (typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/whatsapp-logs';
         tabLabel = 'WhatsApp reminder logs';
       } else if (activeTab === 'wheel-rewards') {
-        deleteUrl = 'http://localhost:5000/api/spin-rewards';
+        deleteUrl = (typeof window.API_BASE_URL === "string" ? window.API_BASE_URL : "http://localhost:5000") + '/api/spin-rewards';
         tabLabel = 'spin wheel rewards';
       } else if (activeTab === 'locations') {
         showToast("Cannot clear bookings directly from the Map View.");
