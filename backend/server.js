@@ -5,12 +5,20 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import jwt from 'jsonwebtoken';
+import dns from 'dns';
 import nodemailer from 'nodemailer';
 import bcrypt from 'bcryptjs';
 import { connectDB, ensureDbConnected } from './mongodb/db.js';
 import { User, Inquiry, Booking, Payment, AbandonedCart, WhatsAppLog, SpinReward, ProductRating } from './mongodb/models.js';
 
 dotenv.config();
+
+// Force IPv4 for DNS resolution to fix ENETUNREACH errors on IPv6 networks (like Render or local misconfigs)
+try {
+  dns.setDefaultResultOrder('ipv4first');
+} catch (e) {
+  console.log('DNS fallback not supported on this Node version');
+}
 
 connectDB();
 
