@@ -17,7 +17,7 @@ connectDB();
 const JWT_SECRET = process.env.JWT_SECRET || 'ankri-super-secret-key-2026';
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: { user: process.env.EMAIL_USER || 'ankricandle@gmail.com', pass: process.env.EMAIL_PASS || 'ggmcykoafwmdgpih' }
+  auth: { user: process.env.EMAIL_USER || 'ankricandle@gmail.com', pass: process.env.EMAIL_PASS }
 });
 
 // Helper to save to local backup JSON when database is offline
