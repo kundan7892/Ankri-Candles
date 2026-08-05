@@ -29,8 +29,9 @@ const transporter = nodemailer.createTransport({
   secure: true,
   auth: { user: process.env.EMAIL_USER || 'ankricandle@gmail.com', pass: process.env.EMAIL_PASS },
   // Force IPv4 natively at the socket level
+  family: 4,
   tls: {
-    rejectUnauthorized: true
+    rejectUnauthorized: false
   }
 });
 
