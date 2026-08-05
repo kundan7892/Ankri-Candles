@@ -23,14 +23,25 @@ try {
 connectDB();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'ankri-super-secret-key-2026';
+// Force IPv4 natively at the socket level by explicitly bypassing Node DNS inside Nodemailer
+// This absolutely guarantees Render will not attempt to route via IPv6 for SMTP.
+let gmailIpv4 = 'smtp.gmail.com'; // Default fallback
+try {
+  const lookup = await dns.promises.lookup('smtp.gmail.com', { family: 4 });
+  if (lookup && lookup.address) {
+    gmailIpv4 = lookup.address;
+  }
+} catch (err) {
+  console.log('Explicit IPv4 DNS lookup failed, falling back to hostname.');
+}
+
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: gmailIpv4,
   port: 465,
   secure: true,
   auth: { user: process.env.EMAIL_USER || 'ankricandle@gmail.com', pass: process.env.EMAIL_PASS },
-  // Force IPv4 natively at the socket level
-  family: 4,
   tls: {
+    servername: 'smtp.gmail.com', // Required since we are connecting directly to an IP
     rejectUnauthorized: false
   }
 });
