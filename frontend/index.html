@@ -3040,7 +3040,8 @@
         window.API_BASE_URL = window.VITE_API_URL || (window.location.protocol === 'file:' ? 'http://localhost:5000' : '');
 
         function getApiUrl(endpoint) {
-          return `${window.API_BASE_URL}${endpoint}`;
+          const base = (window.VITE_API_URL || window.API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');
+          return `${base}${endpoint}`;
         }
 
         function notify(msg) {
@@ -3269,7 +3270,6 @@
             const data = await res.json();
 
             if (data.success) {
-              notify("Verification code sent to " + email);
               // Save email and signed OTP token in session to verify next step
               sessionStorage.setItem('pending_verify_email', email);
               if (data.otpToken) {
@@ -3309,7 +3309,6 @@
             const data = await res.json();
 
             if (data.success) {
-              notify("OTP code sent to " + email);
               sessionStorage.setItem('pending_verify_email', email);
               if (data.otpToken) {
                 sessionStorage.setItem('pending_verify_otp_token', data.otpToken);

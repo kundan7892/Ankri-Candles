@@ -11,7 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&display=swap"
-    rel="stylesheet">
+    rel="stylesheet">
+
 
   <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -3036,7 +3037,7 @@
 
       <script>
         function getApiUrl(endpoint) {
-          const base = (window.VITE_API_URL || window.API_BASE_URL || (window.location.protocol === 'file:' ? 'http://localhost:5000' : '')).replace(/\/$/, '');
+          const base = (window.VITE_API_URL || window.API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');
           return `${base}${endpoint}`;
         }
 
@@ -3266,7 +3267,6 @@
             const data = await res.json();
 
             if (data.success) {
-              notify("Verification code sent to " + email);
               // Save email and signed OTP token in session to verify next step
               sessionStorage.setItem('pending_verify_email', email);
               if (data.otpToken) {
@@ -3306,7 +3306,6 @@
             const data = await res.json();
 
             if (data.success) {
-              notify("OTP code sent to " + email);
               sessionStorage.setItem('pending_verify_email', email);
               if (data.otpToken) {
                 sessionStorage.setItem('pending_verify_otp_token', data.otpToken);
@@ -3984,8 +3983,10 @@
     });
   </script>
 
-  <!-- Main Script -->
-  <!-- Product Detail Page Modal -->
+  <!-- Main Script -->
+
+  <!-- Product Detail Page Modal -->
+
 
   <script>
     if (window.lucide) {

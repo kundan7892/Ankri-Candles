@@ -23,16 +23,15 @@ try {
 connectDB();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'ankri-super-secret-key-2026';
-// Force IPv4 natively at the socket level by explicitly bypassing Node DNS inside Nodemailer
-// This absolutely guarantees Render will not attempt to route via IPv6 for SMTP.
-let gmailIpv4 = 'smtp.gmail.com'; // Default fallback
+// Prevent IPv6 ENETUNREACH errors by strictly resolving to IPv4
+let gmailIpv4 = 'smtp.gmail.com';
 try {
   const lookup = await dns.promises.lookup('smtp.gmail.com', { family: 4 });
   if (lookup && lookup.address) {
     gmailIpv4 = lookup.address;
   }
 } catch (err) {
-  console.log('Explicit IPv4 DNS lookup failed, falling back to hostname.');
+  console.log('DNS lookup failed, falling back to hostname.');
 }
 
 const transporter = nodemailer.createTransport({
@@ -41,7 +40,7 @@ const transporter = nodemailer.createTransport({
   secure: true,
   auth: { user: process.env.EMAIL_USER || 'ankricandle@gmail.com', pass: process.env.EMAIL_PASS },
   tls: {
-    servername: 'smtp.gmail.com', // Required since we are connecting directly to an IP
+    servername: 'smtp.gmail.com', // Required when connecting directly to IP
     rejectUnauthorized: false
   }
 });
@@ -256,7 +255,7 @@ app.post('/api/register', async (req, res) => {
     console.log(`🔑 [ANKRI OTP] Code for ${cleanEmail} is: ${verificationCode}`);
 
     const mailOptions = {
-      from: 'ankricandle@gmail.com',
+      from: process.env.EMAIL_USER || 'ankricandle@gmail.com',
       to: cleanEmail,
       subject: 'Verify your Ankri Candle Account',
       html: `
@@ -270,13 +269,12 @@ app.post('/api/register', async (req, res) => {
       `
     };
 
-    // Enforce strict email delivery to ensure background process doesn't disconnect early
-    try {
-      await transporter.sendMail(mailOptions);
+    // Send email asynchronously in the background so the UI doesn't freeze
+    transporter.sendMail(mailOptions).then(() => {
       console.log(`✉️ [ANKRI OTP] Successfully emailed OTP code to ${cleanEmail}`);
-    } catch (mailErr) {
+    }).catch((mailErr) => {
       console.error(`⚠️ [ANKRI OTP SMTP NOTICE] Could not deliver email to ${cleanEmail}:`, mailErr.message);
-    }
+    });
 
     res.status(200).json({ success: true, message: 'Verification code generated and sent', otpToken });
   } catch (error) {
@@ -345,7 +343,7 @@ app.post('/api/forgot-password', async (req, res) => {
     );
 
     const mailOptions = {
-      from: 'ankricandle@gmail.com',
+      from: process.env.EMAIL_USER || 'ankricandle@gmail.com',
       to: cleanEmail,
       subject: 'Login to Ankri Candle',
       html: `
@@ -359,11 +357,10 @@ app.post('/api/forgot-password', async (req, res) => {
       `
     };
 
-    try {
-      await transporter.sendMail(mailOptions);
-    } catch (mailErr) {
+    // Send email asynchronously in the background
+    transporter.sendMail(mailOptions).catch(mailErr => {
       console.error('Mail error in forgot-password:', mailErr);
-    }
+    });
 
     res.status(200).json({ success: true, message: 'Verification code sent', otpToken });
   } catch (error) {

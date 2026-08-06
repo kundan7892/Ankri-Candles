@@ -1,0 +1,2 @@
+Invalid login: 534-5.7.9 Application-specific password required. For more information, go to
+534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor 5a478bee46e88-315863fb350sm10449824eec.8 - gsmtp
