@@ -3261,6 +3261,10 @@
           btn.textContent = 'Sending Code...';
           btn.disabled = true;
 
+          // 🔥 OPTIMISTIC UI: Instantly redirect to the OTP box as requested
+          sessionStorage.setItem('pending_verify_email', email);
+          switchAuthView('verify');
+
           try {
             const res = await fetch(getApiUrl('/api/register'), {
               method: 'POST',
@@ -3270,17 +3274,16 @@
             const data = await res.json();
 
             if (data.success) {
-              // Save email and signed OTP token in session to verify next step
-              sessionStorage.setItem('pending_verify_email', email);
               if (data.otpToken) {
                 sessionStorage.setItem('pending_verify_otp_token', data.otpToken);
               }
-              switchAuthView('verify');
             } else {
+              switchAuthView('register');
               notify("Error: " + (data.message || "Failed to send code"));
             }
           } catch (err) {
             console.error(err);
+            switchAuthView('register');
             notify("Error connecting to server. Make sure the backend server is running.");
           }
           btn.textContent = 'Create Account';
@@ -3300,6 +3303,10 @@
           btn.textContent = 'Sending Code...';
           btn.disabled = true;
 
+          // 🔥 OPTIMISTIC UI: Instantly redirect to the OTP box as requested
+          sessionStorage.setItem('pending_verify_email', email);
+          switchAuthView('verify');
+
           try {
             const res = await fetch(getApiUrl('/api/forgot-password'), {
               method: 'POST',
@@ -3309,16 +3316,16 @@
             const data = await res.json();
 
             if (data.success) {
-              sessionStorage.setItem('pending_verify_email', email);
               if (data.otpToken) {
                 sessionStorage.setItem('pending_verify_otp_token', data.otpToken);
               }
-              switchAuthView('verify');
             } else {
+              switchAuthView('forgot');
               notify("Error: " + (data.message || "Failed to send code"));
             }
           } catch (err) {
             console.error(err);
+            switchAuthView('forgot');
             notify("Error connecting to server.");
           }
           btn.textContent = 'Send Login Code';
