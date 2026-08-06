@@ -23,25 +23,25 @@ try {
 connectDB();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'ankri-super-secret-key-2026';
-// Prevent IPv6 ENETUNREACH errors by strictly resolving to IPv4
-let gmailIpv4 = 'smtp.gmail.com';
-try {
-  const lookup = await dns.promises.lookup('smtp.gmail.com', { family: 4 });
-  if (lookup && lookup.address) {
-    gmailIpv4 = lookup.address;
-  }
-} catch (err) {
-  console.log('DNS lookup failed, falling back to hostname.');
-}
 
+// Use Gmail SMTP port 587 (STARTTLS) — more reliable and better deliverability than port 465
 const transporter = nodemailer.createTransport({
-  host: gmailIpv4,
-  port: 465,
-  secure: true,
-  auth: { user: process.env.EMAIL_USER || 'ankricandle@gmail.com', pass: process.env.EMAIL_PASS },
-  tls: {
-    servername: 'smtp.gmail.com', // Required when connecting directly to IP
-    rejectUnauthorized: false
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // STARTTLS — upgrades connection automatically
+  auth: {
+    user: process.env.EMAIL_USER || 'ankricandle@gmail.com',
+    pass: process.env.EMAIL_PASS
+  },
+  tls: { rejectUnauthorized: false }
+});
+
+// Verify SMTP connection on startup
+transporter.verify((error) => {
+  if (error) {
+    console.error('❌ SMTP connection failed:', error.message);
+  } else {
+    console.log('✅ SMTP ready — emails will deliver successfully');
   }
 });
 
@@ -255,16 +255,18 @@ app.post('/api/register', async (req, res) => {
     console.log(`🔑 [ANKRI OTP] Code for ${cleanEmail} is: ${verificationCode}`);
 
     const mailOptions = {
-      from: process.env.EMAIL_USER || 'ankricandle@gmail.com',
+      from: `"Ankri Candle" <${process.env.EMAIL_USER || 'ankricandle@gmail.com'}>`,
+      replyTo: process.env.EMAIL_USER || 'ankricandle@gmail.com',
       to: cleanEmail,
-      subject: 'Verify your Ankri Candle Account',
+      subject: `${verificationCode} is your Ankri Candle verification code`,
+      text: `Your Ankri Candle verification code is: ${verificationCode}\n\nThis code expires in 10 minutes.\n\nIf you did not request this, please ignore this email.`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; text-align: center;">
-          <h2>Ankri Candle Verification</h2>
+        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; text-align: center; padding: 30px; border: 1px solid #e0d6c8; border-radius: 12px;">
+          <h2 style="color: #5c3d2e;">Ankri Candle</h2>
           <p>Welcome, ${cleanName || 'Artisan'}!</p>
-          <p>Please use the following 6-digit code to complete your registration:</p>
-          <h1 style="color: #D4AF37; letter-spacing: 5px;">${verificationCode}</h1>
-          <p>This code expires in 10 minutes.</p>
+          <p>Your verification code is:</p>
+          <h1 style="color: #D4AF37; letter-spacing: 8px; font-size: 48px; margin: 20px 0;">${verificationCode}</h1>
+          <p style="color: #888; font-size: 13px;">This code expires in 10 minutes. Do not share it with anyone.</p>
         </div>
       `
     };
@@ -343,16 +345,18 @@ app.post('/api/forgot-password', async (req, res) => {
     );
 
     const mailOptions = {
-      from: process.env.EMAIL_USER || 'ankricandle@gmail.com',
+      from: `"Ankri Candle" <${process.env.EMAIL_USER || 'ankricandle@gmail.com'}>`,
+      replyTo: process.env.EMAIL_USER || 'ankricandle@gmail.com',
       to: cleanEmail,
-      subject: 'Login to Ankri Candle',
+      subject: `${verificationCode} is your Ankri Candle login code`,
+      text: `Your Ankri Candle login code is: ${verificationCode}\n\nThis code expires in 10 minutes.\n\nIf you did not request this, please ignore this email.`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; text-align: center;">
-          <h2>Ankri Candle Login</h2>
-          <p>We received a request to log in to your account.</p>
-          <p>Please use the following 6-digit code to log in:</p>
-          <h1 style="color: #D4AF37; letter-spacing: 5px;">${verificationCode}</h1>
-          <p>This code expires in 10 minutes and can only be used once.</p>
+        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; text-align: center; padding: 30px; border: 1px solid #e0d6c8; border-radius: 12px;">
+          <h2 style="color: #5c3d2e;">Ankri Candle</h2>
+          <p>We received a login request for your account.</p>
+          <p>Your one-time login code is:</p>
+          <h1 style="color: #D4AF37; letter-spacing: 8px; font-size: 48px; margin: 20px 0;">${verificationCode}</h1>
+          <p style="color: #888; font-size: 13px;">This code expires in 10 minutes and can only be used once.</p>
         </div>
       `
     };
