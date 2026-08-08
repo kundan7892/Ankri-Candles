@@ -1037,6 +1037,20 @@ app.post('/api/ratings/:productId', async (req, res) => {
 });
 
 // Start Server
+app.get('/api/debug-smtp', async (req, res) => {
+  try {
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL_USER || 'ankricandle@gmail.com',
+      to: 'kundan.gupta@gmail.com', // user's email
+      subject: 'Debug SMTP',
+      text: 'Testing SMTP configuration'
+    });
+    res.json({ success: true, info });
+  } catch (err) {
+    res.json({ success: false, error: err.message, stack: err.stack, host: transporter.options.host, port: transporter.options.port, secure: transporter.options.secure, family: transporter.options.family });
+  }
+});
+
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
