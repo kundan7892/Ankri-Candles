@@ -10,8 +10,12 @@ import nodemailer from 'nodemailer';
 import bcrypt from 'bcryptjs';
 import { connectDB, ensureDbConnected } from './mongodb/db.js';
 import { User, Inquiry, Booking, Payment, AbandonedCart, WhatsAppLog, SpinReward, ProductRating } from './mongodb/models.js';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '.env') });
+
 
 // Force IPv4 for DNS resolution to fix ENETUNREACH errors on IPv6 networks (like Render or local misconfigs)
 try {
@@ -28,7 +32,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'ankri-super-secret-key-2026';
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
-  secure: false, // STARTTLS — upgrades connection automatically
+  secure: false, // true for 465, false for other ports
   auth: {
     user: process.env.EMAIL_USER || 'ankricandle@gmail.com',
     pass: process.env.EMAIL_PASS
