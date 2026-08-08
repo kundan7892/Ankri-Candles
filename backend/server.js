@@ -37,7 +37,8 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER || 'ankricandle@gmail.com',
     pass: process.env.EMAIL_PASS
   },
-  tls: { rejectUnauthorized: false }
+  tls: { rejectUnauthorized: false },
+  family: 4 // Force IPv4 to fix ENETUNREACH on Render's IPv6-disabled network
 });
 
 // Verify SMTP connection on startup
