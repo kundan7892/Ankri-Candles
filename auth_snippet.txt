@@ -1,0 +1,100 @@
+  <!-- Profile Modal Overlay -->
+  <div class="modal-overlay hidden" id="profile-modal-overlay" style="z-index: 9997;">
+    <div class="enquiry-modal" style="max-width: 500px; width: 95%;">
+      <button class="close-enquiry-btn" id="close-profile-btn" aria-label="Close profile modal">
+        <i data-lucide="x"></i>
+      </button>
+      <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">My Account
+      </h2>
+      <!-- Tabs -->
+      <div id="auth-tabs"
+        style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem;">
+        <button class="filter-btn active" id="tab-login" onclick="switchAuthView('login')"
+          style="font-size: 0.9rem; padding: 0.5rem 1rem;">Sign In</button>
+        <button class="filter-btn" id="tab-register" onclick="switchAuthView('register')"
+          style="font-size: 0.9rem; padding: 0.5rem 1rem;">Create Account</button>
+      </div>
+
+      <!-- Login View -->
+      <div id="auth-login-view" style="display: block;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Welcome
+          back, candle artisan.</p>
+        <form class="enquiry-form" id="login-form" onsubmit="handleLogin(event)">
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <input type="email" placeholder="Email Address" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+          </div>
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <input type="password" placeholder="Password" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+          </div>
+          <button type="submit" class="btn btn-primary btn-large btn-grow" style="width: 100%;">Sign In</button>
+          <div style="text-align: right; margin-top: 1rem;">
+            <button type="button" onclick="switchAuthView('forgot')"
+              style="background: none; border: none; color: var(--gold-primary); text-decoration: underline; cursor: pointer; font-size: 0.8rem;">Forgot
+              Password?</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Forgot Password View -->
+      <div id="auth-forgot-view" style="display: none;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Enter
+          your registered email to receive an OTP to log in.</p>
+        <form class="enquiry-form" id="forgot-form" onsubmit="handleForgotPassword(event)">
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <input type="email" id="forgot-email" placeholder="Registered Email Address" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+          </div>
+          <button type="submit" id="btn-forgot-submit" class="btn btn-primary btn-large btn-grow"
+            style="width: 100%;">Send Login Code</button>
+          <button type="button" onclick="switchAuthView('login')"
+            style="width: 100%; background: none; border: none; color: var(--text-secondary); text-decoration: underline; margin-top: 1rem; cursor: pointer; font-size: 0.8rem;">Back
+            to Sign In</button>
+        </form>
+      </div>
+
+      <!-- Register View -->
+      <div id="auth-register-view" style="display: none;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Join our
+          sanctuary of luxury fragrances.</p>
+        <form class="enquiry-form" id="register-form" onsubmit="handleRegister(event)">
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <input type="text" id="reg-name" placeholder="Full Name" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <input type="email" id="reg-email" placeholder="Email Address" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+          </div>
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <input type="password" id="reg-password" placeholder="Password" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+          </div>
+          <button type="submit" id="btn-register-submit" class="btn btn-primary btn-large btn-grow"
+            style="width: 100%;">Create Account</button>
+        </form>
+      </div>
+
+      <!-- Verify View -->
+      <div id="auth-verify-view" style="display: none;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">We've
+          sent a 6-digit verification code to your email.</p>
+        <form class="enquiry-form" id="verify-form" onsubmit="handleVerify(event)">
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <input type="text" id="verify-code" placeholder="Enter 6-digit code" required maxlength="6"
+              style="width:100%; border-radius:8px !important; padding: 0.85rem; text-align: center; font-size: 1.5rem; letter-spacing: 0.2em; font-weight: bold; color: var(--gold-primary);">
+          </div>
+          <button type="submit" id="btn-verify-submit" class="btn btn-primary btn-large btn-grow"
+            style="width: 100%;">Verify Account</button>
+          <button type="button" onclick="switchAuthView('register')"
+            style="width: 100%; background: none; border: none; color: var(--text-secondary); text-decoration: underline; margin-top: 1rem; cursor: pointer; font-size: 0.8rem;">Change
+            Email</button>
+        </form>
+      </div>
+
+      <!-- Logged In / Profile View -->
+      <div id="auth-profile-view" style="display: none;">
+        <div
+          style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-glass); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1rem;">

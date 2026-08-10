@@ -1,0 +1,10 @@
+.filter-btn.active {
+  background: var(--sage-accent);
+  color: #FFFFFF;
+  border-color: var(--sage-accent);
+  box-shadow: 0 4px 12px rgba(2, 101, 46, 0.15);
+}
+
+/* Trust Section - What Makes Us Unique */
+.trust-section {
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);

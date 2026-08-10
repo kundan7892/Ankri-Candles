@@ -154,6 +154,19 @@
                 activeDot.classList.add('bg-primary');
             });
         });
+        const filterBtns = document.querySelectorAll('.overflow-x-auto span');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active state from all
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-primary', 'text-white');
+                    b.classList.add('bg-secondary/10', 'text-secondary');
+                });
+                // Add active state to clicked
+                btn.classList.remove('bg-secondary/10', 'text-secondary');
+                btn.classList.add('bg-primary', 'text-white');
+            });
+        });
     </script>
 </body>
 

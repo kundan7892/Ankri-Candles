@@ -1,0 +1,25 @@
+  login: `
+    <div class="auth-screen">
+      <div class="auth-header">
+        <h1 class="page-title">Welcome Back</h1>
+        <p class="auth-subtitle">Sign in to sync your wishlist and orders.</p>
+      </div>
+      <div class="auth-form">
+        <input type="email" class="input-field" placeholder="Email Address">
+        <input type="password" class="input-field" placeholder="Password">
+        <button class="btn-primary" onclick="navigate('home')">Sign In</button>
+        <div class="auth-links">
+          <a href="#">Forgot Password?</a>
+          <span> • </span>
+          <a href="#">Create Account</a>
+        </div>
+        <button class="btn-secondary" onclick="navigate('home')">Continue as Guest</button>
+      </div>
+    </div>
+  `,
+  home: `
+    <header class="app-header">
+      <div class="brand-title">Ankri Candles</div>
+      <i data-lucide="bell" style="color: var(--text-secondary);"></i>
+    </header>
+    
