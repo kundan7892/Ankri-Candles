@@ -1987,11 +1987,18 @@
 
       <!-- Column 4: Newsletter -->
       <div class="footer-newsletter">
-        <h4>Stay Inspired</h4>
-        <p>Subscribe for seasonal notes, early drops &amp; exclusive discounts.</p>
-        <form class="newsletter-form" id="newsletter-form">
-          <input type="email" placeholder="Your email address" required>
-          <button type="submit" aria-label="Subscribe"><i data-lucide="arrow-right"></i></button>
+        <h4 style="color: var(--primary, #333); letter-spacing: 1px;">Stay Inspired</h4>
+        <p style="font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary, #666); margin-bottom: 20px;">
+          Subscribe for seasonal notes, early drops &amp; exclusive discounts.</p>
+        <form class="newsletter-form" id="newsletter-form"
+          style="display: flex; position: relative; border-radius: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); overflow: hidden; background: #fff; border: 1px solid rgba(212,175,55,0.4);">
+          <input type="email" placeholder="Your email address..." required
+            style="width: 100%; border: none; padding: 12px 20px; font-size: 0.9rem; outline: none; background: transparent; color: var(--text-primary, #333);">
+          <button type="submit" aria-label="Subscribe"
+            style="background: #D4AF37; color: #fff; border: none; padding: 0 22px; cursor: pointer; transition: opacity 0.2s ease; display: flex; align-items: center; justify-content: center;"
+            onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+            <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+          </button>
         </form>
       </div>
 
@@ -3044,7 +3051,7 @@
       </div>
 
       <script>
-        // Bulletproof API URL parsing
+        // BuURL parsing
         let rawApiStr = "%VITE_API_URL%";
         window.VITE_API_URL = rawApiStr.startsWith('%') ? '' : rawApiStr.replace(/\/+$/, '').replace(/\/api$/, '');
         window.API_BASE_URL = window.VITE_API_URL || (window.location.protocol === 'file:' ? 'http://localhost:5000' : '');
@@ -3852,7 +3859,7 @@
 
   <!-- Shop Filter Interactions -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEer('DOMContentLoaded', () => {
       const searchInput = document.getElementById('shop-search');
       const priceRange = document.getElementById('shop-price-range');
       const priceLabel = document.getElementById('shop-price-label');
@@ -4009,8 +4016,7 @@
   <script type="module" src="/src/js/pdp.js"></script>
 
   <script>
-    if (window.lucide) {
-      window.lucide.createIcons();
+    if (ndow.lu    window.lucide.createIcons();
     }
   </script>
 </body>
