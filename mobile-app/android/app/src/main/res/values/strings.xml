@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Ankri Candles</string>
-    <string name="title_activity_main">Ankri Candles</string>
-    <string name="package_name">com.ankricandles.app</string>
-    <string name="custom_url_scheme">com.ankricandles.app</string>
-</resources>
