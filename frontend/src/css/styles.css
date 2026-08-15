@@ -2604,24 +2604,128 @@ section {
 }
 
 .about-card {
-  background: var(--bg-glass);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-glass);
-  padding: 2.5rem;
-  border-radius: 4px;
-  box-shadow: 0 12px 30px rgba(19, 34, 28, 0.05);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.5));
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(19, 34, 28, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  position: relative;
+  overflow: hidden;
+  transform: translateY(0);
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  max-width: 90%;
+}
+
+.about-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 28px 55px rgba(19, 34, 28, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border-color: var(--gold-primary);
+}
+
+.about-card-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.about-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: #8E7022;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  transition: background 0.3s ease;
+}
+
+.about-card:hover .about-card-badge {
+  background: rgba(212, 175, 55, 0.2);
+}
+
+.about-card-badge i {
+  width: 14px;
+  height: 14px;
 }
 
 .about-card h4 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--gold-text);
+  font-size: 2.1rem;
+  font-family: var(--font-serif);
+  margin-bottom: 1.2rem;
+  color: var(--text-primary);
+  background: linear-gradient(to right, #6F4627, #D4AF37);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
 }
 
 .about-card p {
   color: var(--text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.7;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+
+.about-card-features {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  flex-wrap: wrap;
+}
+
+.about-card-features span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.about-card-features i {
+  width: 18px;
+  height: 18px;
+  color: var(--gold-primary);
+}
+
+.about-card-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.about-card:hover .about-card-glow {
+  opacity: 1;
+  animation: rotateGlow 10s linear infinite;
+}
+
+@keyframes rotateGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.about-card-texture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  z-index: 1;
+  pointer-events: none;
 }
 
 .about-content h2 {
