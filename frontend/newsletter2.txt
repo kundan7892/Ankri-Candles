@@ -1,0 +1,160 @@
+--- Line 1767 ---
+              <div class="form-group">
+                <label for="corp-email">Work Email</label>
+                <input type="email" id="corp-email" placeholder="rahul@company.com" required>
+--- Line 1768 ---
+                <label for="corp-email">Work Email</label>
+                <input type="email" id="corp-email" placeholder="rahul@company.com" required>
+              </div>
+--- Line 1875 ---
+          <div class="form-group">
+            <label for="enq-email">Email <span class="required-star">*</span></label>
+            <input type="email" id="enq-email" required>
+--- Line 1876 ---
+            <label for="enq-email">Email <span class="required-star">*</span></label>
+            <input type="email" id="enq-email" required>
+          </div>
+--- Line 1925 ---
+          <div class="form-group">
+            <label for="bill-email">Email <span class="required-star">*</span></label>
+            <input type="email" id="bill-email" placeholder="rahul@company.com" required>
+--- Line 1926 ---
+            <label for="bill-email">Email <span class="required-star">*</span></label>
+            <input type="email" id="bill-email" placeholder="rahul@company.com" required>
+          </div>
+--- Line 1966 ---
+            <div class="input-icon-wrapper"><i data-lucide="mail"></i></div>
+            <input type="email" placeholder="Enter your email..." required>
+            <button type="submit" aria-label="Subscribe" class="premium-submit-btn">
+--- Line 2016 ---
+          <h4>Studio</h4>
+          <a href="mailto:hello@ankricandles.com" class="contact-email">hello@ankre.com</a>
+          <p class="contact-location">Bangalore, IN</p>
+--- Line 2970 ---
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <input type="email" placeholder="Email Address" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+--- Line 2994 ---
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Enter
+          your registered email to receive an OTP to log in.</p>
+        <form class="enquiry-form" id="forgot-form" onsubmit="handleForgotPassword(event)">
+--- Line 2997 ---
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <input type="email" id="forgot-email" placeholder="Registered Email Address" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+--- Line 3018 ---
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <input type="email" id="reg-email" placeholder="Email Address" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+--- Line 3038 ---
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">We've
+          sent a 6-digit verification code to your email.</p>
+        <form class="enquiry-form" id="verify-form" onsubmit="handleVerify(event)">
+--- Line 3062 ---
+              <div style="font-size: 1.1rem; font-weight: 600;" id="auth-profile-name">Ankri Artisan</div>
+              <div style="font-size: 0.8rem; color: var(--text-secondary);" id="auth-profile-email">
+                artisan@ankricandles.com</div>
+--- Line 3105 ---
+          e.preventDefault();
+          const email = e.target.querySelector('input[type="email"]').value;
+          const password = document.getElementById('login-password').value;
+--- Line 3115 ---
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, password })
+            });
+--- Line 3124 ---
+              document.getElementById('auth-profile-name').textContent = data.user.name || 'Ankri Artisan';
+              document.getElementById('auth-profile-email').textContent = data.user.email;
+              updateProfileAvatar(data.user.name || data.user.email);
+--- Line 3125 ---
+              document.getElementById('auth-profile-email').textContent = data.user.email;
+              updateProfileAvatar(data.user.name || data.user.email);
+              switchAuthView('profile');
+--- Line 3243 ---
+              document.getElementById('auth-profile-name').textContent = u.name || 'Ankri Artisan';
+              document.getElementById('auth-profile-email').textContent = u.email;
+              updateProfileAvatar(u.name || u.email);
+--- Line 3244 ---
+              document.getElementById('auth-profile-email').textContent = u.email;
+              updateProfileAvatar(u.name || u.email);
+              // Pre-load order history so it's ready when they open the modal
+--- Line 3261 ---
+                    document.getElementById('auth-profile-name').textContent = u.name || 'Ankri Artisan';
+                    document.getElementById('auth-profile-email').textContent = u.email;
+                    updateProfileAvatar(u.name || u.email);
+--- Line 3262 ---
+                    document.getElementById('auth-profile-email').textContent = u.email;
+                    updateProfileAvatar(u.name || u.email);
+                  } catch (e) { }
+--- Line 3298 ---
+          const name = (document.getElementById('reg-name').value || '').trim();
+          const email = (document.getElementById('reg-email').value || '').trim().toLowerCase();
+          const password = document.getElementById('reg-password').value;
+--- Line 3302 ---
+
+          if (!email) {
+            notify("Please enter a valid email address.");
+--- Line 3303 ---
+          if (!email) {
+            notify("Please enter a valid email address.");
+            return;
+--- Line 3311 ---
+          // 🔥 OPTIMISTIC UI: Instantly redirect to the OTP box as requested
+          sessionStorage.setItem('pending_verify_email', email);
+          switchAuthView('verify');
+--- Line 3318 ---
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name, email, password })
+            });
+--- Line 3341 ---
+          e.preventDefault();
+          const email = (document.getElementById('forgot-email').value || '').trim().toLowerCase();
+          const btn = document.getElementById('btn-forgot-submit');
+--- Line 3344 ---
+
+          if (!email) {
+            notify("Please enter a valid email address.");
+--- Line 3345 ---
+          if (!email) {
+            notify("Please enter a valid email address.");
+            return;
+--- Line 3353 ---
+          // 🔥 OPTIMISTIC UI: Instantly redirect to the OTP box as requested
+          sessionStorage.setItem('pending_verify_email', email);
+          switchAuthView('verify');
+--- Line 3360 ---
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email })
+            });
+--- Line 3384 ---
+          const code = (document.getElementById('verify-code').value || '').trim();
+          const email = (sessionStorage.getItem('pending_verify_email') || '').trim().toLowerCase();
+          const otpToken = sessionStorage.getItem('pending_verify_otp_token') || '';
+--- Line 3388 ---
+
+          if (!email) {
+            notify("Verification session expired. Please register again.");
+--- Line 3406 ---
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, code, otpToken })
+            });
+--- Line 3417 ---
+              } else {
+                // Fallback: call login with found email to get a proper JWT
+                try {
+--- Line 3422 ---
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, password: '__otp_verified__' })
+                  });
+--- Line 3432 ---
+              document.getElementById('auth-profile-name').textContent = data.user.name || 'Ankri Artisan';
+              document.getElementById('auth-profile-email').textContent = data.user.email;
+              updateProfileAvatar(data.user.name || data.user.email);
+--- Line 3433 ---
+              document.getElementById('auth-profile-email').textContent = data.user.email;
+              updateProfileAvatar(data.user.name || data.user.email);
+              switchAuthView('profile');
+--- Line 3437 ---
+              // Clear session
+              sessionStorage.removeItem('pending_verify_email');
+              sessionStorage.removeItem('pending_verify_otp_token');

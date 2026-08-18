@@ -11,12 +11,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&display=swap"
-    rel="stylesheet">
+    rel="stylesheet">
 
   <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script type="module" crossorigin src="/assets/index-CIhN1P38.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-IcaHre4F.css">
+  <script type="module" crossorigin src="/assets/index-DJgsKsEC.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-DEWFa9lP.css">
 </head>
 
 <body>
@@ -1145,7 +1145,6 @@
     <!-- How Your Custom Candle is Hand-Crafted Section -->
     <section class="process-section" id="process">
       <div class="section-header text-center">
-        <span class="section-tag">Behind the Scenes</span>
         <h2>How Your Custom Candle is Hand-Crafted</h2>
         <p>From custom recipe selection to your doorstep in Bangalore — how our artisan soy-pouring process works.</p>
       </div>
@@ -1234,7 +1233,6 @@
     <!-- Trust Section (What Makes Us Unique) -->
     <section class="trust-section" id="trust-features">
       <div class="section-header text-center">
-        <span class="section-tag">Ankri Quality</span>
         <h2>What Makes Us Unique</h2>
         <p>Every flame we pour carries a commitment to purity, safety, and sustainable luxury.</p>
       </div>
@@ -1282,7 +1280,6 @@
     <!-- Signature Collection Section -->
     <section class="collection-section" id="collection">
       <div class="section-header text-center">
-        <span class="section-tag">Premium Catalog</span>
         <h2>Artisan Heritage Series</h2>
         <p>Hand-poured candle collections inspired by the aromas, moods, and seasons of India. Filter below.</p>
       </div>
@@ -1652,13 +1649,24 @@
       <div class="about-container">
         <div class="about-visual">
           <div class="about-card">
-            <h4>Poured in Bangalore</h4>
-            <p>Every single candle is individually blended, set, and labeled by expert hands in our Bangalore studio
-              using 100% natural biodegradable soy wax and organic cotton wicks.</p>
+            <div class="about-card-inner">
+              <div class="about-card-badge">
+                <i data-lucide="map-pin"></i>
+                <span>Artisan Studio</span>
+              </div>
+              <h4>Poured in Bangalore</h4>
+              <p>Every single candle is individually blended, set, and labeled by expert hands in our Bangalore studio
+                using 100% natural biodegradable soy wax and organic cotton wicks.</p>
+              <div class="about-card-features">
+                <span><i data-lucide="leaf"></i> Sustainable Wax</span>
+                <span><i data-lucide="droplet"></i> Clean Burn</span>
+              </div>
+            </div>
+            <div class="about-card-glow"></div>
+            <div class="about-card-texture"></div>
           </div>
         </div>
         <div class="about-content">
-          <span class="section-tag">Artisan Studio</span>
           <h2>The Craft of Slow Rituals</h2>
           <p>We believe fragrance has the capacity to construct environments, anchor memories, and hold space. By
             combining custom scent engineering with premium glass vessels, we let you customize the light and olfactory
@@ -1678,7 +1686,6 @@
     <!-- FAQ & Safety Section -->
     <section class="faq-section" id="faq-rituals">
       <div class="section-header text-center">
-        <span class="section-tag">Candle Care</span>
         <h2>Rituals & Care FAQs</h2>
         <p>Maximize your candle life and ensure a clean, aromatic burn with these expert rituals.</p>
       </div>
@@ -1739,7 +1746,6 @@
     <section class="corporate-section" id="bulk-gifting">
       <div class="corporate-container">
         <div class="corporate-content">
-          <span class="section-tag">Custom Commissions</span>
           <h2>Corporate Gifting & Bulk Orders</h2>
           <p>Illuminating your brand story. We design bespoke candle runs, custom scent blends, and personalized branded
             labels for corporate events, luxury hospitality, weddings, and private events.</p>
@@ -1949,56 +1955,93 @@
 
 
 
-  <!-- Footer — Premium 4-Column Warm Minimalist Design -->
-  <footer class="app-footer-main">
-    <div class="footer-grid">
-
-      <!-- Column 1: Brand -->
-      <div class="footer-brand">
-        <h3 class="footer-brand-title">ANKRI CANDLE</h3>
-        <p class="footer-desc">
-          Illuminating spaces with mindful craftsmanship and curated fragrances. Join our community of slow-living
-          enthusiasts.
-        </p>
-      </div>
-
-      <!-- Column 2: Shop -->
-      <div class="footer-links">
-        <h4>Shop</h4>
-        <a href="#collection">All Candles</a>
-        <a href="#customizer">Custom Candle Builder</a>
-        <a href="#gifting-studio">Gift Sets</a>
-        <a href="#quiz-section">Scent Finder Quiz</a>
-        <a id="homepage-admin-trigger" href="#"
-          style="display:flex;align-items:center;gap:4px;margin-top:0.5rem;color:var(--primary);">
-          <i data-lucide="shield-alert" style="width:14px;height:14px;"></i> Super Admin
-        </a>
-      </div>
-
-      <!-- Column 3: Information -->
-      <div class="footer-links">
-        <h4>Information</h4>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">FAQs</a>
-        <a href="#">Shipping &amp; Delivery</a>
-        <a href="#">Returns</a>
-        <a href="#">Contact Us</a>
-      </div>
-
-      <!-- Column 4: Newsletter -->
-      <div class="footer-newsletter">
-        <h4>Stay Inspired</h4>
-        <p>Subscribe for seasonal notes, early drops &amp; exclusive discounts.</p>
-        <form class="newsletter-form" id="newsletter-form">
-          <input type="email" placeholder="Your email address" required>
-          <button type="submit" aria-label="Subscribe"><i data-lucide="arrow-right"></i></button>
+  <!-- Footer � Stunning Ambient Light Design -->
+  <div class="footer-pre-banner-wrapper">
+    <div class="footer-glass-banner">
+      <div class="banner-content">
+        <h2>Join The Inner Circle</h2>
+        <p>Subscribe for exclusive candle drops, olfactory notes, and mindful rituals curated just for you.</p>
+        <form class="newsletter-form-premium" id="newsletter-form">
+          <div class="premium-input-group glass-input">
+            <input type="email" placeholder="Your email address..." required style="padding-left: 20px;">
+            <button type="submit" aria-label="Subscribe" class="premium-submit-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
         </form>
       </div>
-
+      <div class="banner-glow-orb"></div>
     </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Ankri Candle. All rights reserved. Handcrafted in India.</p>
+  </div>
+
+  <footer class="app-footer-main stunning-footer-light">
+    <!-- Ambient Animated Background -->
+    <div class="footer-ambient-bg">
+      <div class="ambient-orb orb-1"></div>
+      <div class="ambient-orb orb-2"></div>
+    </div>
+
+    <div class="stunning-footer-grid">
+      <!-- Left: Massive Typography Brand -->
+      <div class="footer-brand-hero">
+        <h3 class="hero-title">ANKRI</h3>
+        <p class="hero-desc">
+          Crafting light, fragrance, and memories.<br>Poured with intention in Bangalore.
+        </p>
+        <div class="stunning-socials">
+          <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+          <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+        </div>
+      </div>
+
+      <!-- Right: Links Grid -->
+      <div class="footer-nav-section">
+        <div class="nav-col">
+          <h4>Explore</h4>
+          <a href="#collection">Signature Editions</a>
+          <a href="#customizer">Custom Builder</a>
+          <a href="#gifting-studio">Corporate Gifting</a>
+          <a href="#quiz-section">Scent Match Quiz</a>
+        </div>
+        <div class="nav-col">
+          <h4>Support</h4>
+          <a href="#">Candle Care</a>
+          <a href="#">Shipping Details</a>
+          <a href="#">Returns & Refunds</a>
+          <a href="#">Track Order</a>
+        </div>
+        <div class="nav-col contact-col">
+          <h4>Studio</h4>
+          <a href="mailto:hello@ankricandles.com" class="contact-email">hello@ankre.com</a>
+          <p class="contact-location">Bangalore, IN</p>
+          <div class="rotating-badge-wrapper">
+            <!-- Circular text requires SVG for best effect -->
+            <svg class="rotating-text-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+              style="width: 140px; height: 140px; animation: spin 10s linear infinite;">
+              <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
+              <text>
+                <textPath href="#circlePath" fill="#8E7022" font-size="11.5" font-family="sans-serif" font-weight="600"
+                  letter-spacing="1">HAND POURED � 100% SOY WAX �</textPath>
+              </text>
+            </svg>
+            <i data-lucide="sparkles" class="center-star"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stunning-footer-bottom">
+      <p>&copy; 2026 Ankri Candle. All Rights Reserved.</p>
+      <div class="bottom-legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a id="homepage-admin-trigger" href="#" class="admin-text-link">Admin Portal</a>
+      </div>
     </div>
   </footer>
 
@@ -3045,7 +3088,7 @@
       </div>
 
       <script>
-        // Bulletproof API URL parsing
+        // BuURL parsing
         let rawApiStr = "%VITE_API_URL%";
         window.VITE_API_URL = rawApiStr.startsWith('%') ? '' : rawApiStr.replace(/\/+$/, '').replace(/\/api$/, '');
         window.API_BASE_URL = window.VITE_API_URL || (window.location.protocol === 'file:' ? 'http://localhost:5000' : '');
@@ -3853,7 +3896,7 @@
 
   <!-- Shop Filter Interactions -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEer('DOMContentLoaded', () => {
       const searchInput = document.getElementById('shop-search');
       const priceRange = document.getElementById('shop-price-range');
       const priceLabel = document.getElementById('shop-price-label');

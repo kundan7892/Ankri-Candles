@@ -1,0 +1,15 @@
+      <div class="banner-content">
+        <h2>Join The Inner Circle</h2>
+        <p>Subscribe for exclusive candle drops, olfactory notes, and mindful rituals curated just for you.</p>
+        <form class="newsletter-form-premium" id="newsletter-form">
+          <div class="premium-input-group glass-input">
+            <div class="input-icon-wrapper"><i data-lucide="mail"></i></div>
+            <input type="email" placeholder="Enter your email..." required>
+            <button type="submit" aria-label="Subscribe" class="premium-submit-btn">
+              <span>Join</span><i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="banner-glow-orb"></div>
+    </div>

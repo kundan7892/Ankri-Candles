@@ -1,0 +1,10 @@
+              </div>
+              <div class="form-group">
+                <label for="corp-email">Work Email</label>
+                <input type="email" id="corp-email" placeholder="rahul@company.com" required>
+              </div>
+            </div>
+            <div class="form-row-grid">
+              <div class="form-group">
+                <label for="corp-org">Company / Occasion</label>
+                <input type="text" id="corp-org" placeholder="e.g. TechCorp, Wedding" required>

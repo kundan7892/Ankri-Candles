@@ -1,0 +1,40 @@
+1767: <label for="corp-email">Work Email</label>
+1768: <input type="email" id="corp-email" placeholder="rahul@company.com" required>
+1875: <label for="enq-email">Email <span class="required-star">*</span></label>
+1876: <input type="email" id="enq-email" required>
+1925: <label for="bill-email">Email <span class="required-star">*</span></label>
+1926: <input type="email" id="bill-email" placeholder="rahul@company.com" required>
+1966: <input type="email" placeholder="Enter your email..." required>
+2016: <a href="mailto:hello@ankricandles.com" class="contact-email">hello@ankre.com</a>
+2970: <input type="email" placeholder="Email Address" required
+2994: your registered email to receive an OTP to log in.</p>
+2997: <input type="email" id="forgot-email" placeholder="Registered Email Address" required
+3018: <input type="email" id="reg-email" placeholder="Email Address" required
+3038: sent a 6-digit verification code to your email.</p>
+3062: <div style="font-size: 0.8rem; color: var(--text-secondary);" id="auth-profile-email">
+3105: const email = e.target.querySelector('input[type="email"]').value;
+3115: body: JSON.stringify({ email, password })
+3124: document.getElementById('auth-profile-email').textContent = data.user.email;
+3125: updateProfileAvatar(data.user.name || data.user.email);
+3243: document.getElementById('auth-profile-email').textContent = u.email;
+3244: updateProfileAvatar(u.name || u.email);
+3261: document.getElementById('auth-profile-email').textContent = u.email;
+3262: updateProfileAvatar(u.name || u.email);
+3298: const email = (document.getElementById('reg-email').value || '').trim().toLowerCase();
+3302: if (!email) {
+3303: notify("Please enter a valid email address.");
+3311: sessionStorage.setItem('pending_verify_email', email);
+3318: body: JSON.stringify({ name, email, password })
+3341: const email = (document.getElementById('forgot-email').value || '').trim().toLowerCase();
+3344: if (!email) {
+3345: notify("Please enter a valid email address.");
+3353: sessionStorage.setItem('pending_verify_email', email);
+3360: body: JSON.stringify({ email })
+3384: const email = (sessionStorage.getItem('pending_verify_email') || '').trim().toLowerCase();
+3388: if (!email) {
+3406: body: JSON.stringify({ email, code, otpToken })
+3417: // Fallback: call login with found email to get a proper JWT
+3422: body: JSON.stringify({ email: email, password: '__otp_verified__' })
+3432: document.getElementById('auth-profile-email').textContent = data.user.email;
+3433: updateProfileAvatar(data.user.name || data.user.email);
+3437: sessionStorage.removeItem('pending_verify_email');

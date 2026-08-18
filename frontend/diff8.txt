@@ -1,0 +1,300 @@
+﻿diff --git a/frontend/src/css/styles.css b/frontend/src/css/styles.css
+index 5a40360..2aef5f7 100644
+--- a/frontend/src/css/styles.css
++++ b/frontend/src/css/styles.css
+@@ -9541,4 +9541,293 @@ body.dark-theme .pdp-close-btn {
+     font-size: 0.72rem;
+     color: var(--text-muted);
+   }
+-}
+\ No newline at end of file
++}
++/* NEW PREMIUM NEWSLETTER FORM */
++.newsletter-form-premium {
++  margin-top: 1rem;
++  width: 100%;
++}
++
++.premium-input-group {
++  position: relative;
++  display: flex;
++  align-items: center;
++  background: var(--bg-glass, #ffffff);
++  border: 1px solid rgba(212, 175, 55, 0.3);
++  border-radius: 50px;
++  padding: 6px 6px 6px 16px;
++  box-shadow: 0 8px 24px rgba(19, 34, 28, 0.05), inset 0 2px 6px rgba(255, 255, 255, 0.6);
++  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
++  overflow: hidden;
++}
++
++.premium-input-group:focus-within {
++  border-color: var(--gold-primary, #D4AF37);
++  box-shadow: 0 12px 30px rgba(212, 175, 55, 0.15), inset 0 2px 6px rgba(255, 255, 255, 0.8);
++  transform: translateY(-2px);
++}
++
++.input-icon-wrapper { display: none; }
++
++.premium-input-group input {
++  flex-grow: 1;
++  border: none;
++  background: transparent;
++  padding: 12px 14px;
++  font-size: 0.95rem;
++  color: var(--text-primary, #333);
++  outline: none;
++  font-family: inherit;
++}
++
++.premium-input-group input::placeholder {
++  color: var(--text-muted, #999);
++  transition: opacity 0.3s ease;
++}
++
++.premium-input-group:focus-within input::placeholder {
++  opacity: 0.6;
++}
++
++.premium-submit-btn {
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  width: 48px;
++  height: 48px;
++  background: var(--gold-primary, #D4AF37);
++  color: #fff;
++  border: none;
++  border-radius: 50%;
++  cursor: pointer;
++  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
++  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
++  flex-shrink: 0;
++}
++
++.premium-submit-btn:hover {
++  background: var(--gold-light, #E6C24A);
++  transform: rotate(-10deg) scale(1.05);
++  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
++}
++
++
++
++/* 1. Newsletter Section */
++.editorial-newsletter {
++  padding: 6rem 1.5rem;
++  border-bottom: 1px solid rgba(0,0,0,0.05);
++  display: flex;
++  justify-content: center;
++}
++
++.editorial-newsletter-inner {
++  text-align: center;
++  max-width: 600px;
++  width: 100%;
++}
++
++.editorial-newsletter-inner h2 {
++  font-family: var(--font-serif);
++  font-size: 2.5rem;
++  margin-bottom: 1rem;
++  color: #1A1512;
++  font-weight: 400;
++}
++
++.editorial-newsletter-inner p {
++  color: #554A41;
++  font-size: 0.95rem;
++  margin-bottom: 2.5rem;
++  letter-spacing: 0.02em;
++}
++
++.editorial-form {
++  position: relative;
++  display: flex;
++  align-items: center;
++  border-bottom: 1px solid #1A1512;
++  padding-bottom: 0.5rem;
++  transition: border-color 0.3s ease;
++}
++
++.editorial-form:focus-within {
++  border-color: #D4AF37;
++}
++
++.editorial-form input {
++  flex-grow: 1;
++  background: transparent;
++  border: none;
++  font-size: 1.1rem;
++  padding: 0.5rem 0;
++  color: #1A1512;
++  font-family: var(--font-sans);
++  outline: none;
++  letter-spacing: 0.03em;
++}
++
++.editorial-form input::placeholder {
++  color: #9A9188;
++  font-weight: 300;
++  text-transform: uppercase;
++  font-size: 0.85rem;
++  letter-spacing: 0.1em;
++}
++
++.editorial-form button {
++  background: transparent;
++  border: none;
++  color: #1A1512;
++  cursor: pointer;
++  padding: 0 0.5rem;
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  transition: transform 0.3s ease, color 0.3s ease;
++}
++
++.editorial-form button i {
++  width: 22px;
++  height: 22px;
++}
++
++.editorial-form button:hover {
++  transform: translateX(4px);
++  color: #D4AF37;
++}
++
++/* 2. Grid Navigation Section */
++.editorial-nav-grid {
++  max-width: 1400px;
++  margin: 0 auto;
++  padding: 5rem 3rem;
++  display: flex;
++  justify-content: space-between;
++  gap: 4rem;
++}
++
++.nav-brand {
++  max-width: 320px;
++}
++
++.nav-brand h3 {
++  font-family: var(--font-sans);
++  font-size: 1.4rem;
++  letter-spacing: 0.25em;
++  margin-bottom: 1.5rem;
++  color: #1A1512;
++}
++
++.nav-brand p {
++  color: #796859;
++  font-size: 0.95rem;
++  line-height: 1.6;
++}
++
++.nav-links-wrap {
++  display: flex;
++  gap: 6rem;
++  flex-wrap: wrap;
++}
++
++.nav-col {
++  display: flex;
++  flex-direction: column;
++  min-width: 140px;
++}
++
++.nav-col h4 {
++  font-size: 0.75rem;
++  text-transform: uppercase;
++  letter-spacing: 0.15em;
++  color: #9A9188;
++  margin-bottom: 2rem;
++  font-weight: 500;
++}
++
++.nav-col a {
++  font-size: 0.95rem;
++  color: #1A1512;
++  text-decoration: none;
++  margin-bottom: 1rem;
++  transition: color 0.3s ease, opacity 0.3s ease;
++  position: relative;
++  width: fit-content;
++}
++
++.nav-col a:hover {
++  color: #D4AF37;
++}
++
++/* Admin inline label styling */
++.admin-link {
++  color: #D4AF37 !important;
++  font-style: italic;
++  font-family: var(--font-serif);
++}
++
++.studio-text {
++  font-size: 0.95rem;
++  margin-bottom: 0.5rem;
++  color: #1A1512;
++}
++
++.studio-email {
++  font-size: 0.95rem;
++  color: #1A1512 !important;
++  margin-bottom: 2rem !important;
++  display: inline-block;
++  text-decoration: underline !important;
++  text-underline-offset: 4px;
++}
++
++.studio-email:hover {
++  color: #D4AF37 !important;
++}
++
++.editorial-socials {
++  display: flex;
++  gap: 1.25rem;
++}
++
++.editorial-socials a {
++  color: #1A1512;
++  margin: 0 !important;
++}
++
++.editorial-socials i {
++  width: 20px;
++  height: 20px;
++}
++
++/* 3. Bottom Copyright */
++.editorial-footer-bottom {
++  border-top: 1px solid rgba(0,0,0,0.05);
++  text-align: center;
++  padding: 1.5rem;
++}
++
++.editorial-footer-bottom p {
++  font-size: 0.8rem;
++  color: #9A9188;
++  letter-spacing: 0.05em;
++  text-transform: uppercase;
++}
++
++@media (max-width: 900px) {
++  .editorial-nav-grid {
++    flex-direction: column;
++    padding: 4rem 1.5rem;
++    gap: 3rem;
++  }
++  
++  .nav-links-wrap {
++    flex-direction: column;
++    gap: 2.5rem;
++  }
++  
++  .editorial-newsletter {
++    padding: 4rem 1.5rem;
++  }
++}

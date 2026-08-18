@@ -1,0 +1,50 @@
+            <i data-lucide="refresh-cw"></i>
+          </div>
+          <h3>Infinite Reusable Jars</h3>
+          <p>Designed for our drop-in refill program. Clean out the empty jar, insert a fresh wax block, and burn
+            forever.</p>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Signature Collection Section -->
+    <section class="collection-section" id="collection">
+      <div class="section-header text-center">
+        <h2>Artisan Heritage Series</h2>
+        <p>Hand-poured candle collections inspired by the aromas, moods, and seasons of India. Filter below.</p>
+      </div>
+
+      <!-- Shop Filter Tabs -->
+      <div class="shop-filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="calming">Calming</button>
+        <button class="filter-btn" data-filter="energizing">Energizing</button>
+        <button class="filter-btn" data-filter="romantic">Romantic</button>
+        <button class="filter-btn" data-filter="festive">Festive</button>
+        <button class="filter-btn" data-filter="bedroom">Bedroom</button>
+        <button class="filter-btn" data-filter="living">Living Room</button>
+        <button class="filter-btn" data-filter="meditation">Meditation</button>
+        <button class="filter-btn" data-filter="office">Office/Study</button>
+        <button class="filter-btn" data-filter="heritage">Heritage India</button>
+        <button class="filter-btn" data-filter="signature">Signature Series</button>
+        <button class="filter-btn" data-filter="kits">Occasion Kits</button>
+      </div>
+
+      <div class="collection-grid" id="product-grid-catalog">
+        <!-- Card 1: Floral Bliss -->
+        <div class="product-card" data-id="sig-1" data-name="Floral Bliss" data-price="699"
+          data-scent="Rose, Jasmine & Sandalwood" data-colors="#E1D5E7, #DEB887" data-collection="signature"
+          data-mood="romantic" data-room="bedroom">
+          <div class="product-image-container">
+            <div class="card-glow"
+              style="background: radial-gradient(circle, rgba(220,100,180,0.12) 0%, transparent 70%);"></div>
+            <div class="product-preview-candle orchid-theme">
+              <div class="flame-dot"></div>
+              <div class="candle-jar-mini">
+                <div class="label-mini">FLORAL BLISS</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-info">

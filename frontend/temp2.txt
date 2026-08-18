@@ -1,0 +1,10 @@
+      <div id="auth-login-view" style="display: block;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">Welcome
+          back, candle artisan.</p>
+        <form class="enquiry-form" id="login-form" onsubmit="handleLogin(event)">
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <input type="email" placeholder="Email Address" required
+              style="width:100%; border-radius:8px !important; padding: 0.85rem;">
+          </div>
+          <div class="form-group" style="margin-bottom: 1.5rem; position: relative;">
+            <input type="password" id="login-password" placeholder="Password" required
