@@ -15,8 +15,10 @@
 
   <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script type="module" crossorigin src="/assets/index-DJgsKsEC.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-DEWFa9lP.css">
+  <script type="module" crossorigin src="/assets/main-HOxSkoDK.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/styles-BUCFW9X3.js">
+  <link rel="stylesheet" crossorigin href="/assets/styles-BSnP31A7.css">
+  <link rel="stylesheet" crossorigin href="/assets/main-BJW7bZn9.css">
 </head>
 
 <body>
@@ -958,80 +960,9 @@
                   </div>
                 </div>
 
-                <!-- ASMR Soundscape Selector -->
-                <div class="soundscape-selector-block">
-                  <h4><i data-lucide="music"></i> Custom ASMR Soundscape</h4>
-                  <p class="section-desc-small">Select a soothing backdrop that synthesizes in real-time when your
-                    candle is lit.</p>
-                  <div class="soundscape-chips">
-                    <label class="soundscape-chip active">
-                      <input type="radio" name="soundscape-selection" value="crackle" checked>
-                      <span>Pure Wood-Wick</span>
-                    </label>
-                    <label class="soundscape-chip">
-                      <input type="radio" name="soundscape-selection" value="rain">
-                      <span>Rainy Forest</span>
-                    </label>
-                    <label class="soundscape-chip">
-                      <input type="radio" name="soundscape-selection" value="zen">
-                      <span>Zen Temple</span>
-                    </label>
-                  </div>
-                </div>
 
-                <!-- Scent Throw Virtual Room Simulator -->
-                <div class="room-simulator-block">
-                  <h4><i data-lucide="home"></i> Scent Throw Room Simulator</h4>
-                  <p class="section-desc-small">Visualize how the Twist, Heart, and Depth notes disperse in your space.
-                  </p>
 
-                  <div class="simulator-controls">
-                    <div class="sim-control-group">
-                      <label for="room-size-select">Room Size:</label>
-                      <select id="room-size-select" class="simulator-select">
-                        <option value="small">Powder Room (80 sq ft)</option>
-                        <option value="medium" selected>Standard Bedroom (150 sq ft)</option>
-                        <option value="large">Grand Living Room (350 sq ft)</option>
-                      </select>
-                    </div>
 
-                    <div class="sim-control-group">
-                      <div class="slider-label-row">
-                        <label for="burn-time-slider">Burn Time:</label>
-                        <span id="burn-time-val">1 Hour</span>
-                      </div>
-                      <input type="range" id="burn-time-slider" min="1" max="3" value="2" class="simulator-slider">
-                    </div>
-                  </div>
-
-                  <!-- Architectural Top-Down Floor Plan -->
-                  <div class="room-floorplan-container">
-                    <div class="room-floorplan" id="room-floor-plan">
-                      <!-- Wall outlines & Door -->
-                      <div class="room-wall room-wall-top"></div>
-                      <div class="room-wall room-wall-right"></div>
-                      <div class="room-wall room-wall-bottom"></div>
-                      <div class="room-wall room-wall-left"></div>
-                      <div class="room-door"></div>
-
-                      <!-- Stylized Furniture Mini Icons -->
-                      <div class="furniture sofa" title="Sofa"><i data-lucide="armchair"></i></div>
-                      <div class="furniture window" title="Window"></div>
-                      <div class="furniture table" title="Candle Table">
-                        <!-- Pulsing scent aura rings radiating from candle -->
-                        <div class="candle-dot"></div>
-                        <div class="aura-ring aura-twist" id="aura-twist-ring"></div>
-                        <div class="aura-ring aura-heart" id="aura-heart-ring"></div>
-                        <div class="aura-ring aura-depth" id="aura-depth-ring"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="room-diffusion-description-card">
-                    <p id="room-diffusion-description">At 1 hour, the warm botanical heart notes of Lavender have fully
-                      diffused, creating a relaxing 150 sq ft sanctuary.</p>
-                  </div>
-                </div>
               </div>
 
               <!-- Step 3: Label Customizer -->
@@ -1742,52 +1673,91 @@
       </div>
     </section>
 
-    <!-- Corporate Gifting Section -->
-    <section class="corporate-section" id="bulk-gifting">
-      <div class="corporate-container">
-        <div class="corporate-content">
-          <h2>Corporate Gifting & Bulk Orders</h2>
-          <p>Illuminating your brand story. We design bespoke candle runs, custom scent blends, and personalized branded
-            labels for corporate events, luxury hospitality, weddings, and private events.</p>
-          <ul class="corporate-perks">
-            <li><i data-lucide="check-circle-2"></i> Custom scent curation and label printing</li>
-            <li><i data-lucide="check-circle-2"></i> Tiered wholesale bulk discounts (minimum 30 units)</li>
-            <li><i data-lucide="check-circle-2"></i> Safe, protected delivery across India</li>
-          </ul>
+    <!-- Corporate Gifting Section Redesigned -->
+    <section class="corporate-premium-section" id="bulk-gifting">
+      <div class="corporate-ambient-bg">
+        <div class="corp-orb orb-gold"></div>
+        <div class="corp-orb orb-sage"></div>
+        <div class="corp-glass-overlay"></div>
+      </div>
+      <div class="corporate-premium-container">
+
+        <div class="corp-visual-column">
+          <div class="corp-visual-header">
+            <span class="corp-tag"><i data-lucide="gem"></i> Premium Service</span>
+            <h2>Corporate Gifting <br><span class="highlight-gold">& Bulk Orders</span></h2>
+            <p>Illuminating your brand story. We design bespoke candle runs, custom scent blends, and personalized
+              branded labels for corporate events, luxury hospitality, weddings, and private events.</p>
+          </div>
+          <div class="corp-features-grid">
+            <div class="corp-feature-card">
+              <div class="corp-feat-icon"><i data-lucide="palette"></i></div>
+              <div class="corp-feat-text">
+                <h4>Custom Curation</h4>
+                <p>Tailored scent profiles & label printing</p>
+              </div>
+            </div>
+            <div class="corp-feature-card">
+              <div class="corp-feat-icon"><i data-lucide="box"></i></div>
+              <div class="corp-feat-text">
+                <h4>Tiered Discounts</h4>
+                <p>Wholesale pricing (min. 30 units)</p>
+              </div>
+            </div>
+            <div class="corp-feature-card">
+              <div class="corp-feat-icon"><i data-lucide="shield-check"></i></div>
+              <div class="corp-feat-text">
+                <h4>Safe Delivery</h4>
+                <p>Protected shipping across India</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="corporate-form-card">
-          <h3>Request a Bulk Quote</h3>
-          <form class="corporate-form" id="bulk-enquiry-form">
-            <div class="form-row-grid">
-              <div class="form-group">
-                <label for="corp-name">Your Name</label>
-                <input type="text" id="corp-name" placeholder="e.g. Rahul Sharma" required>
-              </div>
-              <div class="form-group">
-                <label for="corp-email">Work Email</label>
-                <input type="email" id="corp-email" placeholder="rahul@company.com" required>
-              </div>
+        <div class="corp-form-column">
+          <div class="corp-form-glass-card">
+            <div class="corp-form-header">
+              <h3>Request a Quote</h3>
+              <p>Spark a conversation with our studio experts.</p>
             </div>
-            <div class="form-row-grid">
-              <div class="form-group">
-                <label for="corp-org">Company / Occasion</label>
-                <input type="text" id="corp-org" placeholder="e.g. TechCorp, Wedding" required>
+            <form class="corp-premium-form" id="bulk-enquiry-form">
+              <div class="corp-premium-form-row">
+                <div class="form-group-premium">
+                  <input type="text" id="corp-name" placeholder=" " required>
+                  <label for="corp-name">Your Name</label>
+                  <div class="input-focus-border"></div>
+                </div>
+                <div class="form-group-premium">
+                  <input type="email" id="corp-email" placeholder=" " required>
+                  <label for="corp-email">Work Email</label>
+                  <div class="input-focus-border"></div>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="corp-qty">Estimated Quantity</label>
-                <input type="number" id="corp-qty" min="30" placeholder="Min. 30 units" required>
+              <div class="corp-premium-form-row">
+                <div class="form-group-premium">
+                  <input type="text" id="corp-org" placeholder=" " required>
+                  <label for="corp-org">Company / Occasion</label>
+                  <div class="input-focus-border"></div>
+                </div>
+                <div class="form-group-premium">
+                  <input type="number" id="corp-qty" min="30" placeholder=" " required>
+                  <label for="corp-qty">Est. Quantity</label>
+                  <div class="input-focus-border"></div>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="corp-msg">Your Customization Details</label>
-              <textarea id="corp-msg" rows="4"
-                placeholder="Describe your preferred vessel colors, scent profile ideas, and branding needs..."
-                required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-large btn-grow">Submit Inquiry</button>
-          </form>
+              <div class="form-group-premium">
+                <textarea id="corp-msg" rows="3" placeholder=" " required></textarea>
+                <label for="corp-msg">Customization Details</label>
+                <div class="input-focus-border"></div>
+              </div>
+              <button type="submit" class="btn-corp-submit group">
+                <span>Submit Inquiry</span>
+                <i data-lucide="arrow-right" class="group-hover:translate-x-1 transition-transform"></i>
+              </button>
+            </form>
+          </div>
         </div>
+
       </div>
     </section>
   </main>
@@ -1993,9 +1963,30 @@
           Crafting light, fragrance, and memories.<br>Poured with intention in Bangalore.
         </p>
         <div class="stunning-socials">
-          <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
-          <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
-          <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+          <a href="#" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-instagram">
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+            </svg>
+          </a>
+          <a href="#" aria-label="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-twitter">
+              <path
+                d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+            </svg>
+          </a>
+          <a href="#" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-facebook">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+            </svg>
+          </a>
         </div>
       </div>
 
@@ -2025,8 +2016,8 @@
               style="width: 140px; height: 140px; animation: spin 10s linear infinite;">
               <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
               <text>
-                <textPath href="#circlePath" fill="#8E7022" font-size="11.5" font-family="sans-serif" font-weight="600"
-                  letter-spacing="1">HAND POURED � 100% SOY WAX �</textPath>
+                <textPath href="#circlePath" fill="var(--primary)" font-size="11.5" font-family="sans-serif"
+                  font-weight="600" letter-spacing="1">HAND POURED � 100% SOY WAX �</textPath>
               </text>
             </svg>
             <i data-lucide="sparkles" class="center-star"></i>
