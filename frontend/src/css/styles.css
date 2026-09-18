@@ -828,94 +828,88 @@ section {
   color: var(--text-muted);
 }
 
-/* Customizer Header & Breadcrumbs */
+/* Customizer Header Redesign - Premium Aesthetic */
 .customizer-header {
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  padding: 0;
 }
 
 .customizer-header .breadcrumb {
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  color: #7A726A;
+  margin-bottom: 1.5rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .builder-tag {
   font-family: var(--font-sans);
   font-size: 0.75rem;
-  color: var(--gold-primary);
-  font-weight: 600;
-  letter-spacing: 0.15em;
+  color: #C0A157;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   display: block;
 }
 
 .builder-title {
-  font-size: 3.2rem;
+  font-size: 4.2rem;
   font-family: var(--font-serif);
   font-weight: 700;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   line-height: 1.1;
-  color: var(--text-primary);
+  color: #1A1A1A;
+  letter-spacing: -0.02em;
 }
 
 .builder-meta-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  border-bottom: 1px solid var(--border-glass);
-  padding-bottom: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  /* Removed bottom border to keep the clean look */
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 .builder-price-info {
+  display: flex;
+  align-items: baseline;
+}
+
+.builder-price-info .price-val {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  color: #C0A157;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.builder-price-info .price-symbol {
   font-family: var(--font-serif);
   font-size: 1.8rem;
-  color: var(--gold-primary);
+  color: #C0A157;
   font-weight: 500;
+  margin-right: 0.1rem;
 }
 
 .shipping-note {
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  margin-left: 0.75rem;
+  font-size: 0.95rem;
+  color: #555555;
+  margin-left: 1rem;
   font-weight: 500;
-}
-
-.builder-rating {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-
-.builder-rating i.star-fill {
-  color: var(--gold-primary);
-  fill: var(--gold-primary);
-  width: 16px;
-  height: 16px;
-}
-
-.rating-val {
-  margin-left: 0.5rem;
-}
-
-.see-all-reviews {
-  color: var(--gold-primary);
-  text-decoration: underline;
-  margin-left: 0.5rem;
-  transition: var(--transition-fast);
-}
-
-.see-all-reviews:hover {
-  color: var(--gold-hover);
 }
 
 /* Product Type Selection Cards */
