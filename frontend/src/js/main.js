@@ -1105,54 +1105,6 @@ function initAppFlow() {
       });
     });
 
-    // Corporate Gifting Bulk enquiry Form
-    const bulkEnquiryForm = document.getElementById('bulk-enquiry-form');
-    if (bulkEnquiryForm) {
-      bulkEnquiryForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        console.log("🚀 Corporate Gifting Form submit event fired!");
-
-        const name = document.getElementById('corp-name').value;
-        const email = document.getElementById('corp-email').value;
-        const org = document.getElementById('corp-org').value;
-        const qty = document.getElementById('corp-qty').value;
-        const details = document.getElementById('corp-msg').value;
-
-        // Save locally
-        saveInquiryToLocalStorage({
-          type: 'gifting',
-          name: name,
-          email: email,
-          org: org,
-          qty: qty,
-          details: details,
-          timestamp: Date.now()
-        });
-
-        const submitBtn = bulkEnquiryForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Sending Inquiry...";
-
-        setTimeout(() => {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalText;
-          bulkEnquiryForm.reset();
-
-          triggerCandleGlowAnimation(() => {
-            const randomOrder = `ENQ-${Math.floor(10000 + Math.random() * 90000)}`;
-            if (orderNumberText) orderNumberText.textContent = randomOrder;
-            if (successTitle) successTitle.textContent = "You glowed the candle! Order booked successfully!";
-            if (successDesc) successDesc.textContent = `Thank you, ${name}! Your corporate gifting inquiry has been received. Our team will contact you within 24 hours to discuss customization details.`;
-            if (orderIdLabel) orderIdLabel.textContent = "Inquiry ID";
-            if (successModalOverlay) successModalOverlay.classList.remove('hidden');
-          });
-
-          showToast(`Thank you, ${name}! Your inquiry has been sent. We'll reply within 24 hours.`);
-        }, 1500);
-      });
-    }
 
     // --- SOUND & SIMULATOR EVENT LISTENERS ---
     const audioToggleBtn = document.getElementById('ambient-audio-toggle');
@@ -1819,7 +1771,7 @@ function initAppFlow() {
         if (queryLower.includes('custom') || queryLower.includes('create') || queryLower.includes('design') || queryLower.includes('recipe') || queryLower.includes('scent')) {
           return "In our Artisan Customizer overlay, you can select custom wax ratios (Heart, Depth, Twist) and vessel color to craft your bespoke candles. Take our Scent Finder Quiz above to discover custom synergistic recipes!";
         } else if (queryLower.includes('shipping') || queryLower.includes('delivery') || queryLower.includes('how long') || queryLower.includes('bangalore')) {
-          return "We offer free shipping on orders above ₹999. In Bangalore, delivery takes 1-2 corporate working days, and 3-5 days across all other parts of India.";
+          return "We offer free shipping on orders above ₹999. In Bangalore, delivery takes 1-2 working days, and 3-5 days across all other parts of India.";
         } else if (queryLower.startsWith('ac-') || queryLower.includes('track') || queryLower.includes('status') || queryLower.includes('order')) {
           if (queryLower.includes('98216') || queryLower.includes('ac-98216')) {
             return "Order #AC-98216 has been successfully delivered on July 05, 2026! Total Amount Paid: $64.00. Thank you for your support.";
