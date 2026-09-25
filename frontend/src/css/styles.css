@@ -2197,30 +2197,49 @@ section {
   position: relative;
   z-index: 160;
   border-top: 1px solid var(--border-glass);
-  padding: 1.25rem 2rem;
+  padding: 2rem;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   background: var(--bg-secondary);
+  border-radius: 0 0 12px 12px;
+  gap: 1.5rem;
 }
 
 .price-summary {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .price-label {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.4rem;
 }
 
 .price-value {
   font-family: var(--font-serif);
-  font-size: 1.6rem;
+  font-size: 2.2rem;
   color: var(--gold-primary);
   font-weight: 500;
+}
+
+.configurator-footer #add-custom-candle-btn {
+  width: 100%;
+  max-width: 400px;
+  padding: 1.25rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
 /* How Your Custom Candle is Hand-Crafted Process Section */
@@ -5422,10 +5441,10 @@ section {
   }
 
   .configurator-footer {
-    padding: 1.25rem !important;
+    padding: 1.5rem !important;
     flex-direction: column !important;
-    gap: 1rem !important;
-    align-items: stretch !important;
+    gap: 1.25rem !important;
+    align-items: center !important;
     text-align: center;
   }
 
@@ -5433,8 +5452,9 @@ section {
     margin-bottom: 0 !important;
   }
 
-  .configurator-footer .btn {
+  .configurator-footer #add-custom-candle-btn {
     width: 100% !important;
+    max-width: none !important;
   }
 
   /* Room Simulator controls */
