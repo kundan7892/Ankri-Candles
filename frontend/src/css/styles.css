@@ -2713,6 +2713,7 @@ section {
   overflow: hidden;
   transform: translateY(0);
   transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  width: 100%;
   max-width: 90%;
 }
 
@@ -2760,6 +2761,7 @@ section {
   color: var(--text-primary);
   background: linear-gradient(to right, #6F4627, #D4AF37);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.2;
 }
@@ -3583,6 +3585,10 @@ section {
 }
 
 @media (max-width: 768px) {
+  section {
+    padding: 3rem 1rem;
+  }
+
   .hero-title {
     font-size: 3.2rem;
   }
@@ -3626,22 +3632,26 @@ section {
   }
 
   .about-visual {
-    padding: 1.5rem;
+    padding: 1rem;
     min-height: 380px;
   }
 
   .about-card {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1rem;
+    width: 100%;
     max-width: 100%;
   }
 
   .about-card h4 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
+    word-wrap: break-word;
+    hyphens: auto;
   }
 
   .about-card p {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     margin-bottom: 1.5rem;
+    word-wrap: break-word;
   }
 
   .about-card-features {
