@@ -3920,7 +3920,7 @@ function initAppFlow() {
     storefrontSearchInput.addEventListener('input', (e) => {
       const query = e.target.value.toLowerCase().trim();
       if (!query) {
-        searchResultsContainer.innerHTML = '<div style="color: var(--text-secondary); font-size: 0.85rem; text-align: center; padding: 1.5rem 0;">Type a query to see matching artisan candles.</div>';
+        searchResultsContainer.innerHTML = '<div style="color: #4A453F; font-size: 0.95rem; text-align: center; padding: 1.5rem 0; font-family: var(--font-sans);">Type a query to see matching artisan candles.</div>';
         return;
       }
 
@@ -3930,22 +3930,22 @@ function initAppFlow() {
       );
 
       if (matches.length === 0) {
-        searchResultsContainer.innerHTML = '<div style="color: var(--text-secondary); font-size: 0.85rem; text-align: center; padding: 1.5rem 0;">No matching candles found. Try search terms like Lavender, Oud, or Silk.</div>';
+        searchResultsContainer.innerHTML = '<div style="color: #4A453F; font-size: 0.95rem; text-align: center; padding: 1.5rem 0; font-family: var(--font-sans);">No matching candles found. Try search terms like Lavender, Oud, or Silk.</div>';
         return;
       }
 
       searchResultsContainer.innerHTML = matches.map(item => `
-        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background: rgba(255,255,255,0.02); border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.05);">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background: rgba(0,0,0,0.02); border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid rgba(0,0,0,0.05); transition: background 0.2s ease;">
           <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 36px; height: 36px; background: ${item.color}; border-radius: 6px;"></div>
+            <div style="width: 40px; height: 40px; background: ${item.color}; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);"></div>
             <div>
-              <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">${item.name}</div>
-              <div style="font-size: 0.75rem; color: var(--text-secondary);">${item.category}</div>
+              <div style="font-size: 0.95rem; font-weight: 600; color: #1D1B19; font-family: var(--font-sans);">${item.name}</div>
+              <div style="font-size: 0.8rem; color: #5C564D; font-family: var(--font-sans);">${item.category}</div>
             </div>
           </div>
           <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 0.85rem; font-weight: 600; color: var(--gold-text);">${item.price}</span>
-            <button class="btn btn-primary" onclick="showToast('Added matching item!')" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;">View</button>
+            <span style="font-size: 0.9rem; font-weight: 600; color: #B28E2E;">${item.price}</span>
+            <button class="btn btn-primary" onclick="showToast('Added matching item!')" style="padding: 0.35rem 0.8rem; font-size: 0.75rem; font-family: var(--font-sans);">View</button>
           </div>
         </div>
       `).join('');
