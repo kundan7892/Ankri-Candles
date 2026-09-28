@@ -2745,34 +2745,130 @@
     </div>
   </div>
 
-  <!-- Search Modal Overlay -->
+  <!-- Search Modal Overlay - Premium Edge-to-Edge Design -->
   <div class="modal-overlay hidden" id="search-modal-overlay"
-    style="z-index: 9997; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.7); position: fixed; inset: 0;">
-    <div
-      style="width: 100%; max-width: 600px; background: #FCF8F4; border-radius: 4px; padding: 40px 30px; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+    style="z-index: 9997; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; background: rgba(253, 251, 247, 0.94); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); position: fixed; inset: 0; padding: 0;">
+
+    <style>
+      @keyframes slideUpFade {
+        0% {
+          opacity: 0;
+          transform: translateY(30px) scale(0.98);
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      #search-results-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      .modal-overlay:not(.hidden) {
+        animation: fadeInOverlay 0.4s ease forwards;
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal-overlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      @keyframes fadeInOverlay {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+
+    <!-- Top Nav area for Close Button -->
+    <div style="width: 100%; max-width: 1200px; display: flex; justify-content: flex-end; padding: 2rem;">
       <button id="close-search-btn" aria-label="Close search modal"
-        style="position: absolute; top: 20px; right: 20px; background: transparent; border: 1px solid #D8CFC0; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #2C2621; cursor: pointer; transition: all 0.3s ease; padding: 0;">
-        <i data-lucide="x" style="width: 20px; height: 20px; color: #000;"></i>
+        style="background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; color: #1f1b18; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 24px rgba(0,0,0,0.04); z-index: 2;"
+        onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 12px 32px rgba(0,0,0,0.08)';"
+        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.04)';">
+        <i data-lucide="x" style="width: 24px; height: 24px;"></i>
       </button>
+    </div>
 
-      <h2
-        style="font-family: var(--font-serif); font-size: 2.8rem; margin: 20px 0 10px 0; text-align: center; color: #1D1B19; font-weight: 500; letter-spacing: -0.02em;">
-        Search Collections</h2>
-      <p
-        style="font-size: 0.95rem; color: #5C564D; margin-bottom: 40px; text-align: center; font-family: var(--font-sans);">
-        Find your favorite artisan recipes and custom scents.</p>
+    <!-- Main Content -->
+    <div
+      style="width: 100%; max-width: 800px; padding: 2rem 2rem 4rem; display: flex; flex-direction: column; align-items: center; animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; position: absolute; top: 12vh;">
 
-      <div style="position: relative; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
-        <input type="text" id="storefront-search-input"
-          placeholder="Type to search (e.g., Lavender, Sandalwood, Oud)..."
-          style="width: 100%; padding: 1.1rem 1.5rem; background: transparent; border: 1px solid #D8CFC0; border-radius: 50px; color: #2C2621; font-family: var(--font-sans); font-size: 1rem; outline: none; transition: border 0.3s ease; box-sizing: border-box;">
+      <!-- Premium Tag -->
+      <div
+        style="display:inline-flex; align-items:center; gap:8px; background:rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.2); border-radius:999px; padding:0.4rem 1rem; margin-bottom: 2rem; font-family:'Inter',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#b59325; backdrop-filter: blur(8px);">
+        <i data-lucide="sparkles" style="width: 12px; height: 12px;"></i> Discover More
       </div>
 
+      <h2
+        style="font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 1rem 0; text-align: center; color: #1D1B19; font-weight: 500; letter-spacing: -0.03em;">
+        What are you looking for?</h2>
+      <p
+        style="font-size: 1.125rem; color: #6f675c; margin-bottom: 3.5rem; text-align: center; font-family: var(--font-sans); max-width: 500px; line-height: 1.6;">
+        Explore our curated collection of artisan candles, bespoke gifts, and signature custom scents.</p>
+
+      <!-- Massive Search Input -->
+      <div style="position: relative; width: 100%; margin-bottom: 2.5rem;">
+        <i data-lucide="search"
+          style="position: absolute; left: 1.5rem; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; color: #A8A197; z-index: 2;"></i>
+        <input type="text" id="storefront-search-input" placeholder="Search for 'Sandalwood'..."
+          style="width: 100%; padding: 1.6rem 1.5rem 1.6rem 4rem; background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 24px; color: #1D1B19; font-family: var(--font-sans); font-size: 1.25rem; font-weight: 500; outline: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 20px 40px rgba(0,0,0,0.04); box-sizing: border-box; position: relative; z-index: 1;"
+          onfocus="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 24px 48px rgba(0,0,0,0.08)'; this.style.borderColor='rgba(212,175,55,0.4)';"
+          onblur="this.style.transform='translateY(0)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.04)'; this.style.borderColor='rgba(0,0,0,0.06)';">
+      </div>
+
+      <!-- Quick Links / Popular Searches -->
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-bottom: 4rem;">
+        <span
+          style="font-family: var(--font-sans); font-size: 0.875rem; color: #8A8177; display: flex; align-items: center; margin-right: 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Popular:</span>
+        <button
+          onclick="document.getElementById('storefront-search-input').value='Oud'; document.getElementById('storefront-search-input').dispatchEvent(new Event('input'))"
+          style="background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.06); padding: 0.6rem 1.25rem; border-radius: 24px; font-family: var(--font-sans); font-size: 0.95rem; font-weight: 500; color: #4A453F; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.02);"
+          onmouseover="this.style.background='#fff'; this.style.borderColor='rgba(0,0,0,0.1)'; this.style.transform='translateY(-1px)';"
+          onmouseout="this.style.background='rgba(255,255,255,0.7)'; this.style.borderColor='rgba(0,0,0,0.06)'; this.style.transform='translateY(0)';">Deep
+          Oud</button>
+        <button
+          onclick="document.getElementById('storefront-search-input').value='Lavender'; document.getElementById('storefront-search-input').dispatchEvent(new Event('input'))"
+          style="background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.06); padding: 0.6rem 1.25rem; border-radius: 24px; font-family: var(--font-sans); font-size: 0.95rem; font-weight: 500; color: #4A453F; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.02);"
+          onmouseover="this.style.background='#fff'; this.style.borderColor='rgba(0,0,0,0.1)'; this.style.transform='translateY(-1px)';"
+          onmouseout="this.style.background='rgba(255,255,255,0.7)'; this.style.borderColor='rgba(0,0,0,0.06)'; this.style.transform='translateY(0)';">Lavender</button>
+        <button
+          onclick="document.getElementById('storefront-search-input').value='Citrus'; document.getElementById('storefront-search-input').dispatchEvent(new Event('input'))"
+          style="background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.06); padding: 0.6rem 1.25rem; border-radius: 24px; font-family: var(--font-sans); font-size: 0.95rem; font-weight: 500; color: #4A453F; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.02);"
+          onmouseover="this.style.background='#fff'; this.style.borderColor='rgba(0,0,0,0.1)'; this.style.transform='translateY(-1px)';"
+          onmouseout="this.style.background='rgba(255,255,255,0.7)'; this.style.borderColor='rgba(0,0,0,0.06)'; this.style.transform='translateY(0)';">Bright
+          Citrus</button>
+        <button
+          onclick="document.getElementById('storefront-search-input').value='Gift'; document.getElementById('storefront-search-input').dispatchEvent(new Event('input'))"
+          style="background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.06); padding: 0.6rem 1.25rem; border-radius: 24px; font-family: var(--font-sans); font-size: 0.95rem; font-weight: 500; color: #4A453F; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.02);"
+          onmouseover="this.style.background='#fff'; this.style.borderColor='rgba(0,0,0,0.1)'; this.style.transform='translateY(-1px)';"
+          onmouseout="this.style.background='rgba(255,255,255,0.7)'; this.style.borderColor='rgba(0,0,0,0.06)'; this.style.transform='translateY(0)';">Curated
+          Gifts</button>
+      </div>
+
+      <!-- Results Container -->
       <div id="search-results-container"
-        style="max-height: 300px; overflow-y: auto; padding: 0.5rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+        style="width: 100%; max-height: 48vh; overflow-y: auto; padding: 1rem; padding-bottom: 4rem; scrollbar-width: none; mask-image: linear-gradient(to bottom, black 85%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);">
+
+        <!-- Initial empty state -->
         <div
-          style="color: #4A453F; font-size: 0.95rem; text-align: center; padding: 1.5rem 0; font-family: var(--font-sans);">
-          Type a query to see matching artisan candles.</div>
+          style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8A8177; text-align: center; padding: 3rem 0; font-family: var(--font-sans);">
+          <div
+            style="width: 64px; height: 64px; background: rgba(0,0,0,0.02); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;">
+            <i data-lucide="search" style="width: 24px; height: 24px; color: #D1CBC3;"></i>
+          </div>
+          <span style="font-size: 1.15rem; font-weight: 500; color: #4A453F; margin-bottom: 0.5rem;">Start typing to
+            search</span>
+          <span style="font-size: 0.95rem; color: #A8A197;">Discover signature jars, custom tools, and more.</span>
+        </div>
       </div>
     </div>
   </div>
