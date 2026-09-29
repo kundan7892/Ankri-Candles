@@ -165,10 +165,10 @@
             <div class="shop-filter-group shop-filter-divider">
               <h3 class="shop-filter-heading" style="display:flex;justify-content:space-between;align-items:center;">
                 Price Range
-                <span id="shop-price-label" class="shop-filter-value">₹500 – ₹2,500</span>
+                <span id="shop-price-label" class="shop-filter-value">₹500 – ₹3,000</span>
               </h3>
               <div style="padding-top:0.75rem;">
-                <input id="shop-price-range" type="range" min="0" max="3000" value="2500" step="100"
+                <input id="shop-price-range" type="range" min="500" max="3000" value="3000" step="100"
                   class="shop-range-input">
               </div>
             </div>
@@ -2986,7 +2986,7 @@
             <input type="password" id="login-password" placeholder="Password" required
               style="width:100%; border-radius:8px !important; padding: 0.85rem; padding-right: 2.5rem;">
             <button type="button" aria-label="Toggle password visibility"
-              onclick="const input = this.previousElementSibling; const icon = this.querySelector('i'); if(input.type==='password'){input.type='text'; icon.setAttribute('data-lucide','eye-off');}else{input.type='password'; icon.setAttribute('data-lucide','eye');} lucide.createIcons();"
+              onclick="var pwd = this.previousElementSibling; var ico = this.querySelector('i'); if(pwd.type==='password'){pwd.type='text'; ico.setAttribute('data-lucide','eye-off');}else{pwd.type='password'; ico.setAttribute('data-lucide','eye');} lucide.createIcons();"
               style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; cursor: pointer; color: #888; display: flex; align-items: center; justify-content: center;">
               <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
             </button>
@@ -3034,7 +3034,7 @@
             <input type="password" id="reg-password" placeholder="Password" required
               style="width:100%; border-radius:8px !important; padding: 0.85rem; padding-right: 2.5rem;">
             <button type="button" aria-label="Toggle password visibility"
-              onclick="var input = this.previousElementSibling; var icon = this.querySelector('i'); if(input.type==='password'){input.type='text'; icon.setAttribute('data-lucide','eye-off');}else{input.type='password'; icon.setAttribute('data-lucide','eye');} lucide.createIcons();"
+              onclick="var regPwd = this.previousElementSibling; var regIco = this.querySelector('i'); if(regPwd.type==='password'){regPwd.type='text'; regIco.setAttribute('data-lucide','eye-off');}else{regPwd.type='password'; regIco.setAttribute('data-lucide','eye');} lucide.createIcons();"
               style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; cursor: pointer; color: #888; display: flex; align-items: center; justify-content: center;">
               <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
             </button>
@@ -3900,7 +3900,7 @@
 
   <!-- Shop Filter Interactions -->
   <script>
-    document.addEer('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
       const searchInput = document.getElementById('shop-search');
       const priceRange = document.getElementById('shop-price-range');
       const priceLabel = document.getElementById('shop-price-label');
@@ -4025,7 +4025,7 @@
 
       // Price slider
       priceRange.addEventListener('input', (e) => {
-        priceLabel.textContent = `₹0 – ₹${e.target.value}`;
+        priceLabel.textContent = `₹500 – ₹${e.target.value}`;
         filterCards();
       });
 
