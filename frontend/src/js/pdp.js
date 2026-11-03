@@ -6,6 +6,30 @@
 // ── Candle Product Catalogue ──────────────────────────────────────────────
 export const CANDLE_CATALOGUE = [
     {
+        id: 'christmas-reindeer',
+        name: 'Christmas Reindeer Candle',
+        price: 250,
+        tags: ['Festive', 'Holiday', 'Spicy', 'Vanilla'],
+        description:
+            'A little festive magic for your home ♡. Light up the Christmas cheer with this charming handcrafted reindeer candle, bringing warm cozy holiday notes of cinnamon, spiced clove, and sweet creamy vanilla.',
+        images: [
+            '/images/christmas-reindeer-candle.jpg',
+            '/images/christmas-reindeer-candle.jpg',
+        ],
+        notes: [
+            { label: 'Top', value: 'Spiced Orange, Cinnamon Bark' },
+            { label: 'Middle', value: 'Clove Bud, Warm Honey' },
+            { label: 'Base', value: 'Creamy Vanilla, Frosted Fir' },
+        ],
+        details: [
+            'Weight: 180g | Burn time: ~35 hours',
+            'Container: Clear glass tumbler with festive reindeer candle art',
+            'Wax: 100% natural hand-poured soy wax',
+            'Trim wick to 5mm before each burn',
+            'Adds festive charm & makes a perfect gift',
+        ],
+    },
+    {
         id: 'santal-noir',
         name: 'Santal Noir',
         price: 1299,

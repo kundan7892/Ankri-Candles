@@ -165,10 +165,10 @@
             <div class="shop-filter-group shop-filter-divider">
               <h3 class="shop-filter-heading" style="display:flex;justify-content:space-between;align-items:center;">
                 Price Range
-                <span id="shop-price-label" class="shop-filter-value">₹500 – ₹3,000</span>
+                <span id="shop-price-label" class="shop-filter-value">₹200 – ₹3,000</span>
               </h3>
               <div style="padding-top:0.75rem;">
-                <input id="shop-price-range" type="range" min="500" max="3000" value="3000" step="100"
+                <input id="shop-price-range" type="range" min="200" max="3000" value="3000" step="50"
                   class="shop-range-input">
               </div>
             </div>
@@ -218,7 +218,7 @@
 
           <!-- Toolbar -->
           <div class="shop-toolbar">
-            <p class="shop-results-count">Showing <strong id="shop-results-count">4</strong> results</p>
+            <p class="shop-results-count">Showing <strong id="shop-results-count">7</strong> results</p>
             <div class="shop-sort-wrap">
               <span class="shop-sort-label">Sort by:</span>
               <select id="shop-sort" class="shop-sort-select">
@@ -232,6 +232,24 @@
 
           <!-- Product Grid -->
           <div class="shop-product-grid" id="shop-product-grid">
+
+            <!-- Card: Christmas Reindeer Candle -->
+            <article class="shop-card" data-product="christmas-reindeer" data-notes="spicy,vanilla" data-price="250"
+              data-category="jar" data-wax="soy">
+              <div class="shop-card-image-wrap">
+                <img src="/images/christmas-reindeer-candle.jpg" alt="Christmas Reindeer Candle" class="shop-card-img">
+                <span class="shop-card-badge">FESTIVE</span>
+                <button class="shop-card-wishlist" aria-label="Wishlist">
+                  <i data-lucide="heart"></i>
+                </button>
+              </div>
+              <div class="shop-card-body">
+                <h4 class="shop-card-name">Christmas Reindeer Candle</h4>
+                <p class="shop-card-mood">Festive magic, sweet &amp; cozy</p>
+                <p class="shop-card-price">₹250</p>
+                <button class="shop-card-btn" onclick="window.openPDP('christmas-reindeer')">View Details</button>
+              </div>
+            </article>
 
             <!-- Card: Santal Noir -->
             <article class="shop-card" data-product="santal-noir" data-notes="woody,spicy" data-price="1299"
@@ -344,7 +362,7 @@
             <p style="font-family:'Inter',sans-serif;font-size:1rem;color:var(--text-secondary);">No candles match your
               filters. Try adjusting your selection.</p>
             <button
-              onclick="document.querySelectorAll('.shop-frag-tag').forEach(t=>t.classList.add('active'));document.getElementById('shop-product-grid').querySelectorAll('.shop-card').forEach(c=>c.style.display='');document.getElementById('shop-no-results').style.display='none';document.getElementById('shop-results-count').textContent='6';"
+              onclick="document.querySelectorAll('.shop-frag-tag').forEach(t=>t.classList.add('active'));document.getElementById('shop-product-grid').querySelectorAll('.shop-card').forEach(c=>c.style.display='');document.getElementById('shop-no-results').style.display='none';document.getElementById('shop-results-count').textContent='7';"
               class="shop-card-btn" style="display:inline-block;margin-top:1rem;width:auto;padding:0.65rem 2rem;">Clear
               Filters</button>
           </div>
@@ -4025,7 +4043,7 @@
 
       // Price slider
       priceRange.addEventListener('input', (e) => {
-        priceLabel.textContent = `₹500 – ₹${e.target.value}`;
+        priceLabel.textContent = `₹200 – ₹${Number(e.target.value).toLocaleString('en-IN')}`;
         filterCards();
       });
 
