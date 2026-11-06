@@ -8,7 +8,7 @@ export const CANDLE_CATALOGUE = [
     {
         id: 'christmas-reindeer',
         name: 'Christmas Reindeer Candle',
-        price: 250,
+        price: 449,
         tags: ['Festive', 'Holiday', 'Spicy', 'Vanilla'],
         description:
             'A little festive magic for your home ♡. Light up the Christmas cheer with this charming handcrafted reindeer candle, bringing warm cozy holiday notes of cinnamon, spiced clove, and sweet creamy vanilla.',
